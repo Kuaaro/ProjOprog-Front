@@ -14,3 +14,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+### Uruchomienie serwera z testowym API
+
+```sh
+cd moda_data
+npm install
+node mock_server.js
+```
