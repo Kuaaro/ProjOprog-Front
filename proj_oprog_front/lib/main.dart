@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:proj_oprog_front/widgets/top_navbar.dart';
-import 'package:proj_oprog_front/widgets/catalog_content.dart';
 import 'package:proj_oprog_front/widgets/metadata_content.dart';
 import 'package:proj_oprog_front/widgets/schema_content.dart';
 import 'package:proj_oprog_front/widgets/types_content.dart';
+import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/catalog_list_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _getContent() {
     switch (_selected) {
       case 'Catalog':
-        return const CatalogContent();
+        return const CatalogListView();
       case 'Metadata':
         return const MetadataContent();
       case 'Schema':
