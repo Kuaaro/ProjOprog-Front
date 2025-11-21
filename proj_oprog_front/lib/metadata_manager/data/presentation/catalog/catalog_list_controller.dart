@@ -1,10 +1,10 @@
-import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
 import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/interface/icatalog_list_view.dart';
 import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/interface/icatalog_list_controller.dart';
+import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
 
 class CatalogListController implements ICatalogListController {
   final ICatalogListView view;
-  final CatalogService service;
+  final ICatalog service;
 
   // Stan
   final List<int> _catalogIdStack = [0];

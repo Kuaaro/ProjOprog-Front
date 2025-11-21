@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:proj_oprog_front/widgets/top_navbar.dart';
-import 'package:proj_oprog_front/widgets/metadata_content.dart';
-import 'package:proj_oprog_front/widgets/schema_content.dart';
-import 'package:proj_oprog_front/widgets/types_content.dart';
+import 'package:get_it/get_it.dart';
+import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
+import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
+import 'package:proj_oprog_front/metadata_manager/ui/widgets/top_navbar.dart';
+import 'package:proj_oprog_front/metadata_manager/ui/widgets/metadata_content.dart';
+import 'package:proj_oprog_front/metadata_manager/ui/widgets/schema_content.dart';
+import 'package:proj_oprog_front/metadata_manager/ui/widgets/types_content.dart';
 import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/catalog_list_view.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -81,4 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _getContent(),
     );
   }
+}
+
+final locator = GetIt.instance;
+
+void setupServiceLocator() {
+  locator.registerSingleton<ICatalog>(
+    CatalogService(),
+  );
 }
