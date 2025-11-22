@@ -1,96 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:proj_oprog_front/global_dispatcher.dart';
+import 'package:proj_oprog_front/metadata_manager/uc/catalog_uc.dart';
+import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
-import 'package:proj_oprog_front/metadata_manager/ui/widgets/top_navbar.dart';
-import 'package:proj_oprog_front/metadata_manager/ui/widgets/metadata_content.dart';
-import 'package:proj_oprog_front/metadata_manager/ui/widgets/schema_content.dart';
-import 'package:proj_oprog_front/metadata_manager/ui/widgets/types_content.dart';
-import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/catalog_list_view.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/dispatcher/catalog_presentation_dispatcher.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/event/catalog_event_controller.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/event/icatalog_event_controller.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/icatalog_view.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_list_view.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_window.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/view_model/catalog_list_view_model.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/view_model/catalog_list_view_model_adapter.dart';
 
 void main() {
   setupServiceLocator();
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-      ),
-      home: const MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String _selected = 'Home';
-  bool _isMenuExpanded = false;
-
-  void _toggleMenu() {
-    setState(() {
-      _isMenuExpanded = !_isMenuExpanded;
-    });
-  }
-
-  void _selectItem(String label) {
-    setState(() {
-      _selected = label;
-      _isMenuExpanded = false;
-    });
-  }
-
-  Widget _getContent() {
-    switch (_selected) {
-      case 'Catalog':
-        return const CatalogListView();
-      case 'Metadata':
-        return const MetadataContent();
-      case 'Schema':
-        return const SchemaContent();
-      case 'Types':
-        return const TypesContent();
-      default:
-        return const Center(
-          child: Text('Home Page', style: TextStyle(fontSize: 24)),
-        );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        leading: IconButton(
-          icon: Icon(_isMenuExpanded ? Icons.close : Icons.menu),
-          onPressed: _toggleMenu,
-        ),
-        title: _isMenuExpanded
-            ? TopNavBar(selected: _selected, onSelect: _selectItem)
-            : null,
-      ),
-      body: _getContent(),
-    );
-  }
+  runApp(MyApp());
 }
 
 final locator = GetIt.instance;
 
 void setupServiceLocator() {
-  locator.registerSingleton<ICatalog>(
-    CatalogService(),
+  locator.registerSingleton<ICatalog>(CatalogService());
+  locator.registerSingleton<CatalogListViewModel>(CatalogListViewModel());
+  locator.registerSingleton<VCatalogWindow>(VCatalogWindow());
+  locator.registerLazySingleton<CatalogListViewModelAdapter>(
+    () => CatalogListViewModelAdapter(locator<CatalogListViewModel>()),
   );
+  locator.registerLazySingleton<VCatalogListView>(
+    () => VCatalogListView(locator<CatalogListViewModel>()),
+  );
+  locator.registerLazySingleton<ICatalogView>(
+    () => CatalogPresentationDispatcher(
+      locator<VCatalogListView>(),
+      locator<CatalogListViewModelAdapter>(),
+    ),
+  );
+  locator.registerLazySingleton<ICatalogUseCase>(
+    () => CatalogUseCase(locator<ICatalogView>(), locator<ICatalog>()),
+  );
+  locator.registerLazySingleton<ICatalogEventController>(
+    () => CatalogEventController(locator<ICatalogUseCase>()),
+  );
+  locator.registerLazySingleton<GlobalDispatcher>(
+    () => GlobalDispatcher(locator<VCatalogWindow>()),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  GlobalDispatcher dispatcher = locator<GlobalDispatcher>();
+  ICatalogView catalogView = locator<ICatalogView>();
+  ICatalogUseCase catalogUseCase = locator<ICatalogUseCase>();
+
+  @override
+  Widget build(BuildContext context) {
+    catalogUseCase.showCatalogUC(0);
+    return MaterialApp(
+      title: 'DoorCE',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+      ),
+      home: Scaffold(appBar: AppBar(), body: dispatcher.getCurrentView()),
+    );
+  }
 }

@@ -2,6 +2,6 @@ import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_ch
 import 'package:proj_oprog_front/metadata_manager/data/model/dtos/catalog_dto.dart';
 
 abstract class ICatalog {
-  Future<GetCatalogChildrenResponse> getCatalogChildren(int id);
+  Future<ShowCatalogDto> getCatalogChildren(int id);
   Future<void> createCatalog(CatalogDto dto);
 }
