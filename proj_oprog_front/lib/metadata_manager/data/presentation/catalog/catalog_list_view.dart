@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proj_oprog_front/main.dart';
 import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_children_response.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
 import 'package:proj_oprog_front/metadata_manager/data/presentation/catalog/interface/icatalog_list_controller.dart';
@@ -26,8 +27,7 @@ class _CatalogListViewState extends State<CatalogListView>
   void initState() {
     super.initState();
 
-    final service = CatalogService();
-    _controller = CatalogListController(view: this, service: service);
+    _controller = CatalogListController(view: this, service: locator());
 
     _controller.loadCatalogChildren(0);
   }

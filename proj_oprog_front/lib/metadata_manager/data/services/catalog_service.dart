@@ -5,9 +5,7 @@ import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_ch
 import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
 
 class CatalogService implements ICatalog {
-  final String baseUrl;
-
-  CatalogService({this.baseUrl = 'http://localhost:3000'});
+  final String baseUrl = 'http://localhost:3000';
 
   @override
   Future<GetCatalogChildrenResponse> getCatalogChildren(int id) async {
