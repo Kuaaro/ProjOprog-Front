@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/metadata_manager/utility/igeneral_view.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/event/icatalog_event_controller.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/view_model/catalog_list_view_model.dart';
 
 class VCatalogListView extends StatefulWidget implements IGeneralView {
@@ -46,37 +48,59 @@ class _VCatalogListViewState extends State<VCatalogListView> {
     if (!_isVisible) {
       return const SizedBox.shrink();
     }
-
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'Catalogs',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => {},
+                icon: const Icon(Icons.create_new_folder),
+                label: const Text('New'),
+              ),
+              const SizedBox(width: 16),
+            ],
           ),
-        ),
-        ...widget.viewModel.catalogs.map(
-          (catalog) => ListTile(
-            title: Text(catalog.name),
-            subtitle: Text('ID: ${catalog.id}'),
-          ),
-        ),
-        const Divider(),
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Text(
-            'Datasets',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ),
-        ...widget.viewModel.datasets.map(
-          (dataset) => ListTile(
-            title: Text(dataset.name),
-            subtitle: Text('ID: ${dataset.id}'),
-          ),
-        ),
-      ],
+          const SizedBox(height: 20),
+          // Lista
+          widget.viewModel.catalogs.isEmpty && widget.viewModel.datasets.isEmpty
+              ? const Center(
+                  child: Text('No catalogs or datasets in this folder'),
+                )
+              : Column(
+                  // Changed from ListView wrapped in Expanded
+                  children: [
+                    ...widget.viewModel.catalogs.map(
+                      (catalog) => Card(
+                        child: ListTile(
+                          leading: const Icon(Icons.folder, color: Colors.blue),
+                          title: Text(catalog.name),
+                          subtitle: Text('Catalog ID: ${catalog.id}'),
+                          trailing: const Icon(Icons.arrow_forward_ios),
+                          onTap: () => GetIt.instance<ICatalogEventController>()
+                              .onCatalogPressed(catalog.id),
+                        ),
+                      ),
+                    ),
+                    ...widget.viewModel.datasets.map(
+                      (dataset) => Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.description,
+                            color: Colors.green,
+                          ),
+                          title: Text(dataset.name),
+                          subtitle: Text('Dataset ID: ${dataset.id}'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+        ],
+      ),
     );
   }
 }

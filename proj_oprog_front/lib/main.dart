@@ -61,7 +61,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
-      home: Scaffold(appBar: AppBar(), body: dispatcher.getCurrentView()),
+      // home: Scaffold(appBar: AppBar(), body: dispatcher.getCurrentView()),
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        body: dispatcher.getCurrentView(),
+      ),
     );
   }
 }

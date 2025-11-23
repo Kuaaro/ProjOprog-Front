@@ -11,12 +11,7 @@ class VCatalogWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Catalog')),
-      body: Column(
-        children: [
-          GetIt.instance<VCatalogListView>(),
-          Center(child: Text('here')),
-        ],
-      ),
+      body: Column(children: [GetIt.instance<VCatalogListView>()]),
     );
   }
 }
