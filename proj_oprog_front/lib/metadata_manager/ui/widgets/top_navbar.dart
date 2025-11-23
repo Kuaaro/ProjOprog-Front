@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:proj_oprog_front/global_dispatcher.dart';
+import 'package:proj_oprog_front/iglobal_dispather.dart';
 
 class TopNavBar extends StatelessWidget {
-  final String selected;
-  final ValueChanged<String> onSelect;
-
-  const TopNavBar({super.key, required this.selected, required this.onSelect});
-
-  Widget _navButton(BuildContext context, String label) {
-    final isSelected = selected == label;
-
+  Widget _navButton(
+    BuildContext context,
+    String label,
+    VoidCallback onPressed,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ElevatedButton(
-        onPressed: () => onSelect(label),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected
-              ? Theme.of(context).colorScheme.primary
-              : null,
-          foregroundColor: isSelected ? Colors.white : null,
-        ),
+        onPressed: () => onPressed(),
+        style: ElevatedButton.styleFrom(),
         child: Text(label),
       ),
     );
@@ -30,10 +25,16 @@ class TopNavBar extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _navButton(context, 'Catalog'),
-          _navButton(context, 'Metadata'),
-          _navButton(context, 'Schema'),
-          _navButton(context, 'Types'),
+          _navButton(
+            context,
+            'Catalog',
+            () => GetIt.instance<IGlobalDispather>().showCatalogWindow(),
+          ),
+          _navButton(
+            context,
+            'Metadata',
+            () => GetIt.instance<IGlobalDispather>().showMetadataWindow(),
+          ),
         ],
       ),
     );
