@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/global_dispatcher.dart';
-import 'package:proj_oprog_front/iglobal_dispather.dart';
+import 'package:proj_oprog_front/metadata_manager/global/iglobal_dispather.dart';
 
 class TopNavBar extends StatelessWidget {
   Widget _navButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/iglobal_dispather.dart';
+import 'package:proj_oprog_front/metadata_manager/global/iglobal_dispather.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_window.dart';
 import 'package:proj_oprog_front/metadata_manager/view/dataset/vdataset_window.dart';

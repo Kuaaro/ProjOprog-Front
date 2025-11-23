@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/global_dispatcher.dart';
-import 'package:proj_oprog_front/iglobal_dispather.dart';
-import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_children_response.dart';
+import 'package:proj_oprog_front/metadata_manager/global/global_dispatcher.dart';
+import 'package:proj_oprog_front/metadata_manager/global/iglobal_dispather.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/catalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
