@@ -43,6 +43,13 @@ class _VCatalogListViewState extends State<VCatalogListView> {
     });
   }
 
+  String getPath() {
+    if (widget.viewModel.pathStack.isEmpty) {
+      return '/';
+    }
+    return '/' + widget.viewModel.pathStack.map((item) => item.name).join('/');
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_isVisible) {
@@ -62,6 +69,14 @@ class _VCatalogListViewState extends State<VCatalogListView> {
                 label: const Text('New'),
               ),
               const SizedBox(width: 16),
+
+              Expanded(
+                child: Text(
+                  getPath(),
+                  style: Theme.of(context).textTheme.headlineSmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -71,7 +86,6 @@ class _VCatalogListViewState extends State<VCatalogListView> {
                   child: Text('No catalogs or datasets in this folder'),
                 )
               : Column(
-                  // Changed from ListView wrapped in Expanded
                   children: [
                     ...widget.viewModel.catalogs.map(
                       (catalog) => Card(
@@ -81,7 +95,7 @@ class _VCatalogListViewState extends State<VCatalogListView> {
                           subtitle: Text('Catalog ID: ${catalog.id}'),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () => GetIt.instance<ICatalogEventController>()
-                              .onCatalogPressed(catalog.id),
+                              .onCatalogPressed(catalog),
                         ),
                       ),
                     ),

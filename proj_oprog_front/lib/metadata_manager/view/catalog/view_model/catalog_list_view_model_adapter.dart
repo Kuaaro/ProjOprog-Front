@@ -3,6 +3,7 @@ import 'package:proj_oprog_front/metadata_manager/view/catalog/view_model/catalo
 
 class CatalogListViewModelAdapter {
   final CatalogListViewModel viewModel;
+
   CatalogListViewModelAdapter(this.viewModel);
 
   ShowCatalogDto getData() {
@@ -19,5 +20,20 @@ class CatalogListViewModelAdapter {
     viewModel.datasets
       ..clear()
       ..addAll(dto.datasets);
+  }
+
+  void pushPath(NamedIdPair item) {
+    viewModel.pathStack.add(item);
+  }
+
+  NamedIdPair? popPath() {
+    if (viewModel.pathStack.isEmpty) {
+      return null;
+    }
+    return viewModel.pathStack.removeLast();
+  }
+
+  void clearPath() {
+    viewModel.pathStack.clear();
   }
 }

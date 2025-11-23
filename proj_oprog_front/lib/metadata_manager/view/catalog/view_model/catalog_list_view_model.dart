@@ -3,5 +3,6 @@ import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_ch
 class CatalogListViewModel {
   final List<NamedIdPair> catalogs;
   final List<NamedIdPair> datasets;
-  CatalogListViewModel() : catalogs = [], datasets = [];
+  final List<NamedIdPair> pathStack;
+  CatalogListViewModel() : catalogs = [], datasets = [], pathStack = [];
 }

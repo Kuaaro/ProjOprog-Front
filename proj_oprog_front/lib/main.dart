@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/global_dispatcher.dart';
+import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_children_response.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/catalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
@@ -38,7 +39,11 @@ void setupServiceLocator() {
     ),
   );
   locator.registerLazySingleton<ICatalogUseCase>(
-    () => CatalogUseCase(locator<ICatalogView>(), locator<ICatalog>()),
+    () => CatalogUseCase(
+      locator<ICatalogView>(),
+      locator<ICatalog>(),
+      locator<CatalogListViewModelAdapter>(),
+    ),
   );
   locator.registerLazySingleton<ICatalogEventController>(
     () => CatalogEventController(locator<ICatalogUseCase>()),
@@ -55,7 +60,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    catalogUseCase.showCatalogUC(0);
+    catalogUseCase.showCatalogUC(null);
     return MaterialApp(
       title: 'DoorCE',
       theme: ThemeData(
