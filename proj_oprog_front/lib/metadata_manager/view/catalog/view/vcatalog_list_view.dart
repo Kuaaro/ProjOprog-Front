@@ -70,6 +70,17 @@ class _VCatalogListViewState extends State<VCatalogListView> {
               ),
               const SizedBox(width: 16),
 
+              // Back-button
+              if (widget.viewModel.pathStack.isNotEmpty) ...[
+                IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => GetIt.instance<ICatalogEventController>()
+                      .onPreviousCatalogPressed(),
+                ),
+                const SizedBox(width: 8),
+              ],
+
+              // Path
               Expanded(
                 child: Text(
                   getPath(),

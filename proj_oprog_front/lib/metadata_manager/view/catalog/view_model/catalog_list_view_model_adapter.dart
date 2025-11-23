@@ -26,6 +26,10 @@ class CatalogListViewModelAdapter {
     viewModel.pathStack.add(item);
   }
 
+  List<NamedIdPair> getPath() {
+    return viewModel.pathStack;
+  }
+
   NamedIdPair? popPath() {
     if (viewModel.pathStack.isEmpty) {
       return null;

@@ -14,13 +14,23 @@ class CatalogUseCase implements ICatalogUseCase {
   @override
   void showCatalogUC(NamedIdPair? nameIdPair) async {
     if (nameIdPair != null) {
-      final response = await service.getCatalogChildren(nameIdPair.id);
       viewModelAdapter.pushPath(nameIdPair);
-      view.showCatalog(response);
     } else {
-      final response = await service.getCatalogChildren(0);
       viewModelAdapter.clearPath();
-      view.showCatalog(response);
     }
+
+    final catalogId = nameIdPair?.id ?? 0;
+    final response = await service.getCatalogChildren(catalogId);
+    view.showCatalog(response);
+  }
+
+  @override
+  void showPreviousCatalogUC() async {
+    viewModelAdapter.popPath();
+    final path = viewModelAdapter.getPath();
+
+    final catalogId = path.isEmpty ? 0 : path.last.id;
+    final response = await service.getCatalogChildren(catalogId);
+    view.showCatalog(response);
   }
 }

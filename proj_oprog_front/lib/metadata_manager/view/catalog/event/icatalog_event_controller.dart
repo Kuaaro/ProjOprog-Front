@@ -2,4 +2,5 @@ import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_ch
 
 abstract class ICatalogEventController {
   void onCatalogPressed(NamedIdPair catalogPair);
+  void onPreviousCatalogPressed();
 }

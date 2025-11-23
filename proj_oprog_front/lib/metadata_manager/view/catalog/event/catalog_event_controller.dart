@@ -10,7 +10,11 @@ class CatalogEventController implements ICatalogEventController {
 
   @override
   void onCatalogPressed(NamedIdPair catalogPair) {
-    print('Pressed: ${catalogPair.id} ${catalogPair.name}');
     appLogic.showCatalogUC(catalogPair);
+  }
+
+  @override
+  void onPreviousCatalogPressed() {
+    appLogic.showPreviousCatalogUC();
   }
 }
