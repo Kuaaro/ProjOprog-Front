@@ -9,9 +9,28 @@ class PCatalog implements ICatalogView {
   PCatalog(this.viewModelAdapter, this.router);
 
   @override
-  void showCatalog(ShowCatalogDto dto) {
+  void showCatalog(ShowCatalogDto dto, NamedIdPair? current) {
+    if (current != null) {
+      viewModelAdapter.pushPath(current);
+    } else {
+      viewModelAdapter.clearPath();
+    }
     viewModelAdapter.setData(dto);
 
+    final currentLocation = router.routerDelegate.currentConfiguration.uri.path;
+
+    if (currentLocation != '/catalog') {
+      router.go('/catalog');
+    }
+  }
+
+  @override
+  void showPreviousCatalog(
+    ShowCatalogDto dto,
+    NamedIdPair? previousCatalog,
+  ) async {
+    viewModelAdapter.popPath();
+    viewModelAdapter.setData(dto);
     final currentLocation = router.routerDelegate.currentConfiguration.uri.path;
 
     if (currentLocation != '/catalog') {

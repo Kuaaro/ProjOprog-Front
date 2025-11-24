@@ -36,11 +36,7 @@ void setupServiceLocator() {
   );
 
   locator.registerLazySingleton<ICatalogUseCase>(
-    () => CatalogUseCase(
-      locator<ICatalogView>(),
-      locator<ICatalog>(),
-      locator<CatalogListViewModelAdapter>(),
-    ),
+    () => CatalogUseCase(locator<ICatalogView>(), locator<ICatalog>()),
   );
 
   locator.registerSingleton<TopNavBar>(TopNavBar(locator<ICatalogUseCase>()));

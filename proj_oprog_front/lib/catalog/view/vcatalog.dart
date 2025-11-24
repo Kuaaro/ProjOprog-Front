@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
 import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
 
@@ -13,6 +14,12 @@ class VCatalog extends StatelessWidget {
       return '/';
     }
     return '/' + viewModel.pathStack.map((item) => item.name).join('/');
+  }
+
+  NamedIdPair? getPrevious() {
+    return viewModel.pathStack.length < 2
+        ? null
+        : viewModel.pathStack[viewModel.pathStack.length - 2];
   }
 
   @override
@@ -39,7 +46,7 @@ class VCatalog extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () => GetIt.instance<ICatalogEventController>()
-                          .onPreviousCatalogPressed(),
+                          .onPreviousCatalogPressed(getPrevious()),
                     ),
                     const SizedBox(width: 8),
                   ],

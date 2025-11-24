@@ -12,7 +12,7 @@ class CatalogEventController implements ICatalogEventController {
   }
 
   @override
-  void onPreviousCatalogPressed() {
-    appLogic.showPreviousCatalogUC();
+  void onPreviousCatalogPressed(NamedIdPair? previous) {
+    appLogic.showPreviousCatalogUC(previous);
   }
 }
