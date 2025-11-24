@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/metadata_manager/view/catalog/event/icatalog_event_controller.dart';
-import 'package:proj_oprog_front/metadata_manager/view/catalog/view_model/catalog_list_view_model.dart';
+import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
+import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
 
-class VCatalogListView extends StatelessWidget {
+class VCatalog extends StatelessWidget {
   final CatalogListViewModel viewModel;
 
-  VCatalogListView(this.viewModel);
+  VCatalog(this.viewModel);
 
   String getPath() {
     if (viewModel.pathStack.isEmpty) {

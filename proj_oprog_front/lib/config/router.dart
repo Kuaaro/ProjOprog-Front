@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/config/locator.dart';
 import 'package:proj_oprog_front/home_view.dart';
-import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
-import 'package:proj_oprog_front/metadata_manager/ui/widgets/top_navbar.dart';
-import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_list_view.dart';
-import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_window.dart';
-import 'package:proj_oprog_front/metadata_manager/view/dataset/vdataset_window.dart';
+import 'package:proj_oprog_front/metadata/view/vmetadata.dart';
+import 'package:proj_oprog_front/shared/ui/top_navbar.dart';
+import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -26,13 +24,13 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/catalog',
           builder: (context, state) {
-            return locator<VCatalogListView>();
+            return locator<VCatalog>();
           },
         ),
         GoRoute(
           path: '/metadata',
           builder: (context, state) {
-            return locator<VMetadataWindow>();
+            return locator<VMetadata>();
           },
         ),
       ],

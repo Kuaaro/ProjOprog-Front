@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:proj_oprog_front/metadata_manager/data/model/dtos/catalog_dto.dart';
-import 'package:proj_oprog_front/metadata_manager/data/model/dtos/get_catalog_children_response.dart';
-import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
+import 'package:proj_oprog_front/catalog/dto/catalog_dto.dart';
+import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
+import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 
 class CatalogService implements ICatalog {
   final String baseUrl = 'http://localhost:3000';
