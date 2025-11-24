@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/metadata_manager/global/iglobal_dispather.dart';
 
 class TopNavBar extends StatelessWidget {
@@ -24,16 +25,8 @@ class TopNavBar extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _navButton(
-            context,
-            'Catalog',
-            () => GetIt.instance<IGlobalDispather>().showCatalogWindow(),
-          ),
-          _navButton(
-            context,
-            'Metadata',
-            () => GetIt.instance<IGlobalDispather>().showMetadataWindow(),
-          ),
+          _navButton(context, 'Catalog', () => context.go('/catalog')),
+          _navButton(context, 'Metadata', () => context.go('/metadata')),
         ],
       ),
     );
