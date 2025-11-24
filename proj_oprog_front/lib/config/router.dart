@@ -4,6 +4,7 @@ import 'package:proj_oprog_front/config/locator.dart';
 import 'package:proj_oprog_front/home_view.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/ui/widgets/top_navbar.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_list_view.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/view/vcatalog_window.dart';
 import 'package:proj_oprog_front/metadata_manager/view/dataset/vdataset_window.dart';
 
@@ -15,7 +16,7 @@ final GoRouter router = GoRouter(
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: TopNavBar(),
+            title: locator<TopNavBar>(),
           ),
           body: child,
         );
@@ -25,10 +26,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/catalog',
           builder: (context, state) {
-            final catalogUseCase = locator<ICatalogUseCase>();
-            catalogUseCase.showCatalogUC(null);
-
-            return locator<VCatalogWindow>();
+            return locator<VCatalogListView>();
           },
         ),
         GoRoute(

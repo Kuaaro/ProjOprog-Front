@@ -20,10 +20,13 @@ class CatalogListViewModelAdapter {
     viewModel.datasets
       ..clear()
       ..addAll(dto.datasets);
+
+    viewModel.notifyChanges();
   }
 
   void pushPath(NamedIdPair item) {
     viewModel.pathStack.add(item);
+    viewModel.notifyChanges();
   }
 
   List<NamedIdPair> getPath() {
@@ -34,10 +37,13 @@ class CatalogListViewModelAdapter {
     if (viewModel.pathStack.isEmpty) {
       return null;
     }
-    return viewModel.pathStack.removeLast();
+    final result = viewModel.pathStack.removeLast();
+    viewModel.notifyChanges();
+    return result;
   }
 
   void clearPath() {
     viewModel.pathStack.clear();
+    viewModel.notifyChanges();
   }
 }

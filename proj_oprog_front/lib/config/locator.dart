@@ -1,11 +1,12 @@
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/metadata_manager/global/global_dispatcher.dart';
-import 'package:proj_oprog_front/metadata_manager/global/iglobal_dispather.dart';
+import 'package:go_router/go_router.dart';
+import 'package:proj_oprog_front/config/router.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/catalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/uc/icatalog_uc.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/catalog_service.dart';
 import 'package:proj_oprog_front/metadata_manager/data/services/interface/icatalog.dart';
-import 'package:proj_oprog_front/metadata_manager/view/catalog/dispatcher/catalog_presentation_dispatcher.dart';
+import 'package:proj_oprog_front/metadata_manager/ui/widgets/top_navbar.dart';
+import 'package:proj_oprog_front/metadata_manager/view/catalog/dispatcher/catalog_presenter.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/event/catalog_event_controller.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/event/icatalog_event_controller.dart';
 import 'package:proj_oprog_front/metadata_manager/view/catalog/icatalog_view.dart';
@@ -22,6 +23,7 @@ void setupServiceLocator() {
   locator.registerSingleton<CatalogListViewModel>(CatalogListViewModel());
   locator.registerSingleton<VCatalogWindow>(VCatalogWindow());
   locator.registerSingleton<VMetadataWindow>(VMetadataWindow());
+  locator.registerSingleton<GoRouter>(router);
 
   locator.registerLazySingleton<CatalogListViewModelAdapter>(
     () => CatalogListViewModelAdapter(locator<CatalogListViewModel>()),
@@ -32,9 +34,9 @@ void setupServiceLocator() {
   );
 
   locator.registerLazySingleton<ICatalogView>(
-    () => CatalogPresentationDispatcher(
-      locator<VCatalogListView>(),
+    () => CatalogPresenter(
       locator<CatalogListViewModelAdapter>(),
+      locator<GoRouter>(),
     ),
   );
 
@@ -46,12 +48,9 @@ void setupServiceLocator() {
     ),
   );
 
+  locator.registerSingleton<TopNavBar>(TopNavBar(locator<ICatalogUseCase>()));
+
   locator.registerLazySingleton<ICatalogEventController>(
     () => CatalogEventController(locator<ICatalogUseCase>()),
-  );
-
-  locator.registerLazySingleton<IGlobalDispather>(
-    () =>
-        GlobalDispatcher(locator<VCatalogWindow>(), locator<VMetadataWindow>()),
   );
 }
