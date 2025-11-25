@@ -1,3 +1,5 @@
+import 'package:proj_oprog_front/schema/presenter/pschema.dart';
+import 'package:proj_oprog_front/schema/presenter/ipschema.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/config/router.dart';
@@ -6,6 +8,7 @@ import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
 import 'package:proj_oprog_front/catalog/business_logic/catalog_service.dart';
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 import 'package:proj_oprog_front/metadata/view/vmetadata.dart';
+import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 import 'package:proj_oprog_front/shared/ui/top_navbar.dart';
 import 'package:proj_oprog_front/catalog/presenter/pcatalog.dart';
 import 'package:proj_oprog_front/catalog/event/catalog_event_controller.dart';
@@ -14,6 +17,11 @@ import 'package:proj_oprog_front/catalog/icatalog_view.dart';
 import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model_adapter.dart';
+import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
+import 'package:proj_oprog_front/schema/business_logic/data_schema_service.dart';
+import 'package:proj_oprog_front/schema/use_case/show_schema_list_uc.dart';
+import 'package:proj_oprog_front/schema/view_model/schema_list_view_model.dart';
+import 'package:proj_oprog_front/schema/view/vschema.dart';
 
 final locator = GetIt.instance;
 
@@ -43,5 +51,18 @@ void setupServiceLocator() {
 
   locator.registerLazySingleton<ICatalogEventController>(
     () => CatalogEventController(locator<ICatalogUseCase>()),
+  );
+
+  locator.registerSingleton<SchemaListViewModel>(SchemaListViewModel());
+  locator.registerSingleton<IDataSchema>(DataSchemaService());
+  locator.registerLazySingleton<IPSchema>(
+    () => PSchema(locator<SchemaListViewModel>(), locator<GoRouter>(),
+  ));
+    locator.registerLazySingleton<IShowSchemaListUC>(
+    () => ShowSchemaListUC(locator<IDataSchema>(), locator<IPSchema>()),
+  );
+
+    locator.registerLazySingleton<VSchema>(
+    () => VSchema(viewModel: locator<SchemaListViewModel>()),
   );
 }

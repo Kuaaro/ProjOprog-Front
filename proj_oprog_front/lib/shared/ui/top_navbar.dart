@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
+import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 
 class TopNavBar extends StatelessWidget {
   final ICatalogUseCase catalogUseCase;
@@ -34,6 +36,9 @@ class TopNavBar extends StatelessWidget {
             () => catalogUseCase.showCatalogUC(null),
           ),
           _navButton(context, 'Metadata', () => context.go('/metadata')),
+          _navButton(context, 'Schema', () {
+            GetIt.instance<IShowSchemaListUC>().showSchemaListUCD();
+          }),
         ],
       ),
     );

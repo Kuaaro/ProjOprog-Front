@@ -42,6 +42,15 @@ app.get('/catalogs/children/:id', (req, res) => {
   }
 });
 
+app.get('/schema/list', (req, res) => {
+  res.json([
+    { name: 'User', id: 1 },
+    { name: 'Product', id: 2 },
+    { name: 'Order', id: 3 },
+    { name: 'Invoice', id: 4 }
+  ]);
+});
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });
