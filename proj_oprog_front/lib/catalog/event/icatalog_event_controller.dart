@@ -1,6 +1,6 @@
-import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
+import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 
 abstract class ICatalogEventController {
-  void onCatalogPressed(NamedIdPair catalogPair);
+  void onCatalogPressed(NamedIdPair pressedCatalog);
   void onPreviousCatalogPressed(NamedIdPair? previous);
 }

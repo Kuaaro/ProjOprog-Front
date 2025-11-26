@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:proj_oprog_front/catalog/dto/catalog_dto.dart';
-import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
+import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 
 class CatalogService implements ICatalog {
