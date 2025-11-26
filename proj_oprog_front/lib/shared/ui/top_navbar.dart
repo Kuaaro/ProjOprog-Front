@@ -37,7 +37,7 @@ class TopNavBar extends StatelessWidget {
           ),
           _navButton(context, 'Metadata', () => context.go('/metadata')),
           _navButton(context, 'Schema', () {
-            GetIt.instance<IShowSchemaListUC>().showSchemaListUCD();
+            GetIt.instance<IShowSchemaListUC>().showSchemaListUC();
           }),
         ],
       ),

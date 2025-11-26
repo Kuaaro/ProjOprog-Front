@@ -1,6 +1,6 @@
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
 import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class CatalogEventController implements ICatalogEventController {
   final ICatalogUseCase appLogic;

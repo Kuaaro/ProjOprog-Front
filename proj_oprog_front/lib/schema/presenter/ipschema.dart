@@ -1,5 +1,5 @@
-import '../dto/name_id_pair.dart';
+import '../../shared/dtos/named_id_pair.dart';
 abstract class ISchemaView {
-  void showSchemaList(List<NameIdPair> schemas);
+  void showSchemaList(List<NamedIdPair> schemas);
   void showError(String message);
 }

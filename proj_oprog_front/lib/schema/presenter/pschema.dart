@@ -1,6 +1,5 @@
-import 'package:proj_oprog_front/schema/dto/name_id_pair.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
-import '../use_case/show_schema_list_uc.dart';
 import '../view_model/schema_list_view_model.dart';
 import 'ipschema.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +11,7 @@ class PSchema implements ISchemaView {
   PSchema(this.viewModel, this.router);
 
  @override
-  void showSchemaList(List<NameIdPair> schemas) {
+  void showSchemaList(List<NamedIdPair> schemas) {
     viewModel.schemas = schemas;
     viewModel.error = null; 
     viewModel.isLoading = false;

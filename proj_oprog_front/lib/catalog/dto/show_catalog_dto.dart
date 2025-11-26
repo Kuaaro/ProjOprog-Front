@@ -1,3 +1,5 @@
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
+
 class ShowCatalogDto {
   final List<NamedIdPair> catalogs;
   final List<NamedIdPair> datasets;
