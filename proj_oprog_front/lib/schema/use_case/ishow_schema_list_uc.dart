@@ -1,3 +1,3 @@
 abstract class IShowSchemaListUC {
-  Future<void> showSchemaListUCD();
+  Future<void> showSchemaListUC();
 }

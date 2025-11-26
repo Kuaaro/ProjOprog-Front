@@ -55,11 +55,11 @@ void setupServiceLocator() {
 
   locator.registerSingleton<SchemaListViewModel>(SchemaListViewModel());
   locator.registerSingleton<IDataSchema>(DataSchemaService());
-  locator.registerLazySingleton<IPSchema>(
+  locator.registerLazySingleton<ISchemaView>(
     () => PSchema(locator<SchemaListViewModel>(), locator<GoRouter>(),
   ));
     locator.registerLazySingleton<IShowSchemaListUC>(
-    () => ShowSchemaListUC(locator<IDataSchema>(), locator<IPSchema>()),
+    () => ShowSchemaListUC(locator<IDataSchema>(), locator<ISchemaView>()),
   );
 
     locator.registerLazySingleton<VSchema>(

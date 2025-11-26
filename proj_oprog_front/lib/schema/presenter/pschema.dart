@@ -5,7 +5,7 @@ import '../view_model/schema_list_view_model.dart';
 import 'ipschema.dart';
 import 'package:go_router/go_router.dart';
 
-class PSchema implements IPSchema {
+class PSchema implements ISchemaView {
   final SchemaListViewModel viewModel;
   final GoRouter router;
 
