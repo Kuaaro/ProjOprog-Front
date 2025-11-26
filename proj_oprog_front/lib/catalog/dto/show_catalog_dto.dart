@@ -1,11 +1,11 @@
-class GetCatalogChildrenResponse {
+class ShowCatalogDto {
   final List<NamedIdPair> catalogs;
   final List<NamedIdPair> datasets;
 
-  GetCatalogChildrenResponse({required this.catalogs, required this.datasets});
+  ShowCatalogDto({required this.catalogs, required this.datasets});
 
-  factory GetCatalogChildrenResponse.fromJson(Map<String, dynamic> json) {
-    return GetCatalogChildrenResponse(
+  factory ShowCatalogDto.fromJson(Map<String, dynamic> json) {
+    return ShowCatalogDto(
       catalogs: (json['catalogs'] as List<dynamic>)
           .map((e) => NamedIdPair.fromJson(e as Map<String, dynamic>))
           .toList(),
