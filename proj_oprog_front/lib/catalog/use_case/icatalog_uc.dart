@@ -1,4 +1,4 @@
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 abstract class ICatalogUseCase {
   // Jeśli null, pokaż root catalog

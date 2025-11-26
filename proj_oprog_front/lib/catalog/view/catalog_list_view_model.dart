@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class CatalogListViewModel extends ChangeNotifier {
   final List<NamedIdPair> catalogs;

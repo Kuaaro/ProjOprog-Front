@@ -2,6 +2,7 @@ import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 import 'package:proj_oprog_front/catalog/icatalog_view.dart';
 import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class CatalogUseCase implements ICatalogUseCase {
   final ICatalogView view;

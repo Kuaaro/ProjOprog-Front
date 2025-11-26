@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class VCatalog extends StatelessWidget {
   final CatalogListViewModel viewModel;

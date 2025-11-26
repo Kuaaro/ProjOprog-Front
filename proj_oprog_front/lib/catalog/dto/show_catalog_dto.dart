@@ -1,3 +1,5 @@
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
+
 class ShowCatalogDto {
   final List<NamedIdPair> catalogs;
   final List<NamedIdPair> datasets;
@@ -20,20 +22,5 @@ class ShowCatalogDto {
       'catalogs': catalogs.map((e) => e.toJson()).toList(),
       'datasets': datasets.map((e) => e.toJson()).toList(),
     };
-  }
-}
-
-class NamedIdPair {
-  final String name;
-  final int id;
-
-  NamedIdPair({required this.name, required this.id});
-
-  factory NamedIdPair.fromJson(Map<String, dynamic> json) {
-    return NamedIdPair(name: json['name'] as String, id: json['id'] as int);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'name': name, 'id': id};
   }
 }
