@@ -22,6 +22,16 @@ import 'package:proj_oprog_front/schema/business_logic/data_schema_service.dart'
 import 'package:proj_oprog_front/schema/use_case/show_schema_list_uc.dart';
 import 'package:proj_oprog_front/schema/view_model/schema_list_view_model.dart';
 import 'package:proj_oprog_front/schema/view/vschema.dart';
+import 'package:proj_oprog_front/dataset/business_logic/dataset_service.dart';
+import 'package:proj_oprog_front/dataset/business_logic/idataset.dart';
+import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
+import 'package:proj_oprog_front/dataset/use_case/dataset_uc.dart';
+import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
+import 'package:proj_oprog_front/dataset/presenter/pdataset.dart';
+import 'package:proj_oprog_front/dataset/idataset_view.dart';
+import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
+import 'package:proj_oprog_front/dataset/event/idataset_event_controller.dart';
+import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 
 final locator = GetIt.instance;
 
@@ -65,4 +75,32 @@ void setupServiceLocator() {
     locator.registerLazySingleton<VSchema>(
     () => VSchema(viewModel: locator<SchemaListViewModel>()),
   );
+
+ 
+  locator.registerSingleton<IDataset>(DatasetService());
+  locator.registerSingleton<DatasetEditViewModel>(DatasetEditViewModel());
+
+   locator.registerLazySingleton<VDatasetEdit>(
+    () => VDatasetEdit(locator<DatasetEditViewModel>()),
+  );
+
+  locator.registerLazySingleton<IDatasetView>(
+    () => PDataset(locator<DatasetEditViewModel>(), locator<GoRouter>()),
+  );
+
+  locator.registerLazySingleton<IDatasetUseCase>(
+    () => DatasetUseCase(
+      locator<IDatasetView>(),
+      locator<IDataset>(),
+    ),
+  );
+
+  locator.registerLazySingleton<IDatasetEventController>(
+    () => DatasetEventController(
+      locator<IDatasetUseCase>(),
+      locator<DatasetEditViewModel>(),
+      ),
+  );
+
+   
 }
