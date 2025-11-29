@@ -45,7 +45,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/datasets/:id/edit',
           builder: (context, state) {
-            return locator<VDatasetEdit>();  // ✅ Spójne!
+            return locator<VDatasetEdit>();  
           },
         ),
       ],
