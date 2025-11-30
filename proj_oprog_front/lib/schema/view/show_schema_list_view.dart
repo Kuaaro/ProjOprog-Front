@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import '../view_model/schema_list_view_model.dart';
+import 'package:proj_oprog_front/schema/event/add_schema_controller.dart';
+import 'package:proj_oprog_front/schema/event/edit_schema_controller.dart';
+import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.dart';
 
-class VSchema extends StatelessWidget {
-  final SchemaListViewModel viewModel;
+class ShowSchemaListView extends StatelessWidget {
+  final ShowSchemaListViewModel viewModel;
+  final AddSchemaController controller;
+  final EditSchemaController editController;
 
-  const VSchema({Key? key, required this.viewModel}) : super(key: key);
+  const ShowSchemaListView({super.key, required this.viewModel, required this.editController, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class VSchema extends StatelessWidget {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
+                    controller.showAddSchemaView();
                   },
                   icon: const Icon(Icons.add, size: 18),
                   label: const Text('NOWY'),
@@ -93,7 +98,7 @@ class VSchema extends StatelessWidget {
                         // Edit Button
                         OutlinedButton(
                           onPressed: () {
-                            // Logic to edit this specific schema
+                            editController.showEditSchemaView(schema.id);
                           },
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.black87,
