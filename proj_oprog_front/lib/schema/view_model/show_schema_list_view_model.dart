@@ -1,6 +1,6 @@
 import '../../shared/dtos/named_id_pair.dart';
 
-class SchemaListViewModel {
+class ShowSchemaListViewModel {
   List<NamedIdPair> schemas = [];
   bool isLoading = false;
   String? error;

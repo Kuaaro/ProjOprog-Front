@@ -42,13 +42,56 @@ app.get('/catalogs/children/:id', (req, res) => {
   }
 });
 
+// Full schema data
+const schemaData = [
+  {
+    name: 'User',
+    id: 1,
+    jsonSchema: JSON.stringify([
+      { name: 'username', type: 'string', count: '1' },
+      { name: 'email', type: 'string', count: '1' }
+    ])
+  },
+  {
+    name: 'Product',
+    id: 2,
+    jsonSchema: JSON.stringify([
+      { name: 'title', type: 'string', count: '1' },
+      { name: 'price', type: 'number', count: '1' }
+    ])
+  },
+  {
+    name: 'Order',
+    id: 3,
+    jsonSchema: JSON.stringify([
+      { name: 'orderId', type: 'string', count: '1' },
+      { name: 'amount', type: 'number', count: '1' }
+    ])
+  },
+  {
+    name: 'Invoice',
+    id: 4,
+    jsonSchema: JSON.stringify([
+      { name: 'invoiceNo', type: 'string', count: '1' },
+      { name: 'total', type: 'number', count: '1' }
+    ])
+  }
+];
+
+// /schema/list returns only name and id
 app.get('/schema/list', (req, res) => {
-  res.json([
-    { name: 'User', id: 1 },
-    { name: 'Product', id: 2 },
-    { name: 'Order', id: 3 },
-    { name: 'Invoice', id: 4 }
-  ]);
+  res.json(schemaData.map(({ name, id }) => ({ name, id })));
+});
+
+// /schema/:id returns full schema details
+app.get('/schema/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const schema = schemaData.find(s => s.id === id);
+  if (schema) {
+    res.json(schema);
+  } else {
+    res.status(404).json({ error: 'Schema not found' });
+  }
 });
 
 app.listen(3000, () => {
