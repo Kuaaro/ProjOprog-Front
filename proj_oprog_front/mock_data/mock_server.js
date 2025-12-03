@@ -93,7 +93,7 @@ app.get('/schema/:id', (req, res) => {
     res.status(404).json({ error: 'Schema not found' });
   }
 });
-// ...existing code...
+
 app.listen(3000, () => {
   console.log('Server running on http://localhost:3000');
 });

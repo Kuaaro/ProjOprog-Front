@@ -1,21 +1,29 @@
 import 'package:proj_oprog_front/schema/dto/schema_dto.dart';
+import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 import 'package:proj_oprog_front/schema/use_case/iedit_schema_uc.dart';
+import 'package:proj_oprog_front/schema/view_model/edit_schema_view_model.dart';
 
 class EditSchemaController {
   final IEditSchemaUC useCase;
+  final EditSchemaViewModel viewModel;
 
-  EditSchemaController(this.useCase);
+  EditSchemaController(this.useCase, this.viewModel);
 
-    void showEditSchemaView(int id) {
+  void showEditSchemaView(int id) {
     useCase.showEditSchemaView(id);
   }
 
-  Future<void> saveSchema(String id, String name, String jsonSchema) async {
+  Future<void> saveSchema() async {
+    final name = viewModel.schemaNameController.text;
+    final jsonSchema = toJsonSchema(viewModel.fields);
     try {
-      final schema = SchemaDto(id: id, name: name, jsonSchema: jsonSchema);
+      final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
       await useCase.editSchema(schema);
+      viewModel.setStatus('Schema added successfully');
     } catch (e) {
-      print(e.toString());
+      viewModel.setStatus('Error: ${e.toString()}');
     }
   }
+
+  
 }

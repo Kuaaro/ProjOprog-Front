@@ -5,10 +5,10 @@ import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.d
 
 class ShowSchemaListView extends StatelessWidget {
   final ShowSchemaListViewModel viewModel;
-  final AddSchemaController controller;
+  final AddSchemaController addController;
   final EditSchemaController editController;
 
-  const ShowSchemaListView({super.key, required this.viewModel, required this.editController, required this.controller});
+  const ShowSchemaListView({super.key, required this.viewModel, required this.editController, required this.addController});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class ShowSchemaListView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Schematy Danych',
+                  'Data Schemas',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w400,
@@ -48,12 +48,12 @@ class ShowSchemaListView extends StatelessWidget {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    controller.showAddSchemaView();
+                    addController.showAddSchemaView();
                   },
                   icon: const Icon(Icons.add, size: 18),
-                  label: const Text('NOWY'),
+                  label: const Text('New Schema'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF66C266), // Match the green color
+                    backgroundColor: const Color(0xFF66C266),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

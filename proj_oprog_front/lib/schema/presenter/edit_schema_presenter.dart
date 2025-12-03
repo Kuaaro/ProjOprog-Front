@@ -1,7 +1,8 @@
 import 'package:proj_oprog_front/config/router.dart';
+import 'package:proj_oprog_front/schema/dto/schema_field.dart';
+import 'package:proj_oprog_front/schema/view_model/edit_schema_view_model.dart';
 
 import '../dto/schema_dto.dart';
-import '../view_model/v_edit_schema_view_model.dart';
 import 'iedit_schema_presenter.dart';
 
 class EditSchemaPresenter implements IEditSchemaPresenter {
@@ -11,14 +12,14 @@ class EditSchemaPresenter implements IEditSchemaPresenter {
 
   @override
   void onShowEditSchemaView(SchemaDto schema) {
+    List<SchemaField> fields = fromJsonSchema(schema.jsonSchema);
+    viewModel.setFields(fields);
     viewModel.setSchema(schema);
-    viewModel.setStatus('Editing schema');
     router.go('/edit-schema');
   }
 
   @override
   void onSchemaEdited(SchemaDto schema) {
-    viewModel.setSchema(schema);
     viewModel.setStatus('Schema saved successfully');
     router.go('/edit-schema');
   }
