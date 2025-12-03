@@ -1,3 +1,5 @@
+import 'package:proj_oprog_front/schema/presenter/pschema.dart';
+import 'package:proj_oprog_front/schema/presenter/ipschema.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/config/router.dart';
