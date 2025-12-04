@@ -8,6 +8,8 @@ import 'package:proj_oprog_front/schema/view/edit_schema_view.dart';
 import 'package:proj_oprog_front/schema/view/show_schema_list_view.dart';
 import 'package:proj_oprog_front/shared/ui/top_navbar.dart';
 import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
+import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
+import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -52,6 +54,12 @@ final GoRouter router = GoRouter(
           path: '/edit-schema',
           builder: (context, state) {
             return locator<EditSchemaView>();
+          },
+        ),
+        GoRoute(
+          path: '/datasets/:id/edit',
+          builder: (context, state) {
+            return locator<VDatasetEdit>();  
           },
         ),
       ],
