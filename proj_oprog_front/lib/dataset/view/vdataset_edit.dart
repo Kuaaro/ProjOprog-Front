@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/dataset/dto/distribution_dto.dart';
-import 'package:proj_oprog_front/dataset/event/idataset_event_controller.dart';
+import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 
 class VDatasetEdit extends StatelessWidget {
@@ -124,7 +124,7 @@ class VDatasetEdit extends StatelessWidget {
                         onPressed: viewModel.isLoading
                             ? null
                             : () {
-                                GetIt.instance<IDatasetEventController>()
+                                GetIt.instance<DatasetEventController>()
                                     .onCancelPressed();
                                 context.go('/catalog');
                               },
@@ -137,7 +137,7 @@ class VDatasetEdit extends StatelessWidget {
                         onPressed: viewModel.isLoading
                             ? null
                             : () {
-                                GetIt.instance<IDatasetEventController>()
+                                GetIt.instance<DatasetEventController>()
                                     .onSavePressed();
                               },
                         child: const Text('Save'),
