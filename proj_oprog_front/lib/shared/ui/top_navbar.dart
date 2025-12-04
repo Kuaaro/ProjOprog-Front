@@ -7,7 +7,7 @@ import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 class TopNavBar extends StatelessWidget {
   final ICatalogUseCase catalogUseCase;
 
-  TopNavBar(this.catalogUseCase);
+  const TopNavBar(this.catalogUseCase, {super.key});
 
   Widget _navButton(
     BuildContext context,

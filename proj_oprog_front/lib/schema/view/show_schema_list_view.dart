@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import '../view_model/schema_list_view_model.dart';
+import 'package:proj_oprog_front/schema/event/add_schema_controller.dart';
+import 'package:proj_oprog_front/schema/event/edit_schema_controller.dart';
+import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.dart';
 
-class VSchema extends StatelessWidget {
-  final SchemaListViewModel viewModel;
+class ShowSchemaListView extends StatelessWidget {
+  final ShowSchemaListViewModel viewModel;
+  final AddSchemaController addController;
+  final EditSchemaController editController;
 
-  const VSchema({Key? key, required this.viewModel}) : super(key: key);
+  const ShowSchemaListView({super.key, required this.viewModel, required this.editController, required this.addController});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +39,7 @@ class VSchema extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Schematy Danych',
+                  'Data Schemas',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w400,
@@ -44,11 +48,12 @@ class VSchema extends StatelessWidget {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
+                    addController.showAddSchemaView();
                   },
                   icon: const Icon(Icons.add, size: 18),
-                  label: const Text('NOWY'),
+                  label: const Text('New Schema'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF66C266), // Match the green color
+                    backgroundColor: const Color(0xFF66C266),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -93,7 +98,7 @@ class VSchema extends StatelessWidget {
                         // Edit Button
                         OutlinedButton(
                           onPressed: () {
-                            // Logic to edit this specific schema
+                            editController.showEditSchemaView(schema.id);
                           },
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.black87,

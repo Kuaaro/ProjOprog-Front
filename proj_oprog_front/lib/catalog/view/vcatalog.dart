@@ -8,13 +8,13 @@ import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 class VCatalog extends StatelessWidget {
   final CatalogListViewModel viewModel;
 
-  VCatalog(this.viewModel);
+  const VCatalog(this.viewModel, {super.key});
 
   String getPath() {
     if (viewModel.pathStack.isEmpty) {
       return '/';
     }
-    return '/' + viewModel.pathStack.map((item) => item.name).join('/');
+    return '/${viewModel.pathStack.map((item) => item.name).join('/')}';
   }
 
   NamedIdPair? getPrevious() {
