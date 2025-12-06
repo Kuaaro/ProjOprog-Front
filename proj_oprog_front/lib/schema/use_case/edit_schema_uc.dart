@@ -10,14 +10,21 @@ class EditSchemaUC implements IEditSchemaUC {
 
   EditSchemaUC(this._service, this.presenter);
 
-  @override
-  Future<void> editSchema(SchemaDto schema) async {
+@override
+Future<void> editSchema(SchemaDto schema) async {
+  try {
     await _service.editSchema(schema);
+    presenter.onSchemaEdited(schema);
+  } catch (e) {
+    presenter.onError(e.toString());
   }
+}
 
   @override
   void showEditSchemaView(int id) async{
     SchemaDto dto = await _service.getSchema(id);
     presenter.onShowEditSchemaView(dto);
   }
+  
+
 }

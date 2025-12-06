@@ -16,13 +16,8 @@ class AddSchemaController {
   Future<void> submitSchema() async {
     final name = viewModel.schemaNameController.text;
     final jsonSchema = toJsonSchema(viewModel.fields);
-    try {
-      final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
-      await useCase.addSchema(schema);
-      viewModel.setStatus('Schema added successfully');
-    } catch (e) {
-      viewModel.setStatus('Error: ${e.toString()}');
-    }
+    final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
+    await useCase.addSchema(schema);
   }
 
 }

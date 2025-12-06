@@ -16,14 +16,11 @@ class EditSchemaController {
   Future<void> saveSchema() async {
     final name = viewModel.schemaNameController.text;
     final jsonSchema = toJsonSchema(viewModel.fields);
-    try {
-      final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
-      await useCase.editSchema(schema);
-      viewModel.setStatus('Schema added successfully');
-    } catch (e) {
-      viewModel.setStatus('Error: ${e.toString()}');
-    }
+    final schema = SchemaDto(
+      id: viewModel.schema?.id,
+      name: name,
+      jsonSchema: jsonSchema,
+    );
+    await useCase.editSchema(schema);
   }
-
-  
 }

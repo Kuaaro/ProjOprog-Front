@@ -12,12 +12,12 @@ class AddSchemaPresenter implements IAddSchemaPresenter {
   void onSchemaAdded(SchemaDto schema) {
     viewModel.setSchema(schema);
     viewModel.setStatus('Schema added successfully');
-    router.go('/add-schema');
+    router.go('/schema');
   }
   @override
   void onError(String error) {
     viewModel.setStatus('Error: $error');
-    router.go('/add-schema');
+    // zostajemy
   }
   
   @override

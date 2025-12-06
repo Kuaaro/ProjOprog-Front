@@ -13,29 +13,33 @@ class SchemaField {
 }
 
 String toJsonSchema(List<SchemaField> dtos) {
-    final fieldsList = dtos.map((f) => {
-      'name': f.name,
-      'type': f.type,
-      'count': f.count,
-    }).toList();
-    return fieldsList.toString();
-  }
+  final fieldsList = dtos.map((f) => {
+    'name': f.name,
+    'type': f.type,
+    'count': f.count,
+  }).toList();
+  return json.encode(fieldsList);
+}
   
 List<SchemaField> fromJsonSchema(String jsonSchema) {
-  final dynamic decoded = jsonDecode(jsonSchema); 
+  try {
+    final dynamic decoded = jsonDecode(jsonSchema);
 
-  final List<SchemaField> fields = [];
+    final List<SchemaField> fields = [];
 
-  if (decoded is List) {
-    for (var item in decoded) {
-      fields.add(SchemaField(
-        name: item['name'] ?? '',
-        type: item['type'] ?? '',
-        count: item['count'] ?? '', 
-      ));
+    if (decoded is List) {
+      for (var item in decoded) {
+        fields.add(SchemaField(
+          name: item['name'] ?? '',
+          type: item['type'] ?? '',
+          count: item['count'] ?? '',
+        ));
+      }
     }
-  }
 
-  return fields;
+    return fields;
+  } catch (e, stackTrace) {
+    return [];
+  }
 }
 

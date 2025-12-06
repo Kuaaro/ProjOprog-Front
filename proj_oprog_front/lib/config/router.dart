@@ -8,6 +8,8 @@ import 'package:proj_oprog_front/schema/view/edit_schema_view.dart';
 import 'package:proj_oprog_front/schema/view/show_schema_list_view.dart';
 import 'package:proj_oprog_front/shared/ui/top_navbar.dart';
 import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
+import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
+import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -39,6 +41,8 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/schema',
           builder: (context, state) {
+            locator<ShowSchemaListViewModel>().clear();
+            locator<IShowSchemaListUC>().showSchemaListUC();
             return locator<ShowSchemaListView>();
           },
         ),
@@ -53,7 +57,7 @@ final GoRouter router = GoRouter(
           builder: (context, state) {
             return locator<EditSchemaView>();
           },
-        ),
+        )
       ],
     ),
   ],
