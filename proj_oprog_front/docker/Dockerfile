@@ -8,7 +8,7 @@ RUN flutter pub get
 
 COPY . .
 
-RUN flutter build web --release
+RUN flutter build web --release --dart-define="METADATA_MANAGER_API=${METADATA_MANAGER_API:-http://localhost:3000}"
 
 FROM nginx:1.25-alpine
 

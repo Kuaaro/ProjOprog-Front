@@ -18,7 +18,10 @@ Future<void> editSchema(SchemaDto schema) async {
     throw Exception('Failed to update: ${response.statusCode}');
   }
 }
-  final String baseUrl = 'http://localhost:3000';
+  final String baseUrl = String.fromEnvironment(
+    'METADATA_MANAGER_API',
+    defaultValue: 'http://localhost:3000',
+  );
 
   DataSchemaService();
 
@@ -64,6 +67,6 @@ Future<void> editSchema(SchemaDto schema) async {
       );
       if (response.statusCode != 201 ) {
         throw Exception('Failed to add schema');
-      }
+      };
     }
 }

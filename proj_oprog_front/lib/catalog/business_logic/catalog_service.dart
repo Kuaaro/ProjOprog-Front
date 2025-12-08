@@ -5,7 +5,10 @@ import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 
 class CatalogService implements ICatalog {
-  final String baseUrl = 'http://localhost:3000';
+  final String baseUrl = String.fromEnvironment(
+    'METADATA_MANAGER_API',
+    defaultValue: 'http://localhost:3000',
+  );
 
   @override
   Future<ShowCatalogDto> getCatalogChildren(int id) async {
