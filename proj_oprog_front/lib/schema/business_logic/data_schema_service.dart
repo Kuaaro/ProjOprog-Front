@@ -18,10 +18,7 @@ Future<void> editSchema(SchemaDto schema) async {
     throw Exception('Failed to update: ${response.statusCode}');
   }
 }
-  final String baseUrl = String.fromEnvironment(
-    'METADATA_MANAGER_API',
-    defaultValue: 'http://localhost:3000',
-  );
+  final String baseUrl = '/api';
 
   DataSchemaService();
 

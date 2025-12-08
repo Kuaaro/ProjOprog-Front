@@ -5,10 +5,7 @@ import 'package:proj_oprog_front/dataset/dto/modify_dataset_request.dart';
 import 'package:proj_oprog_front/dataset/business_logic/idataset.dart';
 
 class DatasetService implements IDataset {
-  final String baseUrl = String.fromEnvironment(
-    'METADATA_MANAGER_API',
-    defaultValue: 'http://localhost:3000',
-  );
+  final String baseUrl = '/api';
 
   @override
   Future<DatasetDto> getDataset(int id) async {
