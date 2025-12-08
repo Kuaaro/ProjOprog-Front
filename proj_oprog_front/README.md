@@ -37,9 +37,9 @@ git clone https://github.com/Kuaaro/ProjOpro-Back.git
 git clone https://github.com/Kuaaro/ProjOprog-Front.git
 ```
 
-2. Move `docker-compose.yml` from the backend repository to the parent directory (same level as both repos):
+2. Move or link `docker-compose.yml` from the backend repository to the parent directory (same level as both repos):
 ```bash
-mv ProjOpro-Back/src/docker-compose.yml .
+ln ProjOpro-Back/src/docker-compose.yml .
 ```
 
 Your final structure should look like:
