@@ -60,7 +60,6 @@ final GoRouter router = GoRouter(
           builder: (context, state) {
             return locator<EditSchemaView>();
           },
-<<<<<<< HEAD
         ),
         GoRoute(
           path: '/datasets/:id/edit',
@@ -68,9 +67,6 @@ final GoRouter router = GoRouter(
             return locator<VDatasetEdit>();  
           },
         ),
-=======
-        )
->>>>>>> UC-SM-002-004-schemas-add-edit
       ],
     ),
   ],
