@@ -7,6 +7,8 @@ class EditSchemaViewModel extends ChangeNotifier {
   String status = '';
   final TextEditingController schemaNameController = TextEditingController();
   List<SchemaField> fields = [];
+  List<TextEditingController> nameControllers = [];  
+  List<TextEditingController> typeControllers = [];  
 
   void setSchema(SchemaDto schema) {
     this.schema = schema;
@@ -16,6 +18,8 @@ class EditSchemaViewModel extends ChangeNotifier {
 
   void setFields(List<SchemaField> fields) {
     this.fields = fields;
+    nameControllers = fields.map((f) => TextEditingController(text: f.name)).toList();
+    typeControllers = fields.map((f) => TextEditingController(text: f.type)).toList();
     notifyListeners();
   }
 
@@ -26,12 +30,18 @@ class EditSchemaViewModel extends ChangeNotifier {
 
   void addField(SchemaField field) {
     fields.add(field);
+    nameControllers.add(TextEditingController(text: field.name));
+    typeControllers.add(TextEditingController(text: field.type));
     notifyListeners();
   }
 
   void removeField(int index) {
     if (index >= 0 && index < fields.length) {
       fields.removeAt(index);
+      nameControllers[index].dispose();
+      typeControllers[index].dispose();
+      nameControllers.removeAt(index);
+      typeControllers.removeAt(index);
       notifyListeners();
     }
   }
@@ -39,12 +49,23 @@ class EditSchemaViewModel extends ChangeNotifier {
   void updateField(int index, SchemaField field) {
     if (index >= 0 && index < fields.length) {
       fields[index] = field;
-      notifyListeners();
     }
   }
 
   void clearFields() {
     fields.clear();
+    for (var c in nameControllers) c.dispose();
+    for (var c in typeControllers) c.dispose();
+    nameControllers.clear();
+    typeControllers.clear();
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    schemaNameController.dispose();
+    for (var c in nameControllers) c.dispose();
+    for (var c in typeControllers) c.dispose();
+    super.dispose();
   }
 }

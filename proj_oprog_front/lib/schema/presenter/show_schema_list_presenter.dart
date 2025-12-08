@@ -11,10 +11,9 @@ class ShowSchemaListPresenter implements IShowSchemaListPresenter {
 
   @override
   void showSchemaList(List<NamedIdPair> schemas) {
-    viewModel.schemas = schemas;
+    viewModel.setSchemas(schemas);
     viewModel.error = null;
     viewModel.isLoading = false;
-    router.go('/schema');
   }
 
   @override
@@ -24,4 +23,5 @@ class ShowSchemaListPresenter implements IShowSchemaListPresenter {
     viewModel.isLoading = false;
     router.go('/schema');
   }
+
 }

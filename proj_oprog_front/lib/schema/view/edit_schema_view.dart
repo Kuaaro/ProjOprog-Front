@@ -58,17 +58,13 @@ class EditSchemaView extends StatelessWidget {
                               decoration: const InputDecoration(
                                 labelText: 'Field Name',
                               ),
-                              controller:
-                                  TextEditingController(text: field.name)
-                                    ..selection = TextSelection.fromPosition(
-                                      TextPosition(offset: field.name.length),
-                                    ),
+                              controller: viewModel.nameControllers[index],
                               onChanged: (val) {
                                 viewModel.updateField(
                                   index,
                                   SchemaField(
                                     name: val,
-                                    type: field.type,
+                                    type: viewModel.typeControllers[index].text,
                                     count: field.count,
                                   ),
                                 );
@@ -81,15 +77,13 @@ class EditSchemaView extends StatelessWidget {
                               decoration: const InputDecoration(
                                 labelText: 'Type',
                               ),
-                              controller: TextEditingController(
-                                text: field.type,
-                              ),
+                              controller: viewModel.typeControllers[index],
                               onChanged: (val) {
                                 viewModel.updateField(
                                   index,
                                   SchemaField(
-                                    name: val,
-                                    type: field.type,
+                                    name: viewModel.nameControllers[index].text,
+                                    type: val,
                                     count: field.count,
                                   ),
                                 );

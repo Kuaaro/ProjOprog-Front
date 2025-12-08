@@ -10,23 +10,25 @@ class EditSchemaPresenter implements IEditSchemaPresenter {
 
   EditSchemaPresenter(this.viewModel);
 
-  @override
-  void onShowEditSchemaView(SchemaDto schema) {
-    List<SchemaField> fields = fromJsonSchema(schema.jsonSchema);
-    viewModel.setFields(fields);
-    viewModel.setSchema(schema);
-    router.go('/edit-schema');
-  }
+@override
+void onShowEditSchemaView(SchemaDto schema) {
+  List<SchemaField> fields = fromJsonSchema(schema.jsonSchema);
 
-  @override
-  void onSchemaEdited(SchemaDto schema) {
-    viewModel.setStatus('Schema saved successfully');
-    router.go('/edit-schema');
-  }
+  viewModel.setSchema(schema);
+  viewModel.setFields(fields);
+  viewModel.setStatus('');
+
+  router.go('/edit-schema');
+}
+
+@override
+void onSchemaEdited(SchemaDto schema) {
+  viewModel.setStatus('Schema saved successfully');
+  router.go('/schema');
+}
 
   @override
   void onError(String error) {
     viewModel.setStatus('Error: $error');
-    router.go('/edit-schema');
   }
 }
