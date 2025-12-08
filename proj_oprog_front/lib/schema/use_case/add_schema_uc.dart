@@ -12,16 +12,19 @@ class AddSchemaUC implements IAddSchemaUC {
 
   @override
   Future<void> addSchema(SchemaDto schema) async {
-    await _service.addSchema(schema);
+    try {
+      await _service.addSchema(schema);
+      presenter.onSchemaAdded(schema);
+    } catch (e) {
+      presenter.onError(e.toString());
+    }
   }
   
   @override
   void showAddSchemaView() {
     presenter.onShowAddSchemaView();
   }
+
+
   
-  @override
-  void onError(String error) {
-    presenter.onError(error);
-  }
 }

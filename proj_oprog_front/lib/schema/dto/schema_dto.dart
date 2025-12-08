@@ -11,4 +11,9 @@ class SchemaDto {
       jsonSchema: json['jsonSchema'] ?? '',
     );
   }
+   Map<String, dynamic> toJson() => {
+    if (id != null) 'id': id,
+    'name': name,
+    'jsonSchema': jsonSchema,
+  };
 }
