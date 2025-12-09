@@ -1,0 +1,134 @@
+@startuml ShowCatalog_UseCase_Frontend
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<Presenter>> LightGreen
+    BackgroundColor<<ViewModel>> LightCyan
+    BackgroundColor<<UseCase>> LightYellow
+    BackgroundColor<<EventController>> LightSalmon
+    BackgroundColor<<Service>> LightGoldenRodYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+together {
+    class VCatalog <<View>> {
+        + build(context): Widget
+        + getPath(): String
+        + getPrevious(): NamedIdPair?
+    }
+    
+    class CatalogListViewModel <<ViewModel>> {
+        + catalogs: List<NamedIdPair>
+        + datasets: List<NamedIdPair>
+        + pathStack: List<NamedIdPair>
+        + notifyChanges(): void
+    }
+}
+
+together {
+    interface ICatalogEventController <<EventController>> {
+        + onCatalogPressed(catalogPair): void
+        + onPreviousCatalogPressed(previous): void
+    }
+    
+    class CatalogEventController <<EventController>> {
+        + onCatalogPressed(pressedCatalog): void
+        + onPreviousCatalogPressed(previous): void
+    }
+}
+
+together {
+    interface ICatalogUseCase <<UseCase>> {
+        + showCatalogUC(catalogToShow): void
+        + showPreviousCatalogUC(previous): void
+    }
+    
+    class CatalogUseCase <<UseCase>> {
+        + showCatalogUC(catalogToShow): void
+        + showPreviousCatalogUC(previous): void
+        - getCatalogData(catalog): Future<GetCatalogChildrenResponse>
+    }
+}
+
+together {
+    interface ICatalogView <<Presenter>> {
+        + showCatalog(dto, catalogToShow): void
+        + showPreviousCatalog(dto, previousCatalog): void
+    }
+    
+    class PCatalog <<Presenter>> {
+        + showCatalog(dto, current): void
+        + showPreviousCatalog(dto, previous): void
+        - redirectIfNeeded(): void
+    }
+    
+    class CatalogListViewModelAdapter <<ViewModel>> {
+        + getData(): GetCatalogChildrenResponse
+        + setData(dto): void
+        + pushPath(item): void
+        + popPath(): NamedIdPair?
+        + getPath(): List<NamedIdPair>
+        + clearPath(): void
+    }
+}
+
+together {
+    interface ICatalog <<Service>> {
+        + getCatalogChildren(id): Future<GetCatalogChildrenResponse>
+        + createCatalog(dto): Future<void>
+    }
+    
+    class CatalogService <<Service>> {
+        + getCatalogChildren(id): Future<GetCatalogChildrenResponse>
+        + createCatalog(dto): Future<void>
+    }
+}
+
+together {
+    class GetCatalogChildrenResponse <<DTO>> {
+        + catalogs: List<NamedIdPair>
+        + datasets: List<NamedIdPair>
+        + fromJson(json): GetCatalogChildrenResponse
+        + toJson(): Map<String, dynamic>
+    }
+    
+    class NamedIdPair <<DTO>> {
+        + name: String
+        + id: int
+        + fromJson(json): NamedIdPair
+        + toJson(): Map<String, dynamic>
+    }
+}
+
+' Relationships - View Layer
+VCatalog ..> CatalogListViewModel : observes
+VCatalog ..> ICatalogEventController : uses
+
+' Relationships - Presenter Layer
+ICatalogView <|.. PCatalog : implements
+PCatalog ..> CatalogListViewModelAdapter : uses
+
+' Relationships - ViewModel Layer
+CatalogListViewModel --|> ChangeNotifier : extends
+CatalogListViewModelAdapter o-- CatalogListViewModel : wraps
+
+' Relationships - Event Controller Layer
+ICatalogEventController <|.. CatalogEventController : implements
+CatalogEventController ..> ICatalogUseCase : uses
+
+' Relationships - Use Case Layer
+ICatalogUseCase <|.. CatalogUseCase : implements
+CatalogUseCase ..> ICatalogView : uses
+CatalogUseCase ..> ICatalog : uses
+
+' Relationships - Service Layer
+ICatalog <|.. CatalogService : implements
+CatalogService ..> GetCatalogChildrenResponse : creates
+
+' Relationships - DTOs
+GetCatalogChildrenResponse *-- NamedIdPair : contains
+PCatalog ..> GetCatalogChildrenResponse : receives
+CatalogUseCase ..> GetCatalogChildrenResponse : processes
+
+@enduml

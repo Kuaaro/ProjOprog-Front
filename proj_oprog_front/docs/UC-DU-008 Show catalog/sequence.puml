@@ -1,0 +1,60 @@
+@startuml ShowCatalog_Sequence
+
+actor User
+participant "VCatalog" as View <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "ICatalogEventController" as IEventCtrl <<Interface>>
+    participant "CatalogEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "ICatalogUseCase" as IUseCase <<Interface>>
+    participant "CatalogUseCase" as UseCase <<Implementation>>
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "ICatalog" as IService <<Interface>>
+    participant "CatalogService" as Service <<Proxy>>
+end box
+
+participant "Backend API" as API
+
+box "Presenter" #LightGreen
+    participant "ICatalogView" as IView <<Interface>>
+    participant "PCatalog" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "ViewModelAdapter" as Adapter
+    participant "CatalogListViewModel" as ViewModel
+end box
+
+User -> View: Catalog pressed
+View -> IEventCtrl: onCatalogPressed(catalog)
+IEventCtrl -> EventCtrl: 
+EventCtrl -> IUseCase: showCatalogUC(catalog)
+IUseCase -> UseCase: 
+
+UseCase -> IService: getCatalogChildren(catalog.id)
+IService -> Service: 
+Service -> API: GetCatalogChildren(catalog.id)
+API --> Service: :GetCatalogChildrenResponse dto
+Service --> UseCase:
+
+UseCase -> IView: showCatalog(dto, catalog)
+IView -> Presenter: 
+Presenter -> Adapter: pushPath(catalog)
+Adapter -> ViewModel: pathStack.add(catalog)
+Adapter -> ViewModel: notifyChanges()
+
+Presenter -> Adapter: setData(dto)
+Adapter -> ViewModel: catalogs.clear() + addAll()
+Adapter -> ViewModel: datasets.clear() + addAll()
+Adapter -> ViewModel: notifyChanges()
+Presenter -> Presenter: redirectIfNeeded()
+
+ViewModel --> View: notifyListeners()
+View -> View: rebuild UI
+
+@enduml
