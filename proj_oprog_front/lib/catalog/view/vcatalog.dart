@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
+import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
@@ -37,9 +38,27 @@ class VCatalog extends StatelessWidget {
               Row(
                 children: [
                   ElevatedButton.icon(
-                    onPressed: () => {},
+                    onPressed: () {
+                      final currentCatalogId = viewModel.pathStack.isNotEmpty
+                          ? viewModel.pathStack.last.id
+                          : null;
+                      GetIt.instance<ICatalogEventController>()
+                          .onNewCatalogPressed(currentCatalogId);
+                    },
                     icon: const Icon(Icons.create_new_folder),
-                    label: const Text('New'),
+                    label: const Text('New Catalog'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      final currentCatalogId = viewModel.pathStack.isNotEmpty
+                          ? viewModel.pathStack.last.id
+                          : null;
+                      GetIt.instance<DatasetEventController>()
+                          .onNewPressed(currentCatalogId);
+                    },
+                    icon: const Icon(Icons.add_circle),
+                    label: const Text('New Dataset'),
                   ),
                   const SizedBox(width: 16),
                   // Back-button
@@ -95,8 +114,7 @@ class VCatalog extends StatelessWidget {
                               title: Text(dataset.name),
                               subtitle: Text('Dataset ID: ${dataset.id}'),
                               trailing: const Icon(Icons.edit),
-                              onTap: () => GetIt.instance<DatasetEventController>()
-                                  .onDatasetPressed(dataset.id),
+                              onTap: () => context.go('/datasets/${dataset.id}/edit'),
                             ),
                           ),
                         ),

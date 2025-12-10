@@ -54,7 +54,7 @@ const datasetData = {
 app.get('/catalogs/children/:id', (req, res) => {
   const id = req.params.id;
   const data = catalogData[id];
-  
+
   if (data) {
     res.json(data);
   } else {
@@ -123,7 +123,7 @@ app.put('/schemas/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const { name, jsonSchema } = req.body;
   const index = schemaData.findIndex(s => s.id === id);
-  
+
   if (index !== -1) {
     schemaData[index] = { ...schemaData[index], name, jsonSchema };
     res.json(schemaData[index]);
@@ -132,11 +132,11 @@ app.put('/schemas/:id', (req, res) => {
   }
 });
 
- 
+
 app.get('/datasets/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const dataset = datasetData[id];
-  
+
   if (dataset) {
     res.json(dataset);
   } else {
@@ -144,14 +144,28 @@ app.get('/datasets/:id', (req, res) => {
   }
 });
 
+app.post('/datasets', (req, res) => {
+  const newId = Math.max(...Object.keys(datasetData).map(k => parseInt(k)), -1) + 1;
+  const newDataset = {
+    id: newId,
+    name: req.body.name,
+    desc: req.body.description,
+    contact_point: req.body.contactPoint,
+    keywords: req.body.keywords || [],
+    distributions: req.body.distributions || [],
+    schema_id: req.body.schemaId,
+  };
+  datasetData[newId] = newDataset;
+  res.status(201).json({ id: newId });
+});
+
 app.put('/datasets/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const dataset = datasetData[id];
-  
+
   if (dataset) {
-     
     Object.assign(dataset, req.body);
-    dataset.id = id;  
+    dataset.id = id;
     res.json(dataset);
   } else {
     res.status(404).json({ error: 'Dataset not found' });

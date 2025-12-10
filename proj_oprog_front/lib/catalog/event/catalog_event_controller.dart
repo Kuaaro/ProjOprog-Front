@@ -15,4 +15,9 @@ class CatalogEventController implements ICatalogEventController {
   void onPreviousCatalogPressed(NamedIdPair? previous) {
     appLogic.showPreviousCatalogUC(previous);
   }
+
+  @override
+  void onNewCatalogPressed(int? parentId) {
+    print('New Catalog Pressed - Not implemented yet');
+  }
 }

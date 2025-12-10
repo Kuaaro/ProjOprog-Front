@@ -5,23 +5,49 @@ import 'package:proj_oprog_front/dataset/dto/distribution_dto.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 
-class VDatasetEdit extends StatelessWidget {
+class VDatasetEdit extends StatefulWidget {
   final DatasetEditViewModel viewModel;
+  final int? datasetId;
 
-  const VDatasetEdit(this.viewModel, {Key? key}) : super(key: key);
+  const VDatasetEdit(this.viewModel, {Key? key, this.datasetId}) : super(key: key);
+
+  @override
+  State<VDatasetEdit> createState() => _VDatasetEditState();
+}
+
+class _VDatasetEditState extends State<VDatasetEdit> {
+  int? _parentCatalogId;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final uri = GoRouter.of(context).routerDelegate.currentConfiguration.uri;
+      final parentIdParam = uri.queryParameters['parentId'];
+      _parentCatalogId = parentIdParam != null ? int.tryParse(parentIdParam) : null;
+    });
+    
+    if (widget.datasetId != null) {
+      if (widget.viewModel.dataset == null || widget.viewModel.dataset!.id != widget.datasetId) {
+        GetIt.instance<DatasetEventController>().onDatasetPressed(widget.datasetId!);
+      }
+    } else if (widget.viewModel.dataset == null) {
+      widget.viewModel.createEmptyDataset();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: viewModel,
+      animation: widget.viewModel,
       builder: (context, child) {
-        if (viewModel.isLoading && viewModel.dataset == null) {
+        if (widget.viewModel.isLoading && widget.viewModel.dataset == null) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
 
-        if (viewModel.errorMessage != null && viewModel.dataset == null) {
+        if (widget.viewModel.errorMessage != null && widget.viewModel.dataset == null) {
           return Scaffold(
             appBar: AppBar(title: const Text('Error')),
             body: Center(
@@ -29,7 +55,7 @@ class VDatasetEdit extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    viewModel.errorMessage!,
+                    widget.viewModel.errorMessage!,
                     style: const TextStyle(color: Colors.red),
                   ),
                   const SizedBox(height: 16),
@@ -43,17 +69,20 @@ class VDatasetEdit extends StatelessWidget {
           );
         }
 
-        if (viewModel.dataset == null) {
+        final isCreating = widget.viewModel.dataset?.id == 0;
+        final dataset = widget.viewModel.dataset;
+        
+        if (dataset == null) {
           return const Scaffold(
-            body: Center(child: Text('No dataset selected')),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Edit: ${viewModel.dataset!.name}'),
+            title: Text(isCreating ? 'Create Dataset' : 'Edit Dataset'),
             actions: [
-              if (viewModel.isLoading)
+              if (widget.viewModel.isLoading)
                 const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: SizedBox(
@@ -69,7 +98,7 @@ class VDatasetEdit extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                if (viewModel.errorMessage != null)
+                if (widget.viewModel.errorMessage != null)
                   Container(
                     padding: const EdgeInsets.all(12),
                     margin: const EdgeInsets.only(bottom: 16),
@@ -79,53 +108,42 @@ class VDatasetEdit extends StatelessWidget {
                       border: Border.all(color: Colors.red),
                     ),
                     child: Text(
-                      viewModel.errorMessage!,
+                      widget.viewModel.errorMessage!,
                       style: const TextStyle(color: Colors.red),
                     ),
                   ),
                 _buildTextField(
                   label: 'Name',
-                  initialValue: viewModel.dataset!.name,
-                  onChanged: (value) => viewModel.updateName(value),
+                  initialValue: dataset.name,
+                  onChanged: (value) => widget.viewModel.updateName(value),
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
                   label: 'Description',
-                  initialValue: viewModel.dataset!.desc,
-                  onChanged: (value) => viewModel.updateDesc(value),
+                  initialValue: dataset.desc,
+                  onChanged: (value) => widget.viewModel.updateDesc(value),
                   maxLines: 4,
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
                   label: 'Contact Point',
-                  initialValue: viewModel.dataset!.contactPoint,
-                  onChanged: (value) => viewModel.updateContactPoint(value),
+                  initialValue: dataset.contactPoint,
+                  onChanged: (value) => widget.viewModel.updateContactPoint(value),
                 ),
                 const SizedBox(height: 16),
                 _buildKeywordsField(context),
                 const SizedBox(height: 16),
                 _buildDistributionsField(context),
                 const SizedBox(height: 16),
-                _buildNumberField(
-                  label: 'Schema ID',
-                  initialValue: viewModel.dataset!.schemaId.toString(),
-                  onChanged: (value) {
-                    final id = int.tryParse(value);
-                    if (id != null) {
-                      viewModel.updateSchemaId(id);
-                    }
-                  },
-                ),
+                 _buildSchemaDropdown(context),
                 const SizedBox(height: 24),
                 Row(
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: viewModel.isLoading
+                        onPressed: widget.viewModel.isLoading
                             ? null
                             : () {
-                                GetIt.instance<DatasetEventController>()
-                                    .onCancelPressed();
                                 context.go('/catalog');
                               },
                         child: const Text('Cancel'),
@@ -134,13 +152,17 @@ class VDatasetEdit extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: viewModel.isLoading
+                        onPressed: widget.viewModel.isLoading
                             ? null
                             : () {
-                                GetIt.instance<DatasetEventController>()
-                                    .onSavePressed();
+                                final controller = GetIt.instance<DatasetEventController>();
+                                if (isCreating) {
+                                  controller.onCreatePressed(_parentCatalogId);
+                                } else {
+                                  controller.onSavePressed();
+                                }
                               },
-                        child: const Text('Save'),
+                        child: Text(isCreating ? 'Create' : 'Save'),
                       ),
                     ),
                   ],
@@ -170,19 +192,27 @@ class VDatasetEdit extends StatelessWidget {
     );
   }
 
-  Widget _buildNumberField({
-    required String label,
-    required String initialValue,
-    required ValueChanged<String> onChanged,
-  }) {
-    return TextFormField(
-      initialValue: initialValue,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
+  Widget _buildSchemaDropdown(BuildContext context) {
+    final schemas = widget.viewModel.schemas;
+    final currentSchemaId = widget.viewModel.dataset?.schemaId;
+
+    return DropdownButtonFormField<int>(
+      decoration: const InputDecoration(
+        labelText: 'Schema',
+        border: OutlineInputBorder(),
       ),
-      keyboardType: TextInputType.number,
-      onChanged: onChanged,
+      value: schemas.any((s) => s.id == currentSchemaId) ? currentSchemaId : null,
+      items: schemas.map((schema) {
+        return DropdownMenuItem<int>(
+          value: schema.id,
+          child: Text('${schema.name} (ID: ${schema.id})'),
+        );
+      }).toList(),
+      onChanged: (value) {
+        if (value != null) {
+          widget.viewModel.updateSchemaId(value);
+        }
+      },
     );
   }
 
@@ -199,14 +229,14 @@ class VDatasetEdit extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            ...viewModel.dataset!.keywords.map(
+            ...widget.viewModel.dataset!.keywords.map(
               (keyword) => Chip(
                 label: Text(keyword),
                 onDeleted: () {
                   final newKeywords = List<String>.from(
-                    viewModel.dataset!.keywords,
+                    widget.viewModel.dataset!.keywords,
                   )..remove(keyword);
-                  viewModel.updateKeywords(newKeywords);
+                  widget.viewModel.updateKeywords(newKeywords);
                 },
               ),
             ),
@@ -239,9 +269,9 @@ class VDatasetEdit extends StatelessWidget {
           onSubmitted: (value) {
             if (value.trim().isNotEmpty) {
               final newKeywords = List<String>.from(
-                viewModel.dataset!.keywords,
+                widget.viewModel.dataset!.keywords,
               )..add(value.trim());
-              viewModel.updateKeywords(newKeywords);
+              widget.viewModel.updateKeywords(newKeywords);
               Navigator.of(dialogContext).pop();
             }
           },
@@ -255,9 +285,9 @@ class VDatasetEdit extends StatelessWidget {
             onPressed: () {
               if (controller.text.trim().isNotEmpty) {
                 final newKeywords = List<String>.from(
-                  viewModel.dataset!.keywords,
+                  widget.viewModel.dataset!.keywords,
                 )..add(controller.text.trim());
-                viewModel.updateKeywords(newKeywords);
+                widget.viewModel.updateKeywords(newKeywords);
                 Navigator.of(dialogContext).pop();
               }
             },
@@ -277,14 +307,14 @@ class VDatasetEdit extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 8),
-        ...viewModel.dataset!.distributions.asMap().entries.map(
+        ...widget.viewModel.dataset!.distributions.asMap().entries.map(
           (entry) {
             final index = entry.key;
             final distribution = entry.value;
             return Card(
               margin: const EdgeInsets.only(bottom: 8),
               child: ExpansionTile(
-                title: Text('Distribution ${distribution.distributionId}'),
+                title: Text('Distribution ${index + 1}'),
                 subtitle: Text(distribution.accessURL),
                 children: [
                   Padding(
@@ -296,7 +326,7 @@ class VDatasetEdit extends StatelessWidget {
                           initialValue: distribution.accessURL,
                           onChanged: (value) {
                             final newDistributions = List<DistributionDto>.from(
-                              viewModel.dataset!.distributions,
+                              widget.viewModel.dataset!.distributions,
                             );
                             newDistributions[index] = DistributionDto(
                               distributionId: distribution.distributionId,
@@ -305,7 +335,7 @@ class VDatasetEdit extends StatelessWidget {
                               format: distribution.format,
                               availability: distribution.availability,
                             );
-                            viewModel.updateDistributions(newDistributions);
+                            widget.viewModel.updateDistributions(newDistributions);
                           },
                         ),
                         const SizedBox(height: 16),
@@ -314,7 +344,7 @@ class VDatasetEdit extends StatelessWidget {
                           initialValue: distribution.description,
                           onChanged: (value) {
                             final newDistributions = List<DistributionDto>.from(
-                              viewModel.dataset!.distributions,
+                              widget.viewModel.dataset!.distributions,
                             );
                             newDistributions[index] = DistributionDto(
                               distributionId: distribution.distributionId,
@@ -323,7 +353,7 @@ class VDatasetEdit extends StatelessWidget {
                               format: distribution.format,
                               availability: distribution.availability,
                             );
-                            viewModel.updateDistributions(newDistributions);
+                            widget.viewModel.updateDistributions(newDistributions);
                           },
                           maxLines: 2,
                         ),
@@ -333,7 +363,7 @@ class VDatasetEdit extends StatelessWidget {
                           initialValue: distribution.format,
                           onChanged: (value) {
                             final newDistributions = List<DistributionDto>.from(
-                              viewModel.dataset!.distributions,
+                              widget.viewModel.dataset!.distributions,
                             );
                             newDistributions[index] = DistributionDto(
                               distributionId: distribution.distributionId,
@@ -342,7 +372,7 @@ class VDatasetEdit extends StatelessWidget {
                               format: value,
                               availability: distribution.availability,
                             );
-                            viewModel.updateDistributions(newDistributions);
+                            widget.viewModel.updateDistributions(newDistributions);
                           },
                         ),
                         const SizedBox(height: 16),
@@ -352,7 +382,7 @@ class VDatasetEdit extends StatelessWidget {
                           onChanged: (value) {
                             if (value != null) {
                               final newDistributions = List<DistributionDto>.from(
-                                viewModel.dataset!.distributions,
+                                widget.viewModel.dataset!.distributions,
                               );
                               newDistributions[index] = DistributionDto(
                                 distributionId: distribution.distributionId,
@@ -361,7 +391,7 @@ class VDatasetEdit extends StatelessWidget {
                                 format: distribution.format,
                                 availability: value,
                               );
-                              viewModel.updateDistributions(newDistributions);
+                              widget.viewModel.updateDistributions(newDistributions);
                             }
                           },
                         ),
@@ -369,9 +399,9 @@ class VDatasetEdit extends StatelessWidget {
                         OutlinedButton.icon(
                           onPressed: () {
                             final newDistributions = List<DistributionDto>.from(
-                              viewModel.dataset!.distributions,
+                              widget.viewModel.dataset!.distributions,
                             )..removeAt(index);
-                            viewModel.updateDistributions(newDistributions);
+                            widget.viewModel.updateDistributions(newDistributions);
                           },
                           icon: const Icon(Icons.delete),
                           label: const Text('Remove Distribution'),
@@ -390,7 +420,7 @@ class VDatasetEdit extends StatelessWidget {
         OutlinedButton.icon(
           onPressed: () {
             final newDistributions = List<DistributionDto>.from(
-              viewModel.dataset!.distributions,
+              widget.viewModel.dataset!.distributions,
             )..add(DistributionDto(
                 distributionId: -1,
                 accessURL: '',
@@ -398,7 +428,7 @@ class VDatasetEdit extends StatelessWidget {
                 format: '',
                 availability: false,
               ));
-            viewModel.updateDistributions(newDistributions);
+            widget.viewModel.updateDistributions(newDistributions);
           },
           icon: const Icon(Icons.add),
           label: const Text('Add Distribution'),

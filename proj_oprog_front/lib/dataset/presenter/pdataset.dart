@@ -10,13 +10,25 @@ class PDataset implements IDatasetView {
   PDataset(this.viewModel, this.router);
 
   @override
+  void showDatasetCreate(int? parentCatalogId) {
+    viewModel.clear();
+    viewModel.setLoading(false);
+    viewModel.setError(null);
+    router.go('/datasets/create${parentCatalogId != null ? '?parentId=$parentCatalogId' : ''}');
+  }
+
+  @override
   void showDatasetEdit(ShowDatasetDto dto, int datasetId) {
- 
     viewModel.setDataset(dto.dataset);
     viewModel.setLoading(false);
     viewModel.setError(null);
-
     router.go('/datasets/$datasetId/edit');
+  }
+
+  @override
+  void showDatasetCreated(int datasetId) {
+    viewModel.clear();
+    router.go('/catalog');
   }
 
   @override
@@ -25,11 +37,10 @@ class PDataset implements IDatasetView {
     router.go('/catalog');
   }
 
-    @override
-    void showError(String message) {
-      viewModel.setError(message);
-      viewModel.setLoading(false);
+  @override
+  void showError(String message) {
+    viewModel.setError(message);
+    viewModel.setLoading(false);
   }
-
 }
 

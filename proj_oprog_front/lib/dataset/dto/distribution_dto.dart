@@ -15,8 +15,8 @@ class DistributionDto {
 
   factory DistributionDto.fromJson(Map<String, dynamic> json) {
     return DistributionDto(
-      distributionId: json['distribution_id'] as int,
-      accessURL: json['accessURL'] as String,
+      distributionId: json['distributionId'] as int,
+      accessURL: json['accessUrl'] as String,
       description: json['description'] as String,
       format: json['format'] as String,
       availability: json['availability'] as bool,
@@ -25,8 +25,8 @@ class DistributionDto {
 
   Map<String, dynamic> toJson() {
     return {
-      'distribution_id': distributionId,
-      'accessURL': accessURL,
+      'distributionId': distributionId,
+      'accessUrl': accessURL,
       'description': description,
       'format': format,
       'availability': availability,
