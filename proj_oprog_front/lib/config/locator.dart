@@ -132,10 +132,6 @@ void setupServiceLocator() {
   locator.registerSingleton<IDataset>(DatasetService());
   locator.registerSingleton<DatasetEditViewModel>(DatasetEditViewModel());
 
-   locator.registerLazySingleton<VDatasetEdit>(
-    () => VDatasetEdit(locator<DatasetEditViewModel>()),
-  );
-
   locator.registerLazySingleton<IDatasetView>(
     () => PDataset(locator<DatasetEditViewModel>(), locator<GoRouter>()),
   );

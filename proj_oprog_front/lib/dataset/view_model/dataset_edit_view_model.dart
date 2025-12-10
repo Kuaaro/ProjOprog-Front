@@ -69,6 +69,21 @@ class DatasetEditViewModel extends ChangeNotifier {
     }
   }
 
+  void createEmptyDataset() {
+    _dataset = DatasetDto(
+      id: 0,
+      name: '',
+      desc: '',
+      contactPoint: '',
+      keywords: [],
+      distributions: [],
+      schemaId: 1,
+    );
+    _errorMessage = null;
+    _isLoading = false;
+    notifyListeners();
+  }
+
   void clear() {
     _dataset = null;
     _errorMessage = null;

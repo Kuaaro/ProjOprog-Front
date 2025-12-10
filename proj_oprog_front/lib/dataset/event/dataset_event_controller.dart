@@ -1,6 +1,6 @@
+import 'package:proj_oprog_front/dataset/dto/create_dataset_request.dart';
 import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
-
 
 class DatasetEventController {
   final IDatasetUseCase appLogic;
@@ -8,16 +8,43 @@ class DatasetEventController {
 
   DatasetEventController(this.appLogic, this.viewModel);
 
-  void onDatasetPressed(int datasetId) {
+  void onNewPressed(int? parentCatalogId) {
+    viewModel.setLoading(false);
+    viewModel.setError(null);
+    appLogic.showDatasetCreateUC(parentCatalogId);
+  }
 
+  void onDatasetPressed(int datasetId) {
     viewModel.setLoading(true);
     viewModel.setError(null);
-
     appLogic.showDatasetEditUC(datasetId);
   }
 
-  void onSavePressed() {
+  void onCreatePressed(int? parentCatalogId) {
+    final dataset = viewModel.dataset;
+    
+    if (dataset == null) {
+      viewModel.setError('No dataset data to create');
+      return;
+    }
+    
+    viewModel.setLoading(true);
+    viewModel.setError(null);
+    
+    final request = CreateDatasetRequest(
+      name: dataset.name,
+      description: dataset.desc,
+      contactPoint: dataset.contactPoint,
+      keywords: dataset.keywords,
+      distributions: dataset.distributions,
+      schemaId: dataset.schemaId,
+      parentId: parentCatalogId ?? 0,
+    );
+    
+    appLogic.createDatasetUC(request);
+  }
 
+  void onSavePressed() {
     final dataset = viewModel.dataset;
     
     if (dataset == null) {
@@ -27,8 +54,6 @@ class DatasetEventController {
     
     viewModel.setLoading(true);
     viewModel.setError(null);
-    
-
     appLogic.saveDatasetUC(dataset);
   }
 

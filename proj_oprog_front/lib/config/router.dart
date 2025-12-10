@@ -12,6 +12,9 @@ import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.dart';
+import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model_adapter.dart';
+import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 
 final GoRouter router = GoRouter(
@@ -32,6 +35,13 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/catalog',
           builder: (context, state) {
+            
+            final adapter = locator<CatalogListViewModelAdapter>();
+            final currentStack = adapter.getPath();
+            final currentCatalog = currentStack.isNotEmpty ? currentStack.last : null;
+            
+            locator<ICatalogUseCase>().showCatalogUC(currentCatalog);
+            
             return locator<VCatalog>();
           },
         ),
@@ -62,9 +72,17 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
+          path: '/datasets/create',
+          builder: (context, state) {
+            return VDatasetEdit(locator<DatasetEditViewModel>());
+          },
+        ),
+        GoRoute(
           path: '/datasets/:id/edit',
           builder: (context, state) {
-            return locator<VDatasetEdit>();  
+            final idStr = state.pathParameters['id'];
+            final id = idStr != null ? int.tryParse(idStr) : null;
+            return VDatasetEdit(locator<DatasetEditViewModel>(), datasetId: id);
           },
         ),
       ],

@@ -12,7 +12,10 @@ class PCatalog implements ICatalogView {
   @override
   void showCatalog(ShowCatalogDto dto, NamedIdPair? current) {
     if (current != null) {
-      viewModelAdapter.pushPath(current);
+      final currentStack = viewModelAdapter.getPath();
+      if (currentStack.isEmpty || currentStack.last.id != current.id) {
+        viewModelAdapter.pushPath(current);
+      }
     } else {
       viewModelAdapter.clearPath();
     }

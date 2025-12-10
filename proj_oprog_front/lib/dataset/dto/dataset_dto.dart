@@ -21,15 +21,15 @@ class DatasetDto {
 
   factory DatasetDto.fromJson(Map<String, dynamic> json) {
     return DatasetDto(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      desc: json['desc'] as String,
-      contactPoint: json['contact_point'] as String,
-      keywords: (json['keywords'] as List<dynamic>).map((e) => e as String).toList(),
-      distributions: (json['distributions'] as List<dynamic>)
-          .map((e) => DistributionDto.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      schemaId: json['schema_id'] as int,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      name: json['name'] as String? ?? '',
+      desc: json['description'] as String? ?? '',
+      contactPoint: json['contactPoint'] as String? ?? '',
+      keywords: (json['keywords'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
+      distributions: (json['distributions'] as List<dynamic>?)
+          ?.map((e) => DistributionDto.fromJson(e as Map<String, dynamic>))
+          .toList() ?? [],
+      schemaId: (json['schemaId'] as num?)?.toInt() ?? 0,
     );
   } 
 }
