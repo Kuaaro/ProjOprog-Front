@@ -6,6 +6,7 @@ import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
 import 'package:proj_oprog_front/catalog/business_logic/catalog_service.dart';
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 import 'package:proj_oprog_front/metadata/view/vmetadata.dart';
+import 'package:proj_oprog_front/schema/event/show_schema_list_controller.dart';
 import 'package:proj_oprog_front/schema/presenter/iadd_schema_presenter.dart';
 import 'package:proj_oprog_front/schema/presenter/iedit_schema_presenter.dart';
 import 'package:proj_oprog_front/schema/use_case/add_schema_uc.dart';
@@ -94,7 +95,10 @@ void setupServiceLocator() {
     () => ShowSchemaListPresenter(locator<ShowSchemaListViewModel>(), locator<GoRouter>()),
   );
   locator.registerLazySingleton<ShowSchemaListView>(
-    () => ShowSchemaListView(viewModel: locator<ShowSchemaListViewModel>(), addController: locator<AddSchemaController>(), editController: locator<EditSchemaController>()),
+    () => ShowSchemaListView(viewModel: locator<ShowSchemaListViewModel>(), controller: locator<ShowSchemaListController>(),),
+  );
+   locator.registerLazySingleton<ShowSchemaListController>(
+    () => ShowSchemaListController(viewModel: locator<ShowSchemaListViewModel>(), addSchemaUC: locator<IAddSchemaUC>(), editSchemaUC: locator<IEditSchemaUC>()),
   );
 
   // AddSchema registrations
@@ -106,7 +110,7 @@ void setupServiceLocator() {
     () => AddSchemaPresenter(locator<AddSchemaViewModel>()),
   );
   locator.registerLazySingleton<AddSchemaController>(
-    () => AddSchemaController(locator<IAddSchemaUC>(), locator<AddSchemaViewModel>()),
+    () => AddSchemaController(addSchemaUC: locator<IAddSchemaUC>(), showSchemaListUC: locator<IShowSchemaListUC>(), viewModel: locator<AddSchemaViewModel>()),
   );
   locator.registerLazySingleton<AddSchemaView>(
     () => AddSchemaView(viewModel: locator<AddSchemaViewModel>(), controller: locator<AddSchemaController>()),
@@ -121,7 +125,7 @@ void setupServiceLocator() {
     () => EditSchemaPresenter(locator<EditSchemaViewModel>()),
   );
   locator.registerLazySingleton<EditSchemaController>(
-    () => EditSchemaController(locator<IEditSchemaUC>(), locator<EditSchemaViewModel>()),
+    () => EditSchemaController(editSchemaUC: locator<IEditSchemaUC>(), showSchemaListUC: locator<IShowSchemaListUC>(), viewModel: locator<EditSchemaViewModel>()),
   );
   locator.registerLazySingleton<EditSchemaView>(
     () => EditSchemaView(viewModel: locator<EditSchemaViewModel>(), controller: locator<EditSchemaController>()),

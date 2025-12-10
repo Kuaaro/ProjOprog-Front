@@ -1,0 +1,66 @@
+@startuml
+title Add Schema Sequence (Simplified)
+autonumber
+
+actor User
+
+box "View Layer" #LightBlue
+    participant "AddSchemaView" as View
+    participant "AddSchemaViewModel" as VM #eec590ff
+    participant "AddSchemaController" as Controller #ebf57cff
+    participant "AddSchemaPresenter" as Presenter #10f810ff
+
+end box
+
+box "App Logic" #FEFECD
+    participant "AddSchemaUC" as UC
+end box
+
+box "Data Layer" #FAFAD2
+    participant "DataSchemaService" as Service
+end box
+
+
+User -> View : onPressed()
+activate View
+
+View -> Controller : submitSchema()
+activate Controller
+
+    Controller -> UC : addSchema(CreateSchemaRequest)
+    activate UC
+
+        UC -> Service : addSchema(CreateSchemaRequest)
+        activate Service
+        Service --> UC : void
+        deactivate Service
+
+        UC -> Presenter : onSchemaAdded(SchemaDto)
+        activate Presenter
+            
+            Presenter -> VM : setSchema(SchemaDto)
+            activate VM
+            VM --> Presenter : void
+            deactivate VM
+            
+            Presenter -> VM : setStatus(String)
+            activate VM
+            VM --> Presenter : void
+            VM -->> View : notifyListeners()
+            
+            deactivate VM
+            View -> View : build()
+            
+            
+        Presenter --> UC : void
+        deactivate Presenter
+
+    UC --> Controller : void
+    deactivate UC
+
+Controller --> View : void
+deactivate Controller
+
+deactivate View
+
+@enduml

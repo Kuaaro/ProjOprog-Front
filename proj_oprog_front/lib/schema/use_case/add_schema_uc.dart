@@ -1,6 +1,6 @@
 import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
+import 'package:proj_oprog_front/schema/dto/create_schema_request.dart';
 
-import '../dto/schema_dto.dart';
 import '../presenter/iadd_schema_presenter.dart';
 import 'iadd_schema_uc.dart';
 
@@ -11,20 +11,17 @@ class AddSchemaUC implements IAddSchemaUC {
   AddSchemaUC(this._service, this.presenter);
 
   @override
-  Future<void> addSchema(SchemaDto schema) async {
-    try {
-      await _service.addSchema(schema);
-      presenter.onSchemaAdded(schema);
-    } catch (e) {
-      presenter.onError(e.toString());
-    }
+  Future<void> addSchema(CreateSchemaRequest schema) async {
+    await _service.addSchema(schema);
   }
   
   @override
   void showAddSchemaView() {
     presenter.onShowAddSchemaView();
   }
-
-
   
+  @override
+  void onError(String error) {
+    presenter.onError(error);
+  }
 }

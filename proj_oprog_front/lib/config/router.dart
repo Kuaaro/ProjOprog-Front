@@ -11,10 +11,8 @@ import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
 import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
-import 'package:proj_oprog_front/schema/view_model/show_schema_list_view_model.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model_adapter.dart';
 import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
-import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 
 final GoRouter router = GoRouter(
@@ -54,7 +52,6 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/schema',
           builder: (context, state) {
-            locator<ShowSchemaListViewModel>().clear();
             locator<IShowSchemaListUC>().showSchemaListUC();
             return locator<ShowSchemaListView>();
           },
