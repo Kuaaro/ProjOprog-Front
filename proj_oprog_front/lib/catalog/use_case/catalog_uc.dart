@@ -22,7 +22,9 @@ class CatalogUseCase implements ICatalogUseCase {
     view.showPreviousCatalog(response, previous);
   }
 
-  Future<ShowCatalogDto> getCatalogData(NamedIdPair? catalog) async {
+  Future<GetCatalogChildrenResponse> getCatalogData(
+    NamedIdPair? catalog,
+  ) async {
     final catalogId = catalog?.id ?? 0;
     return await service.getCatalogChildren(catalogId);
   }
