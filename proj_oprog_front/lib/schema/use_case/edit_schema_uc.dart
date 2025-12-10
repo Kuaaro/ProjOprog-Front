@@ -23,8 +23,12 @@ Future<void> editSchema(SchemaDto schema) async {
   @override
   void showEditSchemaView(int id) async{
     SchemaDto dto = await _service.getSchema(id);
+    dto = SchemaDto(
+      id: id.toString(),
+      name: dto.name,
+      jsonSchema: dto.jsonSchema,
+    );
     presenter.onShowEditSchemaView(dto);
   }
-  
 
 }

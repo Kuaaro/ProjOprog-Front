@@ -1,3 +1,4 @@
+import 'package:proj_oprog_front/config/router.dart';
 import 'package:proj_oprog_front/schema/dto/schema_dto.dart';
 import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 import 'package:proj_oprog_front/schema/use_case/iedit_schema_uc.dart';
@@ -11,12 +12,11 @@ class EditSchemaController {
 
   void showEditSchemaView(int id) {
     useCase.showEditSchemaView(id);
+    router.go('/edit-schema');
   }
 
-  Future<void> saveSchema() async {
-  print('DEBUG: viewModel.schema = ${viewModel.schema}');
-  print('DEBUG: viewModel.schema?.id = ${viewModel.schema?.id}');
-  
+  Future<void> saveSchema() async {;
+
   final name = viewModel.schemaNameController.text;
   final jsonSchema = toJsonSchema(viewModel.fields);
   final schema = SchemaDto(
@@ -24,7 +24,13 @@ class EditSchemaController {
     name: name,
     jsonSchema: jsonSchema,
   );
-  print('DEBUG: Created schema with id = ${schema.id}');
   await useCase.editSchema(schema);
+
+  if (viewModel.status == 'Success') {  
+      router.go('/schema');
+    }
+
+
+  
 }
 }
