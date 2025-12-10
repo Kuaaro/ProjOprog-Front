@@ -23,13 +23,13 @@ class DatasetDto {
     return DatasetDto(
       id: (json['id'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
-      desc: json['description'] as String? ?? '',
-      contactPoint: json['contactPoint'] as String? ?? '',
+      desc: json['desc'] as String? ?? (json['description'] as String? ?? ''),
+      contactPoint: json['contact_point'] as String? ?? (json['contactPoint'] as String? ?? ''),
       keywords: (json['keywords'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
       distributions: (json['distributions'] as List<dynamic>?)
           ?.map((e) => DistributionDto.fromJson(e as Map<String, dynamic>))
           .toList() ?? [],
-      schemaId: (json['schemaId'] as num?)?.toInt() ?? 0,
+      schemaId: (json['schema_id'] as num?)?.toInt() ?? (json['schemaId'] as num?)?.toInt() ?? 0,
     );
   } 
 }

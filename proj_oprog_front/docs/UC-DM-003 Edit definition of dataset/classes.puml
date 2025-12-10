@@ -1,0 +1,134 @@
+@startuml EditDataset_ClassDiagram
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<Presenter>> LightGreen
+    BackgroundColor<<ViewModel>> LightCyan
+    BackgroundColor<<UseCase>> LightYellow
+    BackgroundColor<<EventController>> LightSalmon
+    BackgroundColor<<Service>> LightGoldenRodYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+together {
+    class VDatasetEdit <<View>> {
+        + build(context): Widget
+        - _buildTextField(...): Widget
+        - _buildSchemaDropdown(context): Widget
+        - _buildDistributionsField(context): Widget
+    }
+}
+
+together {
+    class DatasetEditViewModel <<ViewModel>> {
+        + dataset: DatasetDto?
+        + isLoading: bool
+        + errorMessage: String?
+        + schemas: List<NamedIdPair>
+        + setDataset(dataset): void
+        + setSchemas(schemas): void
+        + updateName(name): void
+        + updateDesc(desc): void
+        + updateDistributions(distributions): void
+        + clear(): void
+    }
+}
+
+together {
+    class DatasetEventController <<EventController>> {
+        + onDatasetPressed(datasetId): void
+        + onSavePressed(): void
+        + onCancelPressed(): void
+    }
+}
+
+together {
+    interface IDatasetUseCase <<UseCase>> {
+        + showDatasetEditUC(datasetId): void
+        + saveDatasetUC(dataset): void
+        + getSchemas(): Future<List<NamedIdPair>>
+    }
+
+    class DatasetUseCase <<UseCase>> {
+        + showDatasetEditUC(datasetId): void
+        + saveDatasetUC(dataset): void
+        + getSchemas(): Future<List<NamedIdPair>>
+    }
+}
+
+together {
+    interface IDatasetView <<Presenter>> {
+        + showDatasetEdit(dto, datasetId): void
+        + showDatasetSaved(): void
+        + showError(message): void
+    }
+
+    class PDataset <<Presenter>> {
+        + showDatasetEdit(dto, datasetId): void
+        + showDatasetSaved(): void
+        + showError(message): void
+        - router: GoRouter
+    }
+}
+
+together {
+    interface IDataset <<Service>> {
+        + getDataset(id): Future<DatasetDto>
+        + modifyDataset(id, request): Future<void>
+        + createDataset(request): Future<int>
+    }
+
+    class DatasetService <<Service>> {
+        + getDataset(id): Future<DatasetDto>
+        + modifyDataset(id, request): Future<void>
+        + createDataset(request): Future<int>
+    }
+}
+
+together {
+    class DatasetDto <<DTO>> {
+        + id: int
+        + name: String
+        + desc: String
+        + contactPoint: String
+        + keywords: List<String>
+        + distributions: List<DistributionDto>
+        + schemaId: int
+        + fromJson(json): DatasetDto
+        + toJson(): Map<String, dynamic>
+    }
+
+    class ModifyDatasetRequest <<DTO>> {
+        + name: String
+        + desc: String
+        + contactPoint: String
+        + keywords: List<String>
+        + distributions: List<DistributionDto>
+        + schemaId: int
+        + fromDatasetDto(dto): ModifyDatasetRequest
+        + toJson(): Map<String, dynamic>
+    }
+}
+
+' Relationships
+VDatasetEdit ..> DatasetEditViewModel : observes
+VDatasetEdit ..> DatasetEventController : uses
+
+DatasetEventController ..> IDatasetUseCase : uses
+DatasetEventController ..> DatasetEditViewModel : updates
+
+IDatasetUseCase <|.. DatasetUseCase : implements
+DatasetUseCase ..> IDatasetView : uses
+DatasetUseCase ..> IDataset : uses
+DatasetUseCase ..> ModifyDatasetRequest : creates
+
+IDatasetView <|.. PDataset : implements
+PDataset ..> DatasetEditViewModel : updates
+
+IDataset <|.. DatasetService : implements
+DatasetService ..> DatasetDto : returns
+
+DatasetDto <.. ModifyDatasetRequest : uses
+
+@enduml
