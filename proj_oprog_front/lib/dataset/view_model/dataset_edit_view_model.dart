@@ -86,7 +86,7 @@ class DatasetEditViewModel extends ChangeNotifier {
       contactPoint: '',
       keywords: [],
       distributions: [],
-      schemaId: 1,
+      schemaId: 0,
     );
     _errorMessage = null;
     _isLoading = false;
