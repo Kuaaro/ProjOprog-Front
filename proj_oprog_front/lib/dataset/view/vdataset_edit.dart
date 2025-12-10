@@ -37,6 +37,12 @@ class _VDatasetEditState extends State<VDatasetEdit> {
   }
 
   @override
+  void dispose() {
+    widget.viewModel.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: widget.viewModel,
@@ -113,12 +119,14 @@ class _VDatasetEditState extends State<VDatasetEdit> {
                     ),
                   ),
                 _buildTextField(
+                  key: ValueKey('name_${dataset.id}'),
                   label: 'Name',
                   initialValue: dataset.name,
                   onChanged: (value) => widget.viewModel.updateName(value),
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
+                  key: ValueKey('desc_${dataset.id}'),
                   label: 'Description',
                   initialValue: dataset.desc,
                   onChanged: (value) => widget.viewModel.updateDesc(value),
@@ -126,6 +134,7 @@ class _VDatasetEditState extends State<VDatasetEdit> {
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
+                  key: ValueKey('contact_${dataset.id}'),
                   label: 'Contact Point',
                   initialValue: dataset.contactPoint,
                   onChanged: (value) => widget.viewModel.updateContactPoint(value),
@@ -144,6 +153,7 @@ class _VDatasetEditState extends State<VDatasetEdit> {
                         onPressed: widget.viewModel.isLoading
                             ? null
                             : () {
+                                GetIt.instance<DatasetEventController>().onCancelPressed();
                                 context.go('/catalog');
                               },
                         child: const Text('Cancel'),
@@ -176,12 +186,14 @@ class _VDatasetEditState extends State<VDatasetEdit> {
   }
 
   Widget _buildTextField({
+    Key? key,
     required String label,
     required String initialValue,
     required ValueChanged<String> onChanged,
     int maxLines = 1,
   }) {
     return TextFormField(
+      key: key,
       initialValue: initialValue,
       decoration: InputDecoration(
         labelText: label,
@@ -194,14 +206,19 @@ class _VDatasetEditState extends State<VDatasetEdit> {
 
   Widget _buildSchemaDropdown(BuildContext context) {
     final schemas = widget.viewModel.schemas;
-    final currentSchemaId = widget.viewModel.dataset?.schemaId;
+    final currentSchemaId = widget.viewModel.dataset?.schemaId ?? 0;
+    
+    // Ensure we have a valid value for the dropdown
+    final dropdownValue = schemas.any((s) => s.id == currentSchemaId) 
+        ? currentSchemaId 
+        : (schemas.isNotEmpty ? schemas.first.id : null);
 
     return DropdownButtonFormField<int>(
       decoration: const InputDecoration(
         labelText: 'Schema',
         border: OutlineInputBorder(),
       ),
-      value: schemas.any((s) => s.id == currentSchemaId) ? currentSchemaId : null,
+      value: dropdownValue,
       items: schemas.map((schema) {
         return DropdownMenuItem<int>(
           value: schema.id,

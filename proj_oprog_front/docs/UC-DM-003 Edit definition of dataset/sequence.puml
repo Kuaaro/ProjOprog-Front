@@ -1,0 +1,54 @@
+@startuml EditDataset_Sequence
+
+actor User
+participant "VDatasetEdit" as View <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "DatasetEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "IDatasetUseCase" as IUseCase <<Interface>>
+    participant "DatasetUseCase" as UseCase <<Implementation>>
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "IDataset" as IService <<Interface>>
+    participant "DatasetService" as Service <<Implementation>>
+end box
+
+participant "Backend API" as API
+
+box "Presenter" #LightGreen
+    participant "IDatasetView" as IView <<Interface>>
+    participant "PDataset" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "DatasetEditViewModel" as ViewModel
+end box
+
+participant "GoRouter" as Router
+
+User -> View: Fills form (Name, Schema, etc.) and clicks Save
+View -> EventCtrl: onSavePressed()
+EventCtrl -> ViewModel: dataset (get current state with edits)
+ViewModel --> EventCtrl: DatasetDto
+EventCtrl -> ViewModel: setLoading(true)
+EventCtrl -> IUseCase: saveDatasetUC(dataset)
+IUseCase -> UseCase: 
+
+UseCase -> UseCase: Create ModifyDatasetRequest (map from DTO)
+
+UseCase -> IService: modifyDataset(id, request)
+IService -> Service: 
+Service -> API: PUT /datasets/{id}\n(Body: ModifyDatasetRequest JSON)
+API --> Service: 204 No Content (Success)
+Service --> UseCase: void
+
+UseCase -> IView: showDatasetSaved()
+IView -> Presenter: 
+Presenter -> ViewModel: clear()
+Presenter -> Router: go('/catalog')
+
+@enduml
