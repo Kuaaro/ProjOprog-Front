@@ -1,0 +1,52 @@
+@startuml EditDataset_Sequence
+
+actor User
+participant "VDatasetEdit" as View <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "DatasetEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "IDatasetUseCase" as IUseCase <<Interface>>
+    participant "DatasetUseCase" as UseCase <<Implementation>>
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "IDataset" as IService <<Interface>>
+    participant "DatasetService" as Service <<Implementation>>
+end box
+
+participant "Backend API" as API
+
+box "Presenter" #LightGreen
+    participant "IDatasetView" as IView <<Interface>>
+    participant "PDataset" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "DatasetEditViewModel" as ViewModel
+end box
+
+participant "GoRouter" as Router
+
+User -> View: Fills form (Name, Schema, etc.) and clicks Create
+View -> EventCtrl: onCreatePressed()
+EventCtrl -> ViewModel: setLoading(true)
+EventCtrl -> IUseCase: createDatasetUC(dataset)
+IUseCase -> UseCase: 
+
+UseCase -> UseCase: Create CreateDatasetRequest (map from DTO)
+
+UseCase -> IService: createDataset(request)
+IService -> Service: 
+Service -> API: POST /datasets/{id}\n(Body: CreateDatasetRequest JSON)
+API --> Service: 201 Created (Success)
+Service --> UseCase: void
+
+UseCase -> IView: showDatasetCreated(datasetId)
+IView -> Presenter: 
+Presenter -> ViewModel: clear()
+Presenter -> Router: go('/catalog')
+
+@enduml
