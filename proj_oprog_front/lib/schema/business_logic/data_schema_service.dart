@@ -14,7 +14,7 @@ Future<void> editSchema(SchemaDto schema) async {
     body: json.encode(schema.toJson()),
   );
   
-  if (response.statusCode != 200) {
+  if (response.statusCode != 204) {
     throw Exception('Failed to update: ${response.statusCode}');
   }
 }
@@ -65,5 +65,6 @@ Future<void> editSchema(SchemaDto schema) async {
       if (response.statusCode != 201 ) {
         throw Exception('Failed to add schema');
       };
+      
     }
 }

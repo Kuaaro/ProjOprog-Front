@@ -5,7 +5,7 @@ import '../dto/schema_dto.dart';
 class EditSchemaViewModel extends ChangeNotifier {
   SchemaDto? schema;
   String status = '';
-  final TextEditingController schemaNameController = TextEditingController();
+  TextEditingController schemaNameController = TextEditingController();
   List<SchemaField> fields = [];
   List<TextEditingController> nameControllers = [];  
   List<TextEditingController> typeControllers = [];  
@@ -58,11 +58,15 @@ class EditSchemaViewModel extends ChangeNotifier {
     for (var c in typeControllers) c.dispose();
     nameControllers.clear();
     typeControllers.clear();
+  
+    schemaNameController.clear();
+    
     notifyListeners();
   }
 
   @override
   void dispose() {
+    schemaNameController.clear();
     schemaNameController.dispose();
     for (var c in nameControllers) c.dispose();
     for (var c in typeControllers) c.dispose();

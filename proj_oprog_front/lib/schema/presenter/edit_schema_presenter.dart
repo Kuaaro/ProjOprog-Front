@@ -16,14 +16,15 @@ void onShowEditSchemaView(SchemaDto schema) {
 
   viewModel.setSchema(schema);
   viewModel.setFields(fields);
-  viewModel.setStatus('');
+  viewModel.setStatus('Success');
 
   router.go('/edit-schema');
 }
 
 @override
 void onSchemaEdited(SchemaDto schema) {
-  viewModel.setStatus('Schema saved successfully');
+  viewModel.clearFields();
+  viewModel.setStatus('');
   router.go('/schema');
 }
 

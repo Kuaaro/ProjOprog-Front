@@ -10,8 +10,8 @@ class AddSchemaPresenter implements IAddSchemaPresenter {
 
   @override
   void onSchemaAdded(SchemaDto schema) {
-    viewModel.setSchema(schema);
-    viewModel.setStatus('Schema added successfully');
+    viewModel.clearFields();
+    viewModel.setStatus('');
     router.go('/schema');
   }
   @override

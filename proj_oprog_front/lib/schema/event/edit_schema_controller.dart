@@ -14,13 +14,17 @@ class EditSchemaController {
   }
 
   Future<void> saveSchema() async {
-    final name = viewModel.schemaNameController.text;
-    final jsonSchema = toJsonSchema(viewModel.fields);
-    final schema = SchemaDto(
-      id: viewModel.schema?.id,
-      name: name,
-      jsonSchema: jsonSchema,
-    );
-    await useCase.editSchema(schema);
-  }
+  print('DEBUG: viewModel.schema = ${viewModel.schema}');
+  print('DEBUG: viewModel.schema?.id = ${viewModel.schema?.id}');
+  
+  final name = viewModel.schemaNameController.text;
+  final jsonSchema = toJsonSchema(viewModel.fields);
+  final schema = SchemaDto(
+    id: viewModel.schema?.id,
+    name: name,
+    jsonSchema: jsonSchema,
+  );
+  print('DEBUG: Created schema with id = ${schema.id}');
+  await useCase.editSchema(schema);
+}
 }

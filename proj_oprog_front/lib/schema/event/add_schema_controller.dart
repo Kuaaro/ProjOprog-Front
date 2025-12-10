@@ -18,6 +18,8 @@ class AddSchemaController {
     final jsonSchema = toJsonSchema(viewModel.fields);
     final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
     await useCase.addSchema(schema);
+
+   
   }
 
 }
