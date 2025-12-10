@@ -1,0 +1,94 @@
+@startuml
+title Show Schema List Feature
+
+'--- STYLE CONFIGURATION ---
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<ViewModel>> #D0F0F5
+    BackgroundColor<<Controller>> #FFAB91
+    BackgroundColor<<UseCase>> #FEFECD
+    BackgroundColor<<Presenter>> #90EE90
+    BackgroundColor<<Service>> #FAFAD2
+    BackgroundColor<<DTO>> #D3D3D3
+    BackgroundColor<<Router>> #E6E6FA
+}
+
+'--- VIEW LAYER ---
+class ShowSchemaListView <<View>> {
+  +build(): Widget
+}
+
+class ShowSchemaListViewModel <<ViewModel>> {
+  +schemas: List<NamedIdPair>
+  +isLoading: bool
+  +error: String?
+}
+
+'--- CONTROLLER LAYER ---
+class ShowSchemaListController <<Controller>> {
+  +showAddSchema(): void
+  +showEditSchema(): void
+}
+
+'--- USE CASE LAYER ---
+interface IShowSchemaListUC <<UseCase>> {
+  +showSchemaListUC(): void
+}
+
+class ShowSchemaListUC <<UseCase>> {
+  +showSchemaListUC(): void
+}
+
+IShowSchemaListUC <|.. ShowSchemaListUC
+
+'--- PRESENTER LAYER ---
+interface IShowSchemaListPresenter <<Presenter>> {
+  +showSchemaList(): void
+  +showError(): void
+}
+
+class ShowSchemaListPresenter <<Presenter>> {
+  +showSchemaList(): void
+  +showError(): void
+}
+
+IShowSchemaListPresenter <|.. ShowSchemaListPresenter
+
+'--- SERVICE LAYER ---
+interface IDataSchema <<Service>> {
+  +getSchemaList(): GetSchemaListResponse
+}
+
+class DataSchemaService <<Service>> {
+  +getSchemaList(): GetSchemaListResponse
+}
+
+IDataSchema <|.. DataSchemaService
+
+'--- DTO LAYER ---
+class GetSchemaListResponse <<DTO>> {
+  +schemas: List<NamedIdPair>
+}
+
+class NamedIdPair <<DTO>> {
+  +name: String
+  +id: int
+}
+
+GetSchemaListResponse ..> NamedIdPair
+
+'--- RELATIONSHIPS ---
+ShowSchemaListView ..> ShowSchemaListController
+ShowSchemaListView ..> ShowSchemaListViewModel
+
+ShowSchemaListController ..> ShowSchemaListViewModel
+ShowSchemaListController ..> IShowSchemaListUC
+
+ShowSchemaListUC ..> IDataSchema
+ShowSchemaListUC ..> IShowSchemaListPresenter
+
+ShowSchemaListPresenter ..> ShowSchemaListViewModel
+
+DataSchemaService ..> GetSchemaListResponse
+
+@enduml

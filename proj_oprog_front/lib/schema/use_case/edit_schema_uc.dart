@@ -1,6 +1,7 @@
 import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
+import 'package:proj_oprog_front/schema/dto/get_schema_response.dart';
+import 'package:proj_oprog_front/schema/dto/modify_schema_request.dart';
 
-import '../dto/schema_dto.dart';
 import '../presenter/iedit_schema_presenter.dart';
 import 'iedit_schema_uc.dart';
 
@@ -10,21 +11,14 @@ class EditSchemaUC implements IEditSchemaUC {
 
   EditSchemaUC(this._service, this.presenter);
 
-@override
-Future<void> editSchema(SchemaDto schema) async {
-  try {
-    await _service.editSchema(schema);
-    presenter.onSchemaEdited(schema);
-  } catch (e) {
-    presenter.onError(e.toString());
+  @override
+  Future<void> editSchema(ModifySchemaRequest schema, int id) async {
+    await _service.editSchema(schema, id);
   }
-}
 
   @override
   void showEditSchemaView(int id) async{
-    SchemaDto dto = await _service.getSchema(id);
-    presenter.onShowEditSchemaView(dto);
+    GetSchemaResponse dto = await _service.getSchema(id);
+    presenter.onShowEditSchemaView(dto, id);
   }
-  
-
 }

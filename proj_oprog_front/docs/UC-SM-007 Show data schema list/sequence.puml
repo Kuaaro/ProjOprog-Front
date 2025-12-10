@@ -1,0 +1,65 @@
+@startuml
+title Show Schema List Sequence (From Home Navigation)
+autonumber
+
+actor User
+
+box "View Layer" #LightBlue
+participant "TopNavBar" as Home
+participant "ShowSchemaListView" as DestView
+participant "ShowSchemaListViewModel" as VM #eec590ff
+participant "GoRouter" as Router #E6E6FA
+participant "ShowSchemaListPresenter" as Presenter #10f810ff
+end box
+
+box "App Logic" #FEFECD
+participant "ShowSchemaListUC" as UC
+end box
+
+box "Data Layer" #FAFAD2
+participant "DataSchemaService" as Service
+end box
+
+
+User -> Home : onPressed()
+activate Home
+
+Home -> UC : showSchemaListUC()
+activate UC
+
+UC -> Service : getSchemaList()
+activate Service
+Service --> UC : GetSchemaListResponse
+deactivate Service
+
+UC -> Presenter : showSchemaList(response)
+activate Presenter
+
+Presenter -> VM : setSchemas(response.schemas)
+activate VM
+VM --> Presenter : void
+deactivate VM
+
+Presenter -> VM : setLoading(false)
+activate VM
+VM --> Presenter : void
+deactivate VM
+
+Presenter -> Router : go(String)
+activate Router
+Router -> DestView : build()
+activate DestView
+DestView --> Router : void
+deactivate DestView
+Router --> Presenter : void
+deactivate Router
+
+Presenter --> UC : void
+deactivate Presenter
+
+UC --> Home : void
+deactivate UC
+deactivate Home
+
+
+@enduml

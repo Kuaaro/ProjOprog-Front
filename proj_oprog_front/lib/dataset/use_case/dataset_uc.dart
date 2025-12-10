@@ -58,7 +58,7 @@ class DatasetUseCase implements IDatasetUseCase {
       final schemas = await schemaService.getSchemaList();
       return [
         NamedIdPair(name: 'No Schema', id: 0),
-        ...schemas,
+        ...schemas.schemas
       ];
     } catch (e) {
       

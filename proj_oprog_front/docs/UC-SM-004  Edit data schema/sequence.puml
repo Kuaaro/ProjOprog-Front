@@ -1,0 +1,59 @@
+@startuml
+title Edit Schema Sequence (Save Flow)
+autonumber
+
+actor User
+
+box "View Layer" #LightBlue
+    participant "EditSchemaView" as View
+    participant "EditSchemaViewModel" as VM #eec590ff
+    participant "EditSchemaController" as Controller #ebf57cff
+    participant "EditSchemaPresenter" as Presenter #10f810ff
+end box
+
+box "App Logic" #FEFECD
+    participant "EditSchemaUC" as UC
+end box
+
+box "Data Layer" #FAFAD2
+    participant "DataSchemaService" as Service
+end box
+
+
+User -> View : onPressed()
+activate View
+
+View -> Controller : saveSchema()
+activate Controller
+
+    Controller -> UC : editSchema(ModifySchemaRequest, id)
+    activate UC
+
+        UC -> Service : editSchema(ModifySchemaRequest, id)
+        activate Service
+        Service --> UC : void
+        deactivate Service
+
+        UC -> Presenter : onSchemaEdited(ModifySchemaRequest)
+        activate Presenter
+            
+            Presenter -> VM : setStatus("Schema saved successfully")
+            activate VM
+            VM -->> View : notifyListeners()
+            VM --> Presenter : void
+            deactivate VM
+            
+            View -> View : build()
+            
+        Presenter --> UC : void
+        deactivate Presenter
+
+    UC --> Controller : void
+    deactivate UC
+
+Controller --> View : void
+deactivate Controller
+
+deactivate View
+
+@enduml

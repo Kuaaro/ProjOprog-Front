@@ -1,19 +1,41 @@
 
 import 'package:flutter/material.dart';
 import 'package:proj_oprog_front/schema/dto/schema_field.dart';
+import 'package:proj_oprog_front/schema/view_model/schema_field_row.dart';
 import '../dto/schema_dto.dart';
 
 class AddSchemaViewModel extends ChangeNotifier {
   SchemaDto? schema;
   String status = '';
+  
   final TextEditingController schemaNameController = TextEditingController();
-  final List<SchemaField> fields = [];
-  List<TextEditingController> nameControllers = [];
-  List<TextEditingController> typeControllers = [];
+  final List<SchemaFieldRow> fieldRows = [];
 
-  void setSchema(SchemaDto schema) {
-    this.schema = schema;
+  @override
+  void dispose() {
+    schemaNameController.dispose();
+    for (var row in fieldRows) {
+      row.dispose();
+    }
+    super.dispose();
+  }
+
+  List<SchemaField> get fields => fieldRows.map((row) => SchemaField(
+      name: row.nameController.text,
+      type: row.typeController.text,
+  )).toList();
+
+  void addField() {
+    fieldRows.add(SchemaFieldRow());
     notifyListeners();
+  }
+
+  void removeField(int index) {
+    if (index >= 0 && index < fieldRows.length) {
+      fieldRows[index].dispose();
+      fieldRows.removeAt(index);
+      notifyListeners();
+    }
   }
 
   void setStatus(String status) {
@@ -21,44 +43,8 @@ class AddSchemaViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addField(SchemaField field) {
-    fields.add(field);
-    nameControllers.add(TextEditingController(text: field.name));
-    typeControllers.add(TextEditingController(text: field.type));
-    notifyListeners();
+  void setSchema(SchemaDto schema) {
+    this.schema = schema;
   }
 
-  void removeField(int index) {
-    if (index >= 0 && index < fields.length) {
-      fields.removeAt(index);
-      nameControllers[index].dispose();
-      typeControllers[index].dispose();
-      nameControllers.removeAt(index);
-      typeControllers.removeAt(index);
-      notifyListeners();
-    }
-  }
-
-  void updateField(int index, SchemaField field) {
-    if (index >= 0 && index < fields.length) {
-      fields[index] = field;
-    }
-  }
-
-  void clearFields() {
-    fields.clear();
-    notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    schemaNameController.dispose();
-    for (var c in nameControllers) {
-      c.dispose();
-    }
-    for (var c in typeControllers) {
-      c.dispose();
-    }
-    super.dispose();
-  }
 }

@@ -1,5 +1,6 @@
-import '../../shared/dtos/named_id_pair.dart';
+import 'package:proj_oprog_front/schema/dto/get_schema_list_response.dart';
+
 abstract class IShowSchemaListPresenter {
-  void showSchemaList(List<NamedIdPair> schemas);
+  void showSchemaList(GetSchemaListResponse schemas);
   void showError(String message);
 }

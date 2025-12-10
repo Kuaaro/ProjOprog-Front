@@ -1,0 +1,107 @@
+@startuml
+title Add Schema Feature
+
+'--- STYLE CONFIGURATION ---
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<ViewModel>> #D0F0F5
+    BackgroundColor<<Controller>> #FFAB91
+    BackgroundColor<<UseCase>> #FEFECD
+    BackgroundColor<<Presenter>> #90EE90
+    BackgroundColor<<Service>> #FAFAD2
+    BackgroundColor<<DTO>> #D3D3D3
+}
+
+class AddSchemaView <<View>> {
+  +build(): Widget
+}
+
+class AddSchemaViewModel <<ViewModel>> {
+  +schema: SchemaDto?
+  +status: String
+  +schemaNameController: TextEditingController
+  +fieldRows: List<SchemaFieldRow>
+  +dispose(): void
+  +fields(): SchemaField[0..*]
+  +addField(): void
+  +removeField(): void
+  +setStatus(): void
+  +setSchema(): void
+}
+
+class SchemaFieldRow <<ViewModel>> {
+  +nameController: TextEditingController
+  +typeController: TextEditingController
+  +dispose(): void
+}
+
+class AddSchemaController <<Controller>> {
+  +submitSchema(): void
+  +cancel(): void
+}
+
+interface IAddSchemaUC <<UseCase>> {
+  +addSchema(): void
+  +showAddSchemaView(): void
+  +onError(): void
+}
+
+class AddSchemaUC <<UseCase>> {
+  +addSchema(): void
+  +showAddSchemaView(): void
+  +onError(): void
+}
+
+IAddSchemaUC <|.. AddSchemaUC
+
+interface IAddSchemaPresenter <<Presenter>> {
+  +onSchemaAdded(SchemaDto dto): void
+  +onError(): void
+  +onShowAddSchemaView(): void
+}
+
+class AddSchemaPresenter <<Presenter>> {
+  +onSchemaAdded(SchemaDto dto): void
+  +onError(): void
+  +onShowAddSchemaView(): void
+}
+
+IAddSchemaPresenter <|.. AddSchemaPresenter
+
+interface IDataSchema <<Service>> {
+  +addSchema(request: CreateSchemaRequest): void
+}
+
+class DataSchemaService <<Service>> {
+  +addSchema(request: CreateSchemaRequest): void
+}
+
+IDataSchema <|.. DataSchemaService
+
+class CreateSchemaRequest <<DTO>> {
+  +name: String
+  +jsonSchema: String
+}
+
+class SchemaDto <<DTO>> {
+  +name: String
+  +jsonSchema: String
+}
+
+AddSchemaView ..> AddSchemaController
+AddSchemaView ..> AddSchemaViewModel
+
+AddSchemaViewModel *-- SchemaFieldRow
+AddSchemaViewModel ..> SchemaDto
+
+AddSchemaController ..> IAddSchemaUC
+AddSchemaController ..> AddSchemaViewModel
+
+AddSchemaUC ..> IDataSchema
+AddSchemaUC ..> IAddSchemaPresenter
+
+AddSchemaPresenter ..> AddSchemaViewModel
+
+DataSchemaService ..> CreateSchemaRequest
+
+@enduml
