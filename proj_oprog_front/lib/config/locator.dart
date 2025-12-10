@@ -140,6 +140,7 @@ void setupServiceLocator() {
     () => DatasetUseCase(
       locator<IDatasetView>(),
       locator<IDataset>(),
+      locator<IDataSchema>(),
     ),
   );
 

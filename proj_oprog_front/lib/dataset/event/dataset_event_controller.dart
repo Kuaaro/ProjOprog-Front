@@ -8,15 +8,19 @@ class DatasetEventController {
 
   DatasetEventController(this.appLogic, this.viewModel);
 
-  void onNewPressed(int? parentCatalogId) {
+  void onNewPressed(int? parentCatalogId) async {
     viewModel.setLoading(false);
     viewModel.setError(null);
+    final schemas = await appLogic.getSchemas();
+    viewModel.setSchemas(schemas);
     appLogic.showDatasetCreateUC(parentCatalogId);
   }
 
-  void onDatasetPressed(int datasetId) {
+  void onDatasetPressed(int datasetId) async {
     viewModel.setLoading(true);
     viewModel.setError(null);
+    final schemas = await appLogic.getSchemas();
+    viewModel.setSchemas(schemas);
     appLogic.showDatasetEditUC(datasetId);
   }
 

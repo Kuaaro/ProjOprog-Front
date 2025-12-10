@@ -42,11 +42,23 @@ class VCatalog extends StatelessWidget {
                       final currentCatalogId = viewModel.pathStack.isNotEmpty
                           ? viewModel.pathStack.last.id
                           : null;
+                      GetIt.instance<ICatalogEventController>()
+                          .onNewCatalogPressed(currentCatalogId);
+                    },
+                    icon: const Icon(Icons.create_new_folder),
+                    label: const Text('New Catalog'),
+                  ),
+                  const SizedBox(width: 8),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      final currentCatalogId = viewModel.pathStack.isNotEmpty
+                          ? viewModel.pathStack.last.id
+                          : null;
                       GetIt.instance<DatasetEventController>()
                           .onNewPressed(currentCatalogId);
                     },
-                    icon: const Icon(Icons.create_new_folder),
-                    label: const Text('New'),
+                    icon: const Icon(Icons.add_circle),
+                    label: const Text('New Dataset'),
                   ),
                   const SizedBox(width: 16),
                   // Back-button

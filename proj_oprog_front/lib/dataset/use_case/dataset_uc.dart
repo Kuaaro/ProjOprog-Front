@@ -6,12 +6,15 @@ import 'package:proj_oprog_front/dataset/dto/create_dataset_request.dart';
 import 'package:proj_oprog_front/dataset/idataset_view.dart';
 import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
+import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class DatasetUseCase implements IDatasetUseCase {
   final IDatasetView view;
   final IDataset service;
+  final IDataSchema schemaService;
   
-  DatasetUseCase(this.view, this.service);
+  DatasetUseCase(this.view, this.service, this.schemaService);
 
   @override
   void showDatasetCreateUC(int? parentCatalogId) {
@@ -46,6 +49,20 @@ class DatasetUseCase implements IDatasetUseCase {
       view.showDatasetSaved();
     } catch (e) {
       view.showError('Failed to save dataset: $e');
+    }
+  }
+
+  @override
+  Future<List<NamedIdPair>> getSchemas() async {
+    try {
+      final schemas = await schemaService.getSchemaList();
+      return [
+        NamedIdPair(name: 'No Schema', id: 0),
+        ...schemas,
+      ];
+    } catch (e) {
+      
+      return [NamedIdPair(name: 'No Schema', id: 0)]; 
     }
   }
 }

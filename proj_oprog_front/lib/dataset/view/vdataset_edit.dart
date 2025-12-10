@@ -135,16 +135,7 @@ class _VDatasetEditState extends State<VDatasetEdit> {
                 const SizedBox(height: 16),
                 _buildDistributionsField(context),
                 const SizedBox(height: 16),
-                _buildNumberField(
-                  label: 'Schema ID',
-                  initialValue: dataset.schemaId.toString(),
-                  onChanged: (value) {
-                    final id = int.tryParse(value);
-                    if (id != null) {
-                      widget.viewModel.updateSchemaId(id);
-                    }
-                  },
-                ),
+                 _buildSchemaDropdown(context),
                 const SizedBox(height: 24),
                 Row(
                   children: [
@@ -201,19 +192,27 @@ class _VDatasetEditState extends State<VDatasetEdit> {
     );
   }
 
-  Widget _buildNumberField({
-    required String label,
-    required String initialValue,
-    required ValueChanged<String> onChanged,
-  }) {
-    return TextFormField(
-      initialValue: initialValue,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
+  Widget _buildSchemaDropdown(BuildContext context) {
+    final schemas = widget.viewModel.schemas;
+    final currentSchemaId = widget.viewModel.dataset?.schemaId;
+
+    return DropdownButtonFormField<int>(
+      decoration: const InputDecoration(
+        labelText: 'Schema',
+        border: OutlineInputBorder(),
       ),
-      keyboardType: TextInputType.number,
-      onChanged: onChanged,
+      value: schemas.any((s) => s.id == currentSchemaId) ? currentSchemaId : null,
+      items: schemas.map((schema) {
+        return DropdownMenuItem<int>(
+          value: schema.id,
+          child: Text('${schema.name} (ID: ${schema.id})'),
+        );
+      }).toList(),
+      onChanged: (value) {
+        if (value != null) {
+          widget.viewModel.updateSchemaId(value);
+        }
+      },
     );
   }
 
@@ -315,7 +314,7 @@ class _VDatasetEditState extends State<VDatasetEdit> {
             return Card(
               margin: const EdgeInsets.only(bottom: 8),
               child: ExpansionTile(
-                title: Text('Distribution ${distribution.distributionId}'),
+                title: Text('Distribution ${index + 1}'),
                 subtitle: Text(distribution.accessURL),
                 children: [
                   Padding(
