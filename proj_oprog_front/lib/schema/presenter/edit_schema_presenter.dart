@@ -1,4 +1,3 @@
-import 'package:proj_oprog_front/config/router.dart';
 import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 import 'package:proj_oprog_front/schema/view_model/edit_schema_view_model.dart';
 
@@ -16,16 +15,14 @@ void onShowEditSchemaView(SchemaDto schema) {
 
   viewModel.setSchema(schema);
   viewModel.setFields(fields);
-  viewModel.setStatus('Success');
+  viewModel.setStatus('Editing');
 
-  router.go('/edit-schema');
 }
 
 @override
 void onSchemaEdited(SchemaDto schema) {
   viewModel.clearFields();
-  viewModel.setStatus('');
-  router.go('/schema');
+  viewModel.setStatus('Success');
 }
 
   @override

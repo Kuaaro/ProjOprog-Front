@@ -120,7 +120,7 @@ class EditSchemaView extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (viewModel.status.isNotEmpty)
+                if (viewModel.status == 'Error')
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: Text(

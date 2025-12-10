@@ -1,3 +1,4 @@
+import 'package:proj_oprog_front/config/router.dart';
 import 'package:proj_oprog_front/schema/dto/schema_dto.dart';
 import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 import 'package:proj_oprog_front/schema/use_case/iadd_schema_uc.dart';
@@ -11,6 +12,9 @@ class AddSchemaController {
 
   void showAddSchemaView() {
     useCase.showAddSchemaView();
+
+    router.go('/add-schema');
+    
   }
 
   Future<void> submitSchema() async {
@@ -19,7 +23,10 @@ class AddSchemaController {
     final schema = SchemaDto(name: name, jsonSchema: jsonSchema);
     await useCase.addSchema(schema);
 
-   
+    if (viewModel.status == 'Success') {  
+      router.go('/schema');
+    }
+
   }
 
 }
