@@ -10,7 +10,7 @@ class PCatalog implements ICatalogView {
   PCatalog(this.viewModelAdapter, this.router);
 
   @override
-  void showCatalog(ShowCatalogDto dto, NamedIdPair? current) {
+  void showCatalog(GetCatalogChildrenResponse dto, NamedIdPair? current) {
     if (current != null) {
       final currentStack = viewModelAdapter.getPath();
       if (currentStack.isEmpty || currentStack.last.id != current.id) {
@@ -25,7 +25,7 @@ class PCatalog implements ICatalogView {
 
   @override
   void showPreviousCatalog(
-    ShowCatalogDto dto,
+    GetCatalogChildrenResponse dto,
     NamedIdPair? previousCatalog,
   ) async {
     viewModelAdapter.popPath();

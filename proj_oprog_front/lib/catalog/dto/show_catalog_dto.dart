@@ -1,13 +1,13 @@
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
-class ShowCatalogDto {
+class GetCatalogChildrenResponse {
   final List<NamedIdPair> catalogs;
   final List<NamedIdPair> datasets;
 
-  ShowCatalogDto({required this.catalogs, required this.datasets});
+  GetCatalogChildrenResponse({required this.catalogs, required this.datasets});
 
-  factory ShowCatalogDto.fromJson(Map<String, dynamic> json) {
-    return ShowCatalogDto(
+  factory GetCatalogChildrenResponse.fromJson(Map<String, dynamic> json) {
+    return GetCatalogChildrenResponse(
       catalogs: (json['catalogs'] as List<dynamic>)
           .map((e) => NamedIdPair.fromJson(e as Map<String, dynamic>))
           .toList(),

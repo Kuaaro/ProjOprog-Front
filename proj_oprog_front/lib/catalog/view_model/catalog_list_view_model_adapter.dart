@@ -7,14 +7,14 @@ class CatalogListViewModelAdapter {
 
   CatalogListViewModelAdapter(this.viewModel);
 
-  ShowCatalogDto getData() {
-    return ShowCatalogDto(
+  GetCatalogChildrenResponse getData() {
+    return GetCatalogChildrenResponse(
       catalogs: viewModel.catalogs,
       datasets: viewModel.datasets,
     );
   }
 
-  void setData(ShowCatalogDto dto) {
+  void setData(GetCatalogChildrenResponse dto) {
     viewModel.catalogs
       ..clear()
       ..addAll(dto.catalogs);

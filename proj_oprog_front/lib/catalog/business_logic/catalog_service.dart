@@ -8,7 +8,7 @@ class CatalogService implements ICatalog {
   final String baseUrl = '/api';
 
   @override
-  Future<ShowCatalogDto> getCatalogChildren(int id) async {
+  Future<GetCatalogChildrenResponse> getCatalogChildren(int id) async {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/catalogs/children/$id'),
@@ -16,7 +16,7 @@ class CatalogService implements ICatalog {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        return ShowCatalogDto.fromJson(data);
+        return GetCatalogChildrenResponse.fromJson(data);
       } else {
         throw Exception('Failed to load catalog children');
       }
