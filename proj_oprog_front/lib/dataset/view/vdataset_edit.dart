@@ -27,9 +27,13 @@ class _VDatasetEditState extends State<VDatasetEdit> {
       _parentCatalogId = parentIdParam != null ? int.tryParse(parentIdParam) : null;
     });
     
-    if (widget.viewModel.dataset == null) {
-        widget.viewModel.createEmptyDataset();
+    if (widget.datasetId != null) {
+      if (widget.viewModel.dataset == null || widget.viewModel.dataset!.id != widget.datasetId) {
+        GetIt.instance<DatasetEventController>().onDatasetPressed(widget.datasetId!);
       }
+    } else if (widget.viewModel.dataset == null) {
+      widget.viewModel.createEmptyDataset();
+    }
   }
 
   @override
