@@ -8,4 +8,5 @@ abstract class ICatalogView {
     NamedIdPair? previousCatalog,
   );
   void showCatalogCreate(int? parentId);
+  void cancelCatalogCreation();
 }

@@ -25,6 +25,17 @@ class CatalogUseCase implements ICatalogUseCase {
   void showCatalogCreateUC(int? parentId) async {
     view.showCatalogCreate(parentId);
   }
+  @override
+  void createCatalogUC(parentId) async {
+    //final response = await service.createCatalog(parentId);
+    //view.showCatalog(response, NamedIdPair(id: parentId ?? 0, name: ''));
+    return;
+  }
+
+  @override
+  void cancelCatalogCreationUC() async {
+    view.cancelCatalogCreation();
+  }
 
   Future<GetCatalogChildrenResponse> getCatalogData(
     NamedIdPair? catalog,
@@ -32,4 +43,5 @@ class CatalogUseCase implements ICatalogUseCase {
     final catalogId = catalog?.id ?? 0;
     return await service.getCatalogChildren(catalogId);
   }
+  
 }

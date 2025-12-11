@@ -27,6 +27,19 @@ class CatalogService implements ICatalog {
 
   @override
   Future<void> createCatalog(CatalogDto dto) async {
-    // TODO: implement later
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/catalogs'),
+  //     );
+
+  //     if (response.statusCode == 201) {
+  //       return;
+  //     } else {
+  //       throw Exception('Failed to load catalog children');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error fetching catalog children: $e');
+  //   }
+    return;
   }
 }

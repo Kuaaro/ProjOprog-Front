@@ -23,11 +23,11 @@ class CatalogEventController implements ICatalogEventController {
 
   @override
   void onCreateCatalogPressed(int? parentId){
-    
+    appLogic.createCatalogUC(parentId);
   }
 
   @override
   void onCancelPressed() {
-
+    appLogic.cancelCatalogCreationUC();
   }
 }

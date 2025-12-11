@@ -6,4 +6,6 @@ abstract class ICatalogUseCase {
 
   void showPreviousCatalogUC(NamedIdPair? previous);
   void showCatalogCreateUC(int? parentId);
+  void createCatalogUC(parentId);
+  void cancelCatalogCreationUC();
 }
