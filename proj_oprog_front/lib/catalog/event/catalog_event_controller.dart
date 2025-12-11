@@ -18,6 +18,16 @@ class CatalogEventController implements ICatalogEventController {
 
   @override
   void onNewCatalogPressed(int? parentId) {
-    print('New Catalog Pressed - Not implemented yet');
+    appLogic.showCatalogCreateUC(parentId);
+  }
+
+  @override
+  void onCreateCatalogPressed(int? parentId){
+    
+  }
+
+  @override
+  void onCancelPressed() {
+
   }
 }

@@ -4,4 +4,6 @@ abstract class ICatalogEventController {
   void onCatalogPressed(NamedIdPair catalogPair);
   void onPreviousCatalogPressed(NamedIdPair? previous);
   void onNewCatalogPressed(int? parentId);
+  void onCreateCatalogPressed(int? parentId);
+  void onCancelPressed();
 }

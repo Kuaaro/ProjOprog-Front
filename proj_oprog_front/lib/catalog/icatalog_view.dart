@@ -7,4 +7,5 @@ abstract class ICatalogView {
     GetCatalogChildrenResponse dto,
     NamedIdPair? previousCatalog,
   );
+  void showCatalogCreate(int? parentId);
 }

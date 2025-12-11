@@ -33,6 +33,11 @@ class PCatalog implements ICatalogView {
     redirectIfNeeded();
   }
 
+  @override
+  void showCatalogCreate(int? parentId) {
+    router.go('/catalog/create');
+  }
+
   void redirectIfNeeded() {
     final currentLocation = router.routerDelegate.currentConfiguration.uri.path;
 

@@ -21,6 +21,10 @@ class CatalogUseCase implements ICatalogUseCase {
     final response = await getCatalogData(previous);
     view.showPreviousCatalog(response, previous);
   }
+  @override
+  void showCatalogCreateUC(int? parentId) async {
+    view.showCatalogCreate(parentId);
+  }
 
   Future<GetCatalogChildrenResponse> getCatalogData(
     NamedIdPair? catalog,

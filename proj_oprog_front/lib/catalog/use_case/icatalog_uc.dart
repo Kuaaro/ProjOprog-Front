@@ -5,4 +5,5 @@ abstract class ICatalogUseCase {
   void showCatalogUC(NamedIdPair? catalogToShow);
 
   void showPreviousCatalogUC(NamedIdPair? previous);
+  void showCatalogCreateUC(int? parentId);
 }

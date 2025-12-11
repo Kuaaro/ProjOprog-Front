@@ -21,8 +21,10 @@ import 'package:proj_oprog_front/catalog/event/catalog_event_controller.dart';
 import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
 import 'package:proj_oprog_front/catalog/icatalog_view.dart';
 import 'package:proj_oprog_front/catalog/view/vcatalog.dart';
+import 'package:proj_oprog_front/catalog/view/vcatalog_add.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
 import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model_adapter.dart';
+import 'package:proj_oprog_front/catalog/view_model/catalog_add_view_model.dart';
 import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
 import 'package:proj_oprog_front/schema/business_logic/data_schema_service.dart';
 import 'package:proj_oprog_front/schema/use_case/show_schema_list_uc.dart';
@@ -54,11 +56,13 @@ import 'package:proj_oprog_front/dataset/idataset_view.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 
+
 final locator = GetIt.instance;
 
 void setupServiceLocator() {
   locator.registerSingleton<ICatalog>(CatalogService());
   locator.registerSingleton<CatalogListViewModel>(CatalogListViewModel());
+  locator.registerSingleton<CatalogAddViewModel>(CatalogAddViewModel());
   locator.registerSingleton<VMetadata>(VMetadata());
   locator.registerSingleton<GoRouter>(router);
 
@@ -68,6 +72,10 @@ void setupServiceLocator() {
 
   locator.registerLazySingleton<VCatalog>(
     () => VCatalog(locator<CatalogListViewModel>()),
+  );
+
+  locator.registerLazySingleton<VCatalogAdd>(
+    () => VCatalogAdd(locator<CatalogAddViewModel>()),
   );
 
   locator.registerLazySingleton<ICatalogView>(
