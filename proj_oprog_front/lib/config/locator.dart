@@ -95,7 +95,6 @@ void setupServiceLocator() {
     () => CreateCatalogPresenter(
       locator<GoRouter>(),
       locator<CreateCatalogViewModel>(),
-      locator<ShowCatalogViewModel>(),
     ),
   );
 
