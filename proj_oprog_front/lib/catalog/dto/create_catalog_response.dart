@@ -1,13 +1,13 @@
 class CreateCatalogResponse {
-  final int catalogId;
+  final int id;
 
-  CreateCatalogResponse({required this.catalogId});
+  CreateCatalogResponse({required this.id});
 
   factory CreateCatalogResponse.fromJson(Map<String, dynamic> json) {
-    return CreateCatalogResponse(catalogId: json['catalog_id'] as int);
+    return CreateCatalogResponse(id: json['id'] as int);
   }
 
   Map<String, dynamic> toJson() {
-    return {'catalog_id': catalogId};
+    return {'id': id};
   }
 }

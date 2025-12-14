@@ -52,7 +52,7 @@ const datasetData = {
 };
 
 app.post('/catalogs', (req, res) => {
-  res.status(200).json({'catalog_id': 5})
+  res.status(200).json({'id': 5})
 });
 
 app.get('/catalogs/children/:id', (req, res) => {

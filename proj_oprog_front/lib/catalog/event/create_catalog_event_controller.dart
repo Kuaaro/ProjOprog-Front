@@ -35,13 +35,14 @@ class CreateCatalogEventController implements ICreateCatalogEventController {
 
   @override
   void onNewCatalogSavePressed() {
+    var currentStack = showCatalogViewModel.pathStack;
+    var currentCatalog = currentStack.isNotEmpty ? currentStack.last : null;
+    var currentId = currentCatalog?.id ?? 0;
     var dto = CreateCatalogRequest(
       name: createCatalogViewModel.name,
       description: createCatalogViewModel.description,
-      parentCatalog: createCatalogViewModel.parentId,
+      parentCatalogId: currentId,
     );
-    var currentStack = showCatalogViewModel.pathStack;
-    var currentCatalog = currentStack.isNotEmpty ? currentStack.last : null;
     createAppLogic.createCatalog(dto, currentCatalog);
   }
 }

@@ -1,19 +1,19 @@
 class CreateCatalogRequest {
   final String name;
   final String description;
-  final int parentCatalog;
+  final int parentCatalogId;
 
   CreateCatalogRequest({
     required this.name,
     required this.description,
-    required this.parentCatalog,
+    required this.parentCatalogId,
   });
 
   factory CreateCatalogRequest.fromJson(Map<String, dynamic> json) {
     return CreateCatalogRequest(
       name: json['name'] as String,
       description: json['description'] as String,
-      parentCatalog: json['parent_catalog'] as int,
+      parentCatalogId: json['parent_catalog_id'] as int,
     );
   }
 
@@ -21,7 +21,7 @@ class CreateCatalogRequest {
     return {
       'name': name,
       'description': description,
-      'parent_catalog': parentCatalog,
+      'parent_catalog_id': parentCatalogId,
     };
   }
 }

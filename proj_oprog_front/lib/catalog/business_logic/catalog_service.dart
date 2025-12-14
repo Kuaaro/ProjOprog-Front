@@ -6,8 +6,7 @@ import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart'
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 
 class CatalogService implements ICatalog {
-  // final String baseUrl = '/api';
-  final String baseUrl = 'http://localhost:3000';
+  final String baseUrl = '/api';
 
   @override
   Future<GetCatalogChildrenResponse> getCatalogChildren(int id) async {
