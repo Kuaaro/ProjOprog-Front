@@ -27,7 +27,10 @@ class CreateCatalogEventController implements ICreateCatalogEventController {
 
   @override
   void onCancelPressed() {
-    showAppLogic.showCatalog(null);
+    createAppLogic.cancelCreateCatalog();
+    var currentStack = showCatalogViewModel.pathStack;
+    var currentCatalog = currentStack.isNotEmpty ? currentStack.last : null;
+    showAppLogic.showCatalog(currentCatalog);
   }
 
   @override
@@ -37,6 +40,8 @@ class CreateCatalogEventController implements ICreateCatalogEventController {
       description: createCatalogViewModel.description,
       parentCatalog: createCatalogViewModel.parentId,
     );
-    createAppLogic.createCatalog(dto);
+    var currentStack = showCatalogViewModel.pathStack;
+    var currentCatalog = currentStack.isNotEmpty ? currentStack.last : null;
+    createAppLogic.createCatalog(dto, currentCatalog);
   }
 }

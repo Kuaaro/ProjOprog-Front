@@ -7,11 +7,17 @@ class CreateCatalogPresenter implements ICreateCatalogPresenter {
   final GoRouter router;
   final CreateCatalogViewModel createViewModel;
   final ShowCatalogViewModel listViewModel;
+
   CreateCatalogPresenter(this.router, this.createViewModel, this.listViewModel);
 
   @override
   void showCreateCatalogForm(int parentId) {
     createViewModel.refresh(parentId);
-    router.go('/catalog/create');
+    router.push('/catalog/create');
+  }
+
+  @override
+  void closeCreateCatalogForm() {
+    router.pop();
   }
 }

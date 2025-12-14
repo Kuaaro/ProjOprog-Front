@@ -3,6 +3,7 @@ import 'package:proj_oprog_front/catalog/dto/create_catalog_request.dart';
 import 'package:proj_oprog_front/catalog/presenter/icreate_catalog_presenter.dart';
 import 'package:proj_oprog_front/catalog/use_case/icreate_catalog.dart';
 import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
+import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
 class CreateCatalog implements ICreateCatalog {
   final ICreateCatalogPresenter createPresenter;
@@ -17,8 +18,14 @@ class CreateCatalog implements ICreateCatalog {
   }
 
   @override
-  void createCatalog(CreateCatalogRequest req) async {
+  void createCatalog(CreateCatalogRequest req, NamedIdPair? parent) async {
     await businessLogic.createCatalog(req);
-    showCatalogList.showCatalog(null);
+    createPresenter.closeCreateCatalogForm();
+    showCatalogList.showCatalog(parent);
+  }
+
+  @override
+  void cancelCreateCatalog() {
+    createPresenter.closeCreateCatalogForm();
   }
 }

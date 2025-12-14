@@ -44,12 +44,21 @@ final GoRouter router = GoRouter(
 
             return locator<ShowCatalogView>();
           },
-        ),
-        GoRoute(
-          path: '/catalog/create',
-          builder: (context, state) {
-            return CreateCatalogView(locator<CreateCatalogViewModel>());
-          },
+          routes: [
+            GoRoute(
+              path: 'create',
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  child: CreateCatalogView(locator<CreateCatalogViewModel>()),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                  fullscreenDialog: true,
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '/metadata',
