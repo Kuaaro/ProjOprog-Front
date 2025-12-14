@@ -1,23 +1,23 @@
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
-import 'package:proj_oprog_front/catalog/icatalog_view.dart';
-import 'package:proj_oprog_front/catalog/use_case/icatalog_uc.dart';
+import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
+import 'package:proj_oprog_front/catalog/presenter/ishow_catalog_presenter.dart';
+import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
-class CatalogUseCase implements ICatalogUseCase {
-  final ICatalogView view;
+class ShowCatalog implements IShowCatalog {
+  final IShowCatalogPresenter view;
   final ICatalog service;
 
-  CatalogUseCase(this.view, this.service);
+  ShowCatalog(this.view, this.service);
 
   @override
-  void showCatalogUC(NamedIdPair? catalogToShow) async {
+  void showCatalog(NamedIdPair? catalogToShow) async {
     final response = await getCatalogData(catalogToShow);
     view.showCatalog(response, catalogToShow);
   }
 
   @override
-  void showPreviousCatalogUC(NamedIdPair? previous) async {
+  void showPreviousCatalog(NamedIdPair? previous) async {
     final response = await getCatalogData(previous);
     view.showPreviousCatalog(response, previous);
   }
