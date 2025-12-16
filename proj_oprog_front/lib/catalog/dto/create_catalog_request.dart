@@ -13,7 +13,7 @@ class CreateCatalogRequest {
     return CreateCatalogRequest(
       name: json['name'] as String,
       description: json['description'] as String,
-      parentCatalogId: json['parent_catalog_id'] as int,
+      parentCatalogId: json['parentCatalogId'] as int,
     );
   }
 
@@ -21,7 +21,7 @@ class CreateCatalogRequest {
     return {
       'name': name,
       'description': description,
-      'parent_catalog_id': parentCatalogId,
+      'parentCatalogId': parentCatalogId,
     };
   }
 }
