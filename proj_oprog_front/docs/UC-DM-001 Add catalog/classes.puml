@@ -1,0 +1,136 @@
+@startuml CreateCatalog_UseCase_Frontend
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<Presenter>> LightGreen
+    BackgroundColor<<ViewModel>> LightCyan
+    BackgroundColor<<UseCase>> LightYellow
+    BackgroundColor<<EventController>> LightSalmon
+    BackgroundColor<<Service>> LightGoldenRodYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+' View Layer
+together {
+    class CreateCatalogView <<View>> {
+        + build(context): Widget
+    }
+    
+    class CreateCatalogViewModel <<ViewModel>> {
+        + name: String
+        + description: String
+        + parentId: int
+        + refresh(parentId): void
+        + notifyChanges(): void
+    }
+    
+    class ShowCatalogViewModel <<ViewModel>> {
+        + catalogs: List<NamedIdPair>
+        + datasets: List<NamedIdPair>
+        + pathStack: List<NamedIdPair>
+        + notifyChanges(): void
+    }
+}
+
+' Event Controller Layer
+together {
+    interface ICreateCatalogEventController <<EventController>> {
+        + onNewCatalogPressed(): void
+        + onNewCatalogSavePressed(): void
+        + onCancelPressed(): void
+    }
+    
+    class CreateCatalogEventController <<EventController>> {
+        + onNewCatalogPressed(): void
+        + onNewCatalogSavePressed(): void
+        + onCancelPressed(): void
+    }
+}
+
+' Use Case Layer
+together {
+    interface IShowCatalog <<UseCase>> {
+        + showCatalog(catalogToShow): void
+    }
+    
+    interface ICreateCatalog <<UseCase>> {
+        + showNewCatalogForm(parentId): void
+        + createCatalog(req, parent): void
+        + cancelCreateCatalog(): void
+    }
+    
+    class CreateCatalog <<UseCase>> {
+        + showNewCatalogForm(parentId): void
+        + createCatalog(req, parent): void
+        + cancelCreateCatalog(): void
+    }
+}
+
+' Presenter Layer
+together {
+    interface ICreateCatalogPresenter <<Presenter>> {
+        + showCreateCatalogForm(parentId): void
+        + closeCreateCatalogForm(): void
+    }
+    
+    class CreateCatalogPresenter <<Presenter>> {
+        + showCreateCatalogForm(parentId): void
+        + closeCreateCatalogForm(): void
+    }
+}
+
+' Service Layer
+together {
+    interface ICatalog <<Service>> {
+        + createCatalog(request): Future<CreateCatalogResponse>
+    }
+    
+    class CatalogService <<Service>> {
+        + createCatalog(request): Future<CreateCatalogResponse>
+    }
+}
+
+' DTOs
+together {
+    class CreateCatalogRequest <<DTO>> {
+        + name: String
+        + description: String
+        + parentCatalogId: int
+        + fromJson(json): CreateCatalogRequest
+        + toJson(): Map<String, dynamic>
+    }
+}
+
+' View Layer Relationships
+CreateCatalogView ..> CreateCatalogViewModel : observes
+
+' ViewModel Relationships
+CreateCatalogViewModel --|> ChangeNotifier : extends
+ShowCatalogViewModel --|> ChangeNotifier : extends
+
+' Event Controller Relationships
+ICreateCatalogEventController <|.. CreateCatalogEventController : implements
+CreateCatalogEventController ..> ICreateCatalog : uses
+CreateCatalogEventController ..> IShowCatalog : uses
+CreateCatalogEventController ..> ShowCatalogViewModel : uses
+CreateCatalogEventController ..> CreateCatalogViewModel : uses
+
+' Use Case Relationships
+ICreateCatalog <|.. CreateCatalog : implements
+CreateCatalog ..> ICreateCatalogPresenter : uses
+CreateCatalog ..> ICatalog : uses
+CreateCatalog ..> IShowCatalog : uses
+IShowCatalog ..> ICatalog : uses
+
+' Presenter Relationships
+ICreateCatalogPresenter <|.. CreateCatalogPresenter : implements
+CreateCatalogPresenter ..> CreateCatalogViewModel : uses
+
+' Service Layer Relationships
+ICatalog <|.. CatalogService : implements
+
+' DTO Relationships
+CreateCatalogEventController ..> CreateCatalogRequest : creates
+CreateCatalog ..> CreateCatalogRequest : receives
+
+@enduml

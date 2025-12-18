@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:proj_oprog_front/catalog/dto/catalog_dto.dart';
-import 'package:proj_oprog_front/catalog/dto/show_catalog_dto.dart';
+import 'package:proj_oprog_front/catalog/dto/create_catalog_request.dart';
+import 'package:proj_oprog_front/catalog/dto/create_catalog_response.dart';
+import 'package:proj_oprog_front/catalog/dto/get_catalog_children_response.dart';
 import 'package:proj_oprog_front/catalog/business_logic/icatalog.dart';
 
 class CatalogService implements ICatalog {
@@ -26,7 +27,23 @@ class CatalogService implements ICatalog {
   }
 
   @override
-  Future<void> createCatalog(CatalogDto dto) async {
-    // TODO: implement later
+  Future<CreateCatalogResponse> createCatalog(
+    CreateCatalogRequest request,
+  ) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/catalogs'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(request.toJson()),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return CreateCatalogResponse.fromJson(data);
+      } else {
+        throw Exception('Failed to create catalog');
+      }
+    } catch (e) {
+      throw Exception('Error creating catalog: $e');
+    }
   }
 }

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/catalog/event/icatalog_event_controller.dart';
+import 'package:proj_oprog_front/catalog/event/ishow_catalog_event_controller.dart';
 import 'package:go_router/go_router.dart';
-import 'package:proj_oprog_front/catalog/view_model/catalog_list_view_model.dart';
+import 'package:proj_oprog_front/catalog/event/icreate_catalog_event_controller.dart';
+import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
-class VCatalog extends StatelessWidget {
-  final CatalogListViewModel viewModel;
+class ShowCatalogView extends StatelessWidget {
+  final ShowCatalogViewModel viewModel;
 
-  const VCatalog(this.viewModel, {super.key});
+  const ShowCatalogView(this.viewModel, {super.key});
 
   String getPath() {
     if (viewModel.pathStack.isEmpty) {
@@ -39,11 +40,8 @@ class VCatalog extends StatelessWidget {
                 children: [
                   ElevatedButton.icon(
                     onPressed: () {
-                      final currentCatalogId = viewModel.pathStack.isNotEmpty
-                          ? viewModel.pathStack.last.id
-                          : null;
-                      GetIt.instance<ICatalogEventController>()
-                          .onNewCatalogPressed(currentCatalogId);
+                      GetIt.instance<ICreateCatalogEventController>()
+                          .onNewCatalogPressed();
                     },
                     icon: const Icon(Icons.create_new_folder),
                     label: const Text('New Catalog'),
@@ -54,8 +52,9 @@ class VCatalog extends StatelessWidget {
                       final currentCatalogId = viewModel.pathStack.isNotEmpty
                           ? viewModel.pathStack.last.id
                           : null;
-                      GetIt.instance<DatasetEventController>()
-                          .onNewPressed(currentCatalogId);
+                      GetIt.instance<DatasetEventController>().onNewPressed(
+                        currentCatalogId,
+                      );
                     },
                     icon: const Icon(Icons.add_circle),
                     label: const Text('New Dataset'),
@@ -65,8 +64,9 @@ class VCatalog extends StatelessWidget {
                   if (viewModel.pathStack.isNotEmpty) ...[
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      onPressed: () => GetIt.instance<ICatalogEventController>()
-                          .onPreviousCatalogPressed(getPrevious()),
+                      onPressed: () =>
+                          GetIt.instance<IShowCatalogEventController>()
+                              .onPreviousCatalogPressed(getPrevious()),
                     ),
                     const SizedBox(width: 8),
                   ],
@@ -99,7 +99,7 @@ class VCatalog extends StatelessWidget {
                               subtitle: Text('Catalog ID: ${catalog.id}'),
                               trailing: const Icon(Icons.arrow_forward_ios),
                               onTap: () =>
-                                  GetIt.instance<ICatalogEventController>()
+                                  GetIt.instance<IShowCatalogEventController>()
                                       .onCatalogPressed(catalog),
                             ),
                           ),
@@ -114,7 +114,8 @@ class VCatalog extends StatelessWidget {
                               title: Text(dataset.name),
                               subtitle: Text('Dataset ID: ${dataset.id}'),
                               trailing: const Icon(Icons.edit),
-                              onTap: () => context.go('/datasets/${dataset.id}/edit'),
+                              onTap: () =>
+                                  context.go('/datasets/${dataset.id}/edit'),
                             ),
                           ),
                         ),

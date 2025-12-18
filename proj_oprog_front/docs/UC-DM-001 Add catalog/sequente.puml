@@ -1,0 +1,79 @@
+@startuml CreateCatalog_Sequence
+actor User
+
+participant "CreateCatalogView" as CreateView <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "ICreateCatalogEventController" as IEventCtrl <<Interface>>
+    participant "CreateCatalogEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "ICreateCatalog" as ICreateUC <<Interface>>
+    participant "CreateCatalog" as CreateUC <<Implementation>>
+    participant "IShowCatalog" as IShowUC <<Interface>>
+end box
+
+box "Presenter" #LightGreen
+    participant "ICreateCatalogPresenter" as IPresenter <<Interface>>
+    participant "CreateCatalogPresenter" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "CreateCatalogViewModel" as CreateVM
+    participant "ShowCatalogViewModel" as ShowVM
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "ICatalog" as IService <<Interface>>
+    participant "CatalogService" as Service <<Implementation>>
+end box
+
+participant "Backend API" as API
+
+' === PHASE 1: Show Create Form ===
+User -> CreateView: Press "New Catalog"
+CreateView -> IEventCtrl: onNewCatalogPressed()
+IEventCtrl -> EventCtrl: 
+EventCtrl -> ShowVM: get pathStack.last.id
+ShowVM --> EventCtrl: parentId
+EventCtrl -> ICreateUC: showNewCatalogForm(parentId)
+ICreateUC -> CreateUC: 
+CreateUC -> IPresenter: showCreateCatalogForm(parentId)
+IPresenter -> Presenter: 
+Presenter -> CreateVM: refresh(parentId)
+CreateVM -> CreateVM: clear name, description
+Presenter -> Presenter: router.push('/catalog/create')
+Presenter --> CreateView: Navigate to form
+CreateView -> CreateView: Display create form
+
+' === PHASE 2: Fill Form ===
+User -> CreateView: Enter name & description
+CreateView -> CreateVM: name = value
+CreateView -> CreateVM: description = value
+CreateView -> CreateVM: notifyChanges()
+CreateVM --> CreateView: notifyListeners()
+CreateView -> CreateView: rebuild UI
+
+' === PHASE 3: Save Catalog ===
+User -> CreateView: Press "Save"
+CreateView -> IEventCtrl: onNewCatalogSavePressed()
+IEventCtrl -> EventCtrl: 
+EventCtrl -> ShowVM: get pathStack (current catalog)
+ShowVM --> EventCtrl: currentCatalog
+EventCtrl -> CreateVM: get name, description
+CreateVM --> EventCtrl: name, description
+EventCtrl -> EventCtrl: create CreateCatalogRequest dto
+EventCtrl -> ICreateUC: createCatalog(dto, currentCatalog)
+ICreateUC -> CreateUC: 
+CreateUC -> IService: createCatalog(dto)
+IService -> Service: 
+Service -> API: POST /catalogs
+API --> Service: CreateCatalogResponse
+Service --> CreateUC: 
+CreateUC -> IPresenter: closeCreateCatalogForm()
+IPresenter -> Presenter: 
+Presenter -> Presenter: router.pop()
+CreateUC -> IShowUC: showCatalog(currentCatalog)
+
+@enduml
