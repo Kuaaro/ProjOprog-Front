@@ -7,7 +7,7 @@ class EditSchemaViewModel extends ChangeNotifier {
   SchemaDto? schema;
   String status = '';
   int id = -1;
-  
+
   final TextEditingController schemaNameController = TextEditingController();
   final List<SchemaFieldRow> fieldRows = [];
 
@@ -20,26 +20,21 @@ class EditSchemaViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  List<SchemaField> get fields => fieldRows.map((row) => SchemaField(
-      name: row.nameController.text,
-      type: row.typeController.text,
-  )).toList();
+  List<SchemaField> get fields => fieldRows
+      .map(
+        (row) =>
+            SchemaField(name: row.nameController.text, type: row.selectedType),
+      )
+      .toList();
 
   set fields(List<SchemaField> newFields) {
     for (var row in fieldRows) {
       row.dispose();
     }
     fieldRows.clear();
-
     for (var field in newFields) {
-      fieldRows.add(
-        SchemaFieldRow(
-          name: field.name, 
-          type: field.type
-        )
-      );
+      fieldRows.add(SchemaFieldRow(name: field.name, type: field.type));
     }
-
     notifyListeners();
   }
 
@@ -67,7 +62,6 @@ class EditSchemaViewModel extends ChangeNotifier {
   }
 
   void setId(int id) {
-    this.id =id;
+    this.id = id;
   }
-
 }

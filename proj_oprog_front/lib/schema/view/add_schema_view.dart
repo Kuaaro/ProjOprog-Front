@@ -15,8 +15,9 @@ class AddSchemaView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final double containerWidth =
-        screenWidth * 0.6 < 300 ? 300.0 : screenWidth * 0.6;
+    final double containerWidth = screenWidth * 0.6 < 300
+        ? 300.0
+        : screenWidth * 0.6;
 
     final boxDecoration = BoxDecoration(
       color: Colors.white,
@@ -28,20 +29,25 @@ class AddSchemaView extends StatelessWidget {
       animation: viewModel,
       builder: (context, child) {
         return Scaffold(
-          appBar: AppBar(title: Padding(
-            padding: const EdgeInsets.all(70.0),
-            child: const Text('Add Schema'),
-          )),
+          appBar: AppBar(
+            title: Padding(
+              padding: const EdgeInsets.all(70.0),
+              child: const Text('Add Schema'),
+            ),
+          ),
           body: Align(
             alignment: Alignment.topLeft,
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
-                  left: 80.0, top: 40.0, right: 24.0, bottom: 40.0),
+                left: 80.0,
+                top: 40.0,
+                right: 24.0,
+                bottom: 40.0,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
                   SizedBox(
                     width: containerWidth,
                     child: Column(
@@ -130,12 +136,38 @@ class AddSchemaView extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 8),
                                         Expanded(
-                                          child: TextField(
-                                            controller: row.typeController,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Type',
-                                            ),
-                                          ),
+                                          child:
+                                              DropdownButtonFormField<String>(
+                                                value: row.selectedType,
+                                                decoration:
+                                                    const InputDecoration(
+                                                      labelText: 'Type',
+                                                    ),
+                                                items: const [
+                                                  DropdownMenuItem(
+                                                    value: 'int',
+                                                    child: Text('int'),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: 'float',
+                                                    child: Text('float'),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: 'string',
+                                                    child: Text('string'),
+                                                  ),
+                                                  DropdownMenuItem(
+                                                    value: 'date',
+                                                    child: Text('date'),
+                                                  ),
+                                                ],
+                                                onChanged: (String? newValue) {
+                                                  if (newValue != null) {
+                                                    row.selectedType = newValue;
+                                                    viewModel.notifyListeners();
+                                                  }
+                                                },
+                                              ),
                                         ),
                                         IconButton(
                                           icon: const Icon(Icons.remove_circle),
@@ -158,7 +190,8 @@ class AddSchemaView extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 16),
                                   ElevatedButton(
-                                    onPressed: () async => await controller.submitSchema(),
+                                    onPressed: () async =>
+                                        await controller.submitSchema(),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color(0xFF66C266),
                                       foregroundColor: Colors.white,

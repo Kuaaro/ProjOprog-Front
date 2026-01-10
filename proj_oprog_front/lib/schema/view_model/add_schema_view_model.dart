@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 import 'package:proj_oprog_front/schema/view_model/schema_field_row.dart';
@@ -7,7 +6,7 @@ import '../dto/schema_dto.dart';
 class AddSchemaViewModel extends ChangeNotifier {
   SchemaDto? schema;
   String status = '';
-  
+
   final TextEditingController schemaNameController = TextEditingController();
   final List<SchemaFieldRow> fieldRows = [];
 
@@ -20,10 +19,12 @@ class AddSchemaViewModel extends ChangeNotifier {
     super.dispose();
   }
 
-  List<SchemaField> get fields => fieldRows.map((row) => SchemaField(
-      name: row.nameController.text,
-      type: row.typeController.text,
-  )).toList();
+  List<SchemaField> get fields => fieldRows
+      .map(
+        (row) =>
+            SchemaField(name: row.nameController.text, type: row.selectedType),
+      )
+      .toList();
 
   void addField() {
     fieldRows.add(SchemaFieldRow());
@@ -46,5 +47,4 @@ class AddSchemaViewModel extends ChangeNotifier {
   void setSchema(SchemaDto schema) {
     this.schema = schema;
   }
-
 }
