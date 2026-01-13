@@ -96,7 +96,7 @@ class MockSensorUI extends StatelessWidget {
                 _buildDataButton(
                   context,
                   'SendDataA',
-                  'Sensor ID: 1, Data: {"Ints":"3"}',
+                  'Sensor ID: 1, Data: {"integer":"3"}',
                   () => _handleSendDataA(context),
                   Colors.blue.shade700,
                 ),
@@ -104,7 +104,7 @@ class MockSensorUI extends StatelessWidget {
                 _buildDataButton(
                   context,
                   'SendDataB',
-                  'Sensor ID: 1, Data: {"Strings": "abcd"}',
+                  'Sensor ID: 1, Data: {"string": "abcd"}',
                   () => _handleSendDataB(context),
                   Colors.purple.shade700,
                 ),

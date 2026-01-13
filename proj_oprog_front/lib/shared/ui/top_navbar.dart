@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
-import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 
 class TopNavBar extends StatelessWidget {
   final IShowCatalog catalogUseCase;
