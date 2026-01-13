@@ -10,6 +10,7 @@ class HomeView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('Home Page', style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 32),
         ],
       ),
     );
