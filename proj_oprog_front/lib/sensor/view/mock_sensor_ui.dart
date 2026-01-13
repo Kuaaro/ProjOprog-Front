@@ -69,7 +69,7 @@ class MockSensorUI extends StatelessWidget {
               ),
               child: const Text(
                 'Add Sensors',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ],
@@ -108,6 +108,14 @@ class MockSensorUI extends StatelessWidget {
                   () => _handleSendDataB(context),
                   Colors.purple.shade700,
                 ),
+                const SizedBox(height: 12),
+                 _buildDataButton(
+                  context,
+                  'SendBlankData',
+                  'Sensor ID: 1, Data: {}',
+                  () => _handleSendBlankData(context),
+                  Colors.blueGrey.shade700,
+                ),
               ],
             ),
           ],
@@ -145,7 +153,7 @@ class MockSensorUI extends StatelessWidget {
               vertical: 12,
             ),
           ),
-          child: Text(label),
+          child: Text(label, style: TextStyle(color: Colors.white)),
         ),
       ],
     );
@@ -154,14 +162,12 @@ class MockSensorUI extends StatelessWidget {
   void _handleAddSensors(BuildContext context) {
     final controller = locator<IAddSensorRouterEventController>();
     
-    // Add first sensor (SensorId: 1, DatasetId: 1)
     final request1 = CreateSensorRouterRequest(
       sensorId: 1,
       datasetId: 1,
     );
     controller.onConfirmAddSensorRouter(request1);
 
-    // Add second sensor (SensorId: 1, DatasetId: 2)
     final request2 = CreateSensorRouterRequest(
       sensorId: 1,
       datasetId: 2,
@@ -183,6 +189,16 @@ class MockSensorUI extends StatelessWidget {
     final request = SendDataRequest(
       sensorId: 1,
       data: '{"string":"abcd"}',
+    );
+
+    locator<ISendSensorDataEventController>()
+        .onSendDataPressed(request, 2);
+  }
+
+    void _handleSendBlankData(BuildContext context) {
+    final request = SendDataRequest(
+      sensorId: 1,
+      data: '{}',
     );
 
     locator<ISendSensorDataEventController>()
