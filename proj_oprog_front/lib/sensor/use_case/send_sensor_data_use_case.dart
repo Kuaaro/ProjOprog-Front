@@ -3,11 +3,11 @@ import 'package:proj_oprog_front/sensor/dto/send_data_request.dart';
 import 'package:proj_oprog_front/sensor/presenter/isend_sensor_data_presenter.dart';
 import 'package:proj_oprog_front/sensor/use_case/isend_sensor_data.dart';
 
-class SendSensorData implements ISendSensorData {
+class SendSensorDataUseCase implements ISendSensorData {
   final ISendSensorDataPresenter presenter;
   final ISensor businessLogic;
 
-  SendSensorData(this.presenter, this.businessLogic);
+  SendSensorDataUseCase(this.presenter, this.businessLogic);
 
   @override
   void sendSensorData(SendDataRequest request, int dataIndex) async {

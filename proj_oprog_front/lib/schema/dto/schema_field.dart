@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 enum SchemaFieldType {
-  int('integer'),
-  float('number'),
-  string('string'),
-  date('string');
+  int('integer', 'integer'),
+  float('number', 'float'),
+  string('string', 'string'),
+  date('string', 'date');
 
   final String value;
-  const SchemaFieldType(this.value);
+  final String displayName;
+  const SchemaFieldType(this.value, this.displayName);
 
   static SchemaFieldType fromString(String value) {
     return SchemaFieldType.values.firstWhere(

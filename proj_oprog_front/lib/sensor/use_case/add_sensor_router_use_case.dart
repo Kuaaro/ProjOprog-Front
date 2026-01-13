@@ -3,11 +3,11 @@ import 'package:proj_oprog_front/sensor/dto/create_sensor_router_request.dart';
 import 'package:proj_oprog_front/sensor/presenter/iadd_sensor_router_presenter.dart';
 import 'package:proj_oprog_front/sensor/use_case/iadd_sensor_router.dart';
 
-class AddSensorRouter implements IAddSensorRouter {
+class AddSensorRouterUseCase implements IAddSensorRouter {
   final IAddSensorRouterPresenter presenter;
   final ISensor businessLogic;
 
-  AddSensorRouter(this.presenter, this.businessLogic);
+  AddSensorRouterUseCase(this.presenter, this.businessLogic);
 
   @override
   void showAddSensorRouterForm() {
@@ -19,7 +19,6 @@ class AddSensorRouter implements IAddSensorRouter {
     try {
       await businessLogic.addSensorRouter(request);
       presenter.showSuccessMessage('Sensor router added successfully');
-      presenter.closeAddSensorRouterForm();
     } catch (e) {
       presenter.showErrorMessage('Failed to add sensor router: $e');
     }

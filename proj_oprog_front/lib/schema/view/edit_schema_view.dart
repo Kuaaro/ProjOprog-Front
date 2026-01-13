@@ -148,7 +148,7 @@ class EditSchemaView extends StatelessWidget {
                                                     .map((type) =>
                                                         DropdownMenuItem(
                                                           value: type,
-                                                          child: Text(type.value),
+                                                          child: Text(type.displayName),
                                                         ))
                                                     .toList(),
                                                 onChanged: (SchemaFieldType? newValue) {
