@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 
 class SchemaFieldRow {
   final TextEditingController nameController;
-  SchemaFieldType selectedType;
+  String selectedType;
 
-  SchemaFieldRow({String name = '', SchemaFieldType type = SchemaFieldType.int})
+  SchemaFieldRow({String name = '', String type = 'int'})
     : nameController = TextEditingController(text: name),
       selectedType = type;
 

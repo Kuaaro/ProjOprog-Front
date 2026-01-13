@@ -61,25 +61,7 @@ import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
 import 'package:proj_oprog_front/dataset/presenter/pdataset.dart';
 import 'package:proj_oprog_front/dataset/idataset_view.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
-
-// Sensor registrations
-import 'package:proj_oprog_front/sensor/business_logic/sensor_service.dart';
-import 'package:proj_oprog_front/sensor/business_logic/isensor.dart';
-import 'package:proj_oprog_front/sensor/event/add_sensor_router_event_controller.dart';
-import 'package:proj_oprog_front/sensor/event/iadd_sensor_router_event_controller.dart';
-import 'package:proj_oprog_front/sensor/event/send_sensor_data_event_controller.dart';
-import 'package:proj_oprog_front/sensor/event/isend_sensor_data_event_controller.dart';
-import 'package:proj_oprog_front/sensor/presenter/add_sensor_router_presenter.dart';
-import 'package:proj_oprog_front/sensor/presenter/iadd_sensor_router_presenter.dart';
-import 'package:proj_oprog_front/sensor/presenter/send_sensor_data_presenter.dart';
-import 'package:proj_oprog_front/sensor/presenter/isend_sensor_data_presenter.dart';
-import 'package:proj_oprog_front/sensor/use_case/add_sensor_router.dart';
-import 'package:proj_oprog_front/sensor/use_case/iadd_sensor_router.dart';
-import 'package:proj_oprog_front/sensor/use_case/send_sensor_data.dart';
-import 'package:proj_oprog_front/sensor/use_case/isend_sensor_data.dart';
-import 'package:proj_oprog_front/sensor/view_model/add_sensor_router_view_model.dart';
-import 'package:proj_oprog_front/sensor/view_model/send_sensor_data_view_model.dart';
-import 'package:proj_oprog_front/sensor/view/mock_sensor_ui.dart';
+import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 
 final locator = GetIt.instance;
 
@@ -237,50 +219,5 @@ void setupServiceLocator() {
       locator<IDatasetUseCase>(),
       locator<DatasetEditViewModel>(),
     ),
-  );
-
-  // Sensor registrations
-  locator.registerSingleton<ISensor>(SensorService());
-  locator.registerSingleton<AddSensorRouterViewModel>(AddSensorRouterViewModel());
-  locator.registerSingleton<SendSensorDataViewModel>(SendSensorDataViewModel());
-
-  locator.registerLazySingleton<IAddSensorRouterPresenter>(
-    () => AddSensorRouterPresenter(
-      locator<GoRouter>(),
-      locator<AddSensorRouterViewModel>(),
-    ),
-  );
-
-  locator.registerLazySingleton<ISendSensorDataPresenter>(
-    () => SendSensorDataPresenter(locator<SendSensorDataViewModel>()),
-  );
-
-  locator.registerLazySingleton<IAddSensorRouter>(
-    () => AddSensorRouter(
-      locator<IAddSensorRouterPresenter>(),
-      locator<ISensor>(),
-    ),
-  );
-
-  locator.registerLazySingleton<ISendSensorData>(
-    () => SendSensorData(
-      locator<ISendSensorDataPresenter>(),
-      locator<ISensor>(),
-    ),
-  );
-
-  locator.registerLazySingleton<IAddSensorRouterEventController>(
-    () => AddSensorRouterEventController(
-      locator<IAddSensorRouter>(),
-      locator<AddSensorRouterViewModel>(),
-    ),
-  );
-
-  locator.registerLazySingleton<ISendSensorDataEventController>(
-    () => SendSensorDataEventController(locator<ISendSensorData>()),
-  );
-
-  locator.registerLazySingleton<MockSensorUI>(
-    () => MockSensorUI(),
   );
 }
