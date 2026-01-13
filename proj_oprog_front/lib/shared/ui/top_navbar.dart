@@ -37,6 +37,7 @@ class TopNavBar extends StatelessWidget {
           ),
           _navButton(context, 'Metadata', () => context.go('/metadata')),
           _navButton(context, 'Schema', () => context.go('/schema')),
+          _navButton(context, 'Mock Sensor', () => context.go('/sensor/mock')),
         ],
       ),
     );
