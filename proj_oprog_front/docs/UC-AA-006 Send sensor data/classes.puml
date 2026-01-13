@@ -1,0 +1,82 @@
+@startuml
+title Send Sensor Data Feature
+
+'--- STYLE CONFIGURATION ---
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<ViewModel>> #D0F0F5
+    BackgroundColor<<Controller>> #FFAB91
+    BackgroundColor<<UseCase>> #FEFECD
+    BackgroundColor<<Presenter>> #90EE90
+    BackgroundColor<<Service>> #FAFAD2
+    BackgroundColor<<DTO>> #D3D3D3
+}
+
+class MockSensorUI <<View>> {
+  +build(): Widget
+}
+
+class SendSensorDataViewModel <<ViewModel>> {
+  +message: String
+  +isError: bool
+  +dispose(): void
+  +setMessage(String, bool): void
+}
+
+class SendSensorDataEventController <<Controller>> {
+  +onSendDataPressed(SendDataRequest, int): void
+}
+
+interface ISendSensorData <<UseCase>> {
+  +sendSensorData(SendDataRequest, int): void
+}
+
+class SendSensorDataUseCase <<UseCase>> {
+  +sendSensorData(SendDataRequest, int): void
+}
+
+ISendSensorData <|.. SendSensorDataUseCase
+
+interface ISendSensorDataPresenter <<Presenter>> {
+  +showSuccessMessage(String): void
+  +showErrorMessage(String): void
+}
+
+class SendSensorDataPresenter <<Presenter>> {
+  +showSuccessMessage(String): void
+  +showErrorMessage(String): void
+}
+
+ISendSensorDataPresenter <|.. SendSensorDataPresenter
+
+interface ISensor <<Service>> {
+  +sendSensorData(SendDataRequest): Future<void>
+}
+
+class SensorService <<Service>> {
+  +sendSensorData(SendDataRequest): Future<void>
+}
+
+ISensor <|.. SensorService
+
+class SendDataRequest <<DTO>> {
+  +sensorId: int
+  +data: String
+}
+
+MockSensorUI ..> SendSensorDataEventController
+MockSensorUI ..> SendSensorDataViewModel
+
+SendSensorDataViewModel ..> SendDataRequest
+
+SendSensorDataEventController ..> ISendSensorData
+SendSensorDataEventController ..> SendSensorDataViewModel
+
+SendSensorDataUseCase ..> ISensor
+SendSensorDataUseCase ..> ISendSensorDataPresenter
+
+SendSensorDataPresenter ..> SendSensorDataViewModel
+
+SensorService ..> SendDataRequest
+
+@enduml

@@ -4,6 +4,8 @@ import 'package:proj_oprog_front/sensor/dto/create_sensor_router_request.dart';
 import 'package:proj_oprog_front/sensor/dto/send_data_request.dart';
 import 'package:proj_oprog_front/sensor/event/iadd_sensor_router_event_controller.dart';
 import 'package:proj_oprog_front/sensor/event/isend_sensor_data_event_controller.dart';
+import 'package:proj_oprog_front/sensor/view_model/add_sensor_router_view_model.dart';
+import 'package:proj_oprog_front/sensor/view_model/send_sensor_data_view_model.dart';
 
 class MockSensorUI extends StatelessWidget {
   const MockSensorUI({Key? key}) : super(key: key);
@@ -20,6 +22,8 @@ class MockSensorUI extends StatelessWidget {
               'Mock Sensor Control Panel',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 16),
+            _buildStatusPanel(),
             const SizedBox(height: 32),
             _buildAddSensorsSection(context),
             const SizedBox(height: 32),
@@ -27,6 +31,91 @@ class MockSensorUI extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStatusPanel() {
+    return Column(
+      children: [
+        AnimatedBuilder(
+          animation: locator<AddSensorRouterViewModel>(),
+          builder: (context, child) {
+            final viewModel = locator<AddSensorRouterViewModel>();
+            if (viewModel.message == null || viewModel.message!.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: viewModel.isError ? Colors.red.shade50 : Colors.green.shade50,
+                border: Border.all(
+                  color: viewModel.isError ? Colors.red : Colors.green,
+                  width: 1.5,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    viewModel.isError ? Icons.error : Icons.check_circle,
+                    color: viewModel.isError ? Colors.red : Colors.green,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      viewModel.message!,
+                      style: TextStyle(
+                        color: viewModel.isError ? Colors.red : Colors.green,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+        AnimatedBuilder(
+          animation: locator<SendSensorDataViewModel>(),
+          builder: (context, child) {
+            final viewModel = locator<SendSensorDataViewModel>();
+            if (viewModel.message == null || viewModel.message!.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return Container(
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: viewModel.isError ? Colors.red.shade50 : Colors.green.shade50,
+                border: Border.all(
+                  color: viewModel.isError ? Colors.red : Colors.green,
+                  width: 1.5,
+                ),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    viewModel.isError ? Icons.error : Icons.check_circle,
+                    color: viewModel.isError ? Colors.red : Colors.green,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      viewModel.message!,
+                      style: TextStyle(
+                        color: viewModel.isError ? Colors.red : Colors.green,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 

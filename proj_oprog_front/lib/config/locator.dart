@@ -73,9 +73,9 @@ import 'package:proj_oprog_front/sensor/presenter/add_sensor_router_presenter.da
 import 'package:proj_oprog_front/sensor/presenter/iadd_sensor_router_presenter.dart';
 import 'package:proj_oprog_front/sensor/presenter/send_sensor_data_presenter.dart';
 import 'package:proj_oprog_front/sensor/presenter/isend_sensor_data_presenter.dart';
-import 'package:proj_oprog_front/sensor/use_case/add_sensor_router.dart';
+import 'package:proj_oprog_front/sensor/use_case/add_sensor_router_use_case.dart';
 import 'package:proj_oprog_front/sensor/use_case/iadd_sensor_router.dart';
-import 'package:proj_oprog_front/sensor/use_case/send_sensor_data.dart';
+import 'package:proj_oprog_front/sensor/use_case/send_sensor_data_use_case.dart';
 import 'package:proj_oprog_front/sensor/use_case/isend_sensor_data.dart';
 import 'package:proj_oprog_front/sensor/view_model/add_sensor_router_view_model.dart';
 import 'package:proj_oprog_front/sensor/view_model/send_sensor_data_view_model.dart';
@@ -256,14 +256,14 @@ void setupServiceLocator() {
   );
 
   locator.registerLazySingleton<IAddSensorRouter>(
-    () => AddSensorRouter(
+    () => AddSensorRouterUseCase(
       locator<IAddSensorRouterPresenter>(),
       locator<ISensor>(),
     ),
   );
 
   locator.registerLazySingleton<ISendSensorData>(
-    () => SendSensorData(
+    () => SendSensorDataUseCase(
       locator<ISendSensorDataPresenter>(),
       locator<ISensor>(),
     ),
