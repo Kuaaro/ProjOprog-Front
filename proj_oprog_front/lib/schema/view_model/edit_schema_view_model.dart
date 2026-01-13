@@ -64,11 +64,4 @@ class EditSchemaViewModel extends ChangeNotifier {
   void setId(int id) {
     this.id = id;
   }
-
-  void updateFieldType(int index, SchemaFieldType type) {
-    if (index >= 0 && index < fieldRows.length) {
-      fieldRows[index].selectedType = type;
-      notifyListeners();
-    }
-  }
 }

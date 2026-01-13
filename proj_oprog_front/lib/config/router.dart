@@ -15,7 +15,6 @@ import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart
 import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model_adapter.dart';
 import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
-import 'package:proj_oprog_front/sensor/view/mock_sensor_ui.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
@@ -98,12 +97,6 @@ final GoRouter router = GoRouter(
             final idStr = state.pathParameters['id'];
             final id = idStr != null ? int.tryParse(idStr) : null;
             return VDatasetEdit(locator<DatasetEditViewModel>(), datasetId: id);
-          },
-        ),
-        GoRoute(
-          path: '/sensor/mock',
-          builder: (context, state) {
-            return const MockSensorUI();
           },
         ),
       ],

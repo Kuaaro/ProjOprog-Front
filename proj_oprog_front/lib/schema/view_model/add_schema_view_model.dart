@@ -47,11 +47,4 @@ class AddSchemaViewModel extends ChangeNotifier {
   void setSchema(SchemaDto schema) {
     this.schema = schema;
   }
-
-  void updateFieldType(int index, SchemaFieldType type) {
-    if (index >= 0 && index < fieldRows.length) {
-      fieldRows[index].selectedType = type;
-      notifyListeners();
-    }
-  }
 }
