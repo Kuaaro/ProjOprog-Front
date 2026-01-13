@@ -70,5 +70,21 @@ class DatasetService implements IDataset {
       throw Exception('Error updating dataset: $e');
     }
   }
+  @override
+  Future<Map<String, dynamic>> getDatasetData(int id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/data/$id'),
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body) as Map<String, dynamic>;
+      } else {
+        throw Exception('Failed to load dataset data');
+      }
+    } catch (e) {
+      throw Exception('Error fetching dataset data: $e');
+    }
+  }
 }
 

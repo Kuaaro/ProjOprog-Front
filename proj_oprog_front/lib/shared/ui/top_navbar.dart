@@ -5,9 +5,7 @@ import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
 import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 
 class TopNavBar extends StatelessWidget {
-  final IShowCatalog catalogUseCase;
-
-  const TopNavBar(this.catalogUseCase, {super.key});
+  const TopNavBar({super.key});
 
   Widget _navButton(
     BuildContext context,
@@ -26,19 +24,32 @@ class TopNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          _navButton(
-            context,
-            'Catalog',
-            () => catalogUseCase.showCatalog(null),
-          ),
-          _navButton(context, 'Metadata', () => context.go('/metadata')),
-          _navButton(context, 'Schema', () => context.go('/schema')),
-        ],
-      ),
+    return Row(
+      children: [
+         
+        _navButton(
+          context,
+          'Catalog',
+          () => GetIt.instance<IShowCatalog>().showCatalog(null),
+        ),
+        _navButton(context, 'Metadata', () => context.go('/metadata')),
+        _navButton(context, 'Schema', () => context.go('/schema')),
+
+        const Spacer(),
+
+         
+        FilledButton.icon(
+          onPressed: () {},  
+          icon: const Icon(Icons.admin_panel_settings),
+          label: const Text('Manager'),
+        ),
+        const SizedBox(width: 8),
+        TextButton.icon(
+          onPressed: () => context.go('/user/catalog'),
+          icon: const Icon(Icons.person),
+          label: const Text('User'),
+        ),
+      ],
     );
   }
 }
