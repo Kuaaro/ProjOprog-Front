@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/feedback/dto/dataset_comment_dto.dart';
+import 'package:proj_oprog_front/feedback/dto/create_user_feedback_dto.dart';
 import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
 
 class DatasetCommentDialog extends StatefulWidget {
@@ -15,11 +15,13 @@ class DatasetCommentDialog extends StatefulWidget {
 class _DatasetCommentDialogState extends State<DatasetCommentDialog> {
   final _formKey = GlobalKey<FormState>();
   final _contentController = TextEditingController();
+  final _contactPointController = TextEditingController();
   bool _isLoading = false;
 
   @override
   void dispose() {
     _contentController.dispose();
+    _contactPointController.dispose();
     super.dispose();
   }
 
@@ -30,12 +32,13 @@ class _DatasetCommentDialogState extends State<DatasetCommentDialog> {
       });
 
       try {
-        final comment = DatasetCommentDto(
-          content: _contentController.text,
+        final feedback = CreateUserFeedbackDto(
+          contactPoint: _contactPointController.text,
+          message: _contentController.text,
           datasetId: widget.datasetId,
         );
 
-        await GetIt.instance<FeedbackService>().sendDatasetComment(comment);
+        await GetIt.instance<FeedbackService>().createUserFeedback(feedback);
 
         if (mounted) {
           Navigator.of(context).pop();
@@ -69,6 +72,20 @@ class _DatasetCommentDialogState extends State<DatasetCommentDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+               TextFormField(
+                controller: _contactPointController,
+                decoration: const InputDecoration(
+                  labelText: 'Contact Point (Email)',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter contact info';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _contentController,
                 decoration: const InputDecoration(

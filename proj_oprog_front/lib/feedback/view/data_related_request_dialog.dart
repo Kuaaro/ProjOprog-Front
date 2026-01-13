@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/feedback/dto/data_related_request_dto.dart';
+import 'package:proj_oprog_front/feedback/dto/create_user_feedback_dto.dart';
 import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
 
 class DataRelatedRequestDialog extends StatefulWidget {
@@ -16,12 +16,14 @@ class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _contactPointController = TextEditingController();
   bool _isLoading = false;
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _contactPointController.dispose();
     super.dispose();
   }
 
@@ -32,13 +34,13 @@ class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
       });
 
       try {
-        final request = DataRelatedRequestDto(
-          title: _titleController.text,
-          description: _descriptionController.text,
-          datasetId: widget.datasetId,
+        final feedback = CreateUserFeedbackDto(
+          contactPoint: _contactPointController.text,
+          message: 'Title: ${_titleController.text}\nDescription: ${_descriptionController.text}',
+          datasetId: 0, // 0 For Data Request
         );
 
-        await GetIt.instance<FeedbackService>().sendDataRelatedRequest(request);
+        await GetIt.instance<FeedbackService>().createUserFeedback(feedback);
 
         if (mounted) {
           Navigator.of(context).pop();
@@ -72,6 +74,20 @@ class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+               TextFormField(
+                controller: _contactPointController,
+                decoration: const InputDecoration(
+                  labelText: 'Contact Point (Email)',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter contact info';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
