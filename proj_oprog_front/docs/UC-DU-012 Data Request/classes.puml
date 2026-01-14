@@ -1,0 +1,87 @@
+@startuml
+title UC-DU-012 Data Request
+
+'--- STYLE CONFIGURATION ---
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<ViewModel>> #D0F0F5
+    BackgroundColor<<Controller>> #FFAB91
+    BackgroundColor<<UseCase>> #FEFECD
+    BackgroundColor<<Presenter>> #90EE90
+    BackgroundColor<<Service>> #FAFAD2
+    BackgroundColor<<DTO>> #D3D3D3
+}
+
+'--- VIEWS ---
+class UserCatalogView <<View>> {
+  +viewModel: ShowCatalogViewModel
+  +build(BuildContext): Widget
+}
+
+class DataRelatedRequestDialog <<View>> {
+  +datasetId: int?
+  +build(BuildContext): Widget
+}
+
+class ShowCatalogView <<View>> {
+  +viewModel: ShowCatalogViewModel
+  +build(BuildContext): Widget
+}
+
+class FeedbackListDialog <<View>> {
+  +datasetId: int
+  +build(BuildContext): Widget
+}
+
+class FeedbackDetailsDialog <<View>> {
+  +feedbackId: int
+  +build(BuildContext): Widget
+}
+
+'--- SERVICE ---
+class FeedbackService <<Service>> {
+  +createUserFeedback(CreateUserFeedbackDto): Future<void>
+  +getUserFeedbackList(int datasetId): Future<List<NamedIdPair>>
+  +getUserFeedbackDetails(int userFeedbackId): Future<UserFeedbackDetailsDto>
+  +deleteUserFeedback(int userFeedbackId): Future<void>
+}
+
+'--- DTOs ---
+class CreateUserFeedbackDto <<DTO>> {
+  +contactPoint: String
+  +message: String
+  +datasetId: int
+}
+
+class NamedIdPair <<DTO>> {
+  +id: int
+  +name: String
+}
+
+class UserFeedbackDetailsDto <<DTO>> {
+  +userFeedbackId: int
+  +contactPoint: String
+  +message: String
+  +datasetId: int
+}
+
+'--- RELATIONSHIPS ---
+' Requesting Data (User Side)
+UserCatalogView ..> DataRelatedRequestDialog : opens >
+DataRelatedRequestDialog ..> FeedbackService : uses >
+DataRelatedRequestDialog ..> CreateUserFeedbackDto : creates >
+
+' Viewing Requests (Manager Side)
+ShowCatalogView ..> FeedbackListDialog : opens (for requests) >
+FeedbackListDialog ..> FeedbackDetailsDialog : opens >
+FeedbackListDialog ..> FeedbackService : uses >
+FeedbackDetailsDialog ..> FeedbackService : uses >
+
+FeedbackService ..> CreateUserFeedbackDto
+FeedbackService ..> NamedIdPair
+FeedbackService ..> UserFeedbackDetailsDto
+
+FeedbackListDialog ..> NamedIdPair : reads >
+FeedbackDetailsDialog ..> UserFeedbackDetailsDto : reads >
+
+@enduml

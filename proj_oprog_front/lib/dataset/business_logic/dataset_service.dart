@@ -71,14 +71,14 @@ class DatasetService implements IDataset {
     }
   }
   @override
-  Future<Map<String, dynamic>> getDatasetData(int id) async {
+  Future<List<dynamic>> getDatasetData(int id) async {  
     try {
       final response = await http.get(
-        Uri.parse('$baseUrl/data/$id'),
+        Uri.parse('$baseUrl/datasets/data/$id'),
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body) as Map<String, dynamic>;
+        return jsonDecode(response.body) as List<dynamic>; 
       } else {
         throw Exception('Failed to load dataset data');
       }
