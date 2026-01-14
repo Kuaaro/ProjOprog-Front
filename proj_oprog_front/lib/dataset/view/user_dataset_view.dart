@@ -4,8 +4,11 @@ import 'package:proj_oprog_front/dataset/business_logic/idataset.dart';
 import 'package:proj_oprog_front/dataset/dto/dataset_dto.dart';
 import 'package:proj_oprog_front/feedback/view/dataset_comment_dialog.dart';
 import 'package:go_router/go_router.dart';
+<<<<<<< HEAD
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
+=======
+>>>>>>> d979ac66ad159440f5975816229dbaef9a38f607
 
 class UserDatasetView extends StatefulWidget {
   final int datasetId;
@@ -37,13 +40,25 @@ class _UserDatasetViewState extends State<UserDatasetView> {
     try {
       final datasetService = GetIt.instance<IDataset>();
       
+<<<<<<< HEAD
       final dataset = await datasetService.getDataset(widget.datasetId);
       
       List<dynamic>? data;
+=======
+       
+      final dataset = await datasetService.getDataset(widget.datasetId);
+      
+       
+      Map<String, dynamic>? data;
+>>>>>>> d979ac66ad159440f5975816229dbaef9a38f607
       try {
         final result = await datasetService.getDatasetData(widget.datasetId);
         data = result as List<dynamic>;
       } catch (e) {
+<<<<<<< HEAD
+=======
+       
+>>>>>>> d979ac66ad159440f5975816229dbaef9a38f607
         debugPrint('Error fetching data: $e');
       }
 

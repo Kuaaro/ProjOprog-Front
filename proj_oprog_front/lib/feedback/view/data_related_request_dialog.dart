@@ -14,15 +14,13 @@ class DataRelatedRequestDialog extends StatefulWidget {
 
 class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
+  final _contentController = TextEditingController();
   final _contactPointController = TextEditingController();
   bool _isLoading = false;
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
+    _contentController.dispose();
     _contactPointController.dispose();
     super.dispose();
   }
@@ -36,8 +34,8 @@ class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
       try {
         final feedback = CreateUserFeedbackDto(
           contactPoint: _contactPointController.text,
-          message: 'Title: ${_titleController.text}\nDescription: ${_descriptionController.text}',
-          datasetId: 0, // 0 For Data Request
+          message: _contentController.text,
+          datasetId: 0,
         );
 
         await GetIt.instance<FeedbackService>().createUserFeedback(feedback);
@@ -89,29 +87,15 @@ class _DataRelatedRequestDialogState extends State<DataRelatedRequestDialog> {
               ),
               const SizedBox(height: 16),
               TextFormField(
-                controller: _titleController,
+                controller: _contentController,
                 decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
+                  labelText: 'Request Content',
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 4,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter the request details';
                   }
                   return null;
                 },
