@@ -61,6 +61,8 @@ import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
 import 'package:proj_oprog_front/dataset/presenter/pdataset.dart';
 import 'package:proj_oprog_front/dataset/idataset_view.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
+import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
+import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
 
 // Sensor registrations
 import 'package:proj_oprog_front/sensor/business_logic/sensor_service.dart';
@@ -90,6 +92,7 @@ void setupServiceLocator() {
     CreateCatalogViewModel(parentId: 0),
   );
   locator.registerSingleton<VMetadata>(VMetadata());
+  locator.registerSingleton<FeedbackService>(FeedbackService());
   locator.registerSingleton<GoRouter>(router);
 
   locator.registerLazySingleton<ShowCatalogViewModelAdapter>(
@@ -132,7 +135,7 @@ void setupServiceLocator() {
     () => ShowCatalogEventController(locator<IShowCatalog>()),
   );
 
-  locator.registerSingleton<TopNavBar>(TopNavBar(locator<IShowCatalog>()));
+
 
   locator.registerLazySingleton<ICreateCatalogEventController>(
     () => CreateCatalogEventController(

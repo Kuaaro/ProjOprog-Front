@@ -36,8 +36,14 @@ class ShowCatalogPresenter implements IShowCatalogPresenter {
   void redirectIfNeeded() {
     final currentLocation = router.routerDelegate.currentConfiguration.uri.path;
 
-    if (currentLocation != '/catalog') {
-      router.go('/catalog');
+    if (currentLocation.startsWith('/user')) {
+      if (currentLocation != '/user/catalog') {
+        router.go('/user/catalog');
+      }
+    } else {
+      if (currentLocation != '/catalog') {
+        router.go('/catalog');
+      }
     }
   }
 }

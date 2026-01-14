@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/catalog/view/create_catalog_view.dart';
 import 'package:proj_oprog_front/catalog/view_model/create_catalog_view_model.dart';
 import 'package:proj_oprog_front/config/locator.dart';
-import 'package:proj_oprog_front/home_view.dart';
 import 'package:proj_oprog_front/metadata/view/vmetadata.dart';
 import 'package:proj_oprog_front/schema/view/add_schema_view.dart';
 import 'package:proj_oprog_front/schema/view/edit_schema_view.dart';
@@ -14,7 +13,11 @@ import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
 import 'package:proj_oprog_front/schema/use_case/ishow_schema_list_uc.dart';
 import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model_adapter.dart';
+import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model.dart';
 import 'package:proj_oprog_front/catalog/use_case/ishow_catalog.dart';
+import 'package:proj_oprog_front/catalog/view/user_catalog_view.dart';
+import 'package:proj_oprog_front/dataset/view/user_dataset_view.dart';
+import 'package:proj_oprog_front/shared/ui/user_top_navbar.dart';
 import 'package:proj_oprog_front/sensor/view/mock_sensor_ui.dart';
 
 final GoRouter router = GoRouter(
@@ -25,13 +28,16 @@ final GoRouter router = GoRouter(
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: locator<TopNavBar>(),
+            title: const TopNavBar(),
           ),
           body: child,
         );
       },
       routes: [
-        GoRoute(path: '/', builder: (context, state) => HomeView()),
+        GoRoute(
+          path: '/',
+          redirect: (context, state) => '/user/catalog',
+        ),
         GoRoute(
           path: '/catalog',
           builder: (context, state) {
@@ -104,6 +110,41 @@ final GoRouter router = GoRouter(
           path: '/sensor/mock',
           builder: (context, state) {
             return const MockSensorUI();
+          },
+        ),
+      ],
+    ),
+    ShellRoute(
+      builder: (context, state, child) {
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            title: const UserTopNavbar(),
+          ),
+          body: child,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '/user/catalog',
+          builder: (context, state) {
+            final adapter = locator<ShowCatalogViewModelAdapter>();
+            final currentStack = adapter.getPath();
+            final currentCatalog = currentStack.isNotEmpty
+                ? currentStack.last
+                : null;
+
+            locator<IShowCatalog>().showCatalog(currentCatalog);
+
+            return UserCatalogView(locator<ShowCatalogViewModel>());
+          },
+        ),
+        GoRoute(
+          path: '/user/datasets/:id',
+          builder: (context, state) {
+            final idStr = state.pathParameters['id'];
+            final id = idStr != null ? int.tryParse(idStr) : 0;
+            return UserDatasetView(datasetId: id ?? 0);
           },
         ),
       ],
