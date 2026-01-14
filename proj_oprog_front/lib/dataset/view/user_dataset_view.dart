@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/dataset/business_logic/idataset.dart';
 import 'package:proj_oprog_front/dataset/dto/dataset_dto.dart';
 import 'package:proj_oprog_front/feedback/view/dataset_comment_dialog.dart';
+import 'package:go_router/go_router.dart';
 
 class UserDatasetView extends StatefulWidget {
   final int datasetId;
@@ -34,15 +35,15 @@ class _UserDatasetViewState extends State<UserDatasetView> {
     try {
       final datasetService = GetIt.instance<IDataset>();
       
-      // Load dataset metadata
+       
       final dataset = await datasetService.getDataset(widget.datasetId);
       
-      // Load dataset data
+       
       Map<String, dynamic>? data;
       try {
         data = await datasetService.getDatasetData(widget.datasetId);
       } catch (e) {
-        // Data might not be available or error fetching data, but we still show metadata
+       
         debugPrint('Error fetching data: $e');
       }
 
@@ -87,6 +88,10 @@ class _UserDatasetViewState extends State<UserDatasetView> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/user/catalog'),
+        ),
         title: Text(_dataset!.name),
         actions: [
           IconButton(
