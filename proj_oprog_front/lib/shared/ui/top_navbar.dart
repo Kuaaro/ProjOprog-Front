@@ -29,7 +29,7 @@ class TopNavBar extends StatelessWidget {
       child: Row(
         children: [
 			_navButton(context, 'Catalog',() => GetIt.instance<IShowCatalog>().showCatalog(null),),
-			_navButton(context, 'Catalog',() => catalogUseCase.showCatalog(null),),
+			//_navButton(context, 'Catalog',() => catalogUseCase.showCatalog(null),),
 			_navButton(context, 'Metadata', () => context.go('/metadata')),
 			_navButton(context, 'Schema', () => context.go('/schema')),
 			_navButton(context, 'Mock Sensor', () => context.go('/sensor/mock')),
