@@ -1,0 +1,54 @@
+@startuml
+title Send Sensor Data Sequence
+autonumber
+
+actor User
+
+box "View Layer" #LightBlue
+    participant "MockSensorUI" as View
+    participant "SendSensorDataViewModel" as VM #eec590ff
+    participant "SendSensorDataEventController" as Controller
+    participant "SendSensorDataPresenter" as Presenter
+end box
+
+box "App Logic" #FEFECD
+    participant "SendSensorData" as UC
+end box
+
+box "Data Layer" #FAFAD2
+    participant "SensorService" as Service
+end box
+
+
+User -> View : onPressed()
+activate View
+
+View -> Controller : onSendDataPressed(SendDataRequest, int)
+activate Controller
+
+Controller -> UC : sendSensorData(SendDataRequest, int)
+activate UC
+
+    UC -> Service : sendSensorData(SendDataRequest)
+    activate Service
+    Service --> UC : void
+    deactivate Service
+
+UC -> Presenter : showSuccessMessage(String)
+activate Presenter
+
+    Presenter -> VM : setMessage(String, bool)
+    activate VM
+    VM --> Presenter : void
+    deactivate VM
+    
+    Presenter -> View : notifyListeners()
+    deactivate Presenter
+
+View -> View : build()
+deactivate View
+
+deactivate UC
+deactivate Controller
+
+@enduml

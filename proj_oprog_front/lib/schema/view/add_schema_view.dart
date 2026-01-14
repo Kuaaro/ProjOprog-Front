@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proj_oprog_front/schema/event/add_schema_controller.dart';
 import 'package:proj_oprog_front/schema/view_model/add_schema_view_model.dart';
+import 'package:proj_oprog_front/schema/dto/schema_field.dart';
 
 class AddSchemaView extends StatelessWidget {
   final AddSchemaController controller;
@@ -137,34 +138,22 @@ class AddSchemaView extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child:
-                                              DropdownButtonFormField<String>(
+                                              DropdownButtonFormField<SchemaFieldType>(
                                                 value: row.selectedType,
                                                 decoration:
                                                     const InputDecoration(
                                                       labelText: 'Type',
                                                     ),
-                                                items: const [
-                                                  DropdownMenuItem(
-                                                    value: 'int',
-                                                    child: Text('int'),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: 'float',
-                                                    child: Text('float'),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: 'string',
-                                                    child: Text('string'),
-                                                  ),
-                                                  DropdownMenuItem(
-                                                    value: 'date',
-                                                    child: Text('date'),
-                                                  ),
-                                                ],
-                                                onChanged: (String? newValue) {
+                                                items: SchemaFieldType.values
+                                                    .map((type) =>
+                                                        DropdownMenuItem(
+                                                          value: type,
+                                                          child: Text(type.displayName),
+                                                        ))
+                                                    .toList(),
+                                                onChanged: (SchemaFieldType? newValue) {
                                                   if (newValue != null) {
-                                                    row.selectedType = newValue;
-                                                    viewModel.notifyListeners();
+                                                    viewModel.updateFieldType(index, newValue);
                                                   }
                                                 },
                                               ),

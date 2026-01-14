@@ -1,0 +1,54 @@
+@startuml
+title Add Sensor Router Sequence
+autonumber
+
+actor User
+
+box "View Layer" #LightBlue
+    participant "MockSensorUI" as View
+    participant "AddSensorRouterViewModel" as VM
+    participant "AddSensorRouterEventController" as Controller
+    participant "AddSensorRouterPresenter" as Presenter
+end box
+
+box "App Logic" #FEFECD
+    participant "AddSensorRouter" as UC
+end box
+
+box "Data Layer" #FAFAD2
+    participant "SensorService" as Service
+end box
+
+
+User -> View : onPressed()
+activate View
+
+View -> Controller : onConfirmAddSensorRouter(CreateSensorRouterRequest)
+activate Controller
+
+Controller -> UC : addSensorRouter(CreateSensorRouterRequest)
+activate UC
+
+    UC -> Service : createSensorRouter(CreateSensorRouterRequest)
+    activate Service
+    Service --> UC : void
+    deactivate Service
+
+UC -> Presenter : showSuccessMessage(String)
+activate Presenter
+
+    Presenter -> VM : setMessage(String, bool)
+    activate VM
+    VM --> Presenter : void
+    deactivate VM
+    
+    Presenter -> View : notifyListeners()
+    deactivate Presenter
+
+View -> View : build()
+deactivate View
+
+deactivate UC
+deactivate Controller
+
+@enduml
