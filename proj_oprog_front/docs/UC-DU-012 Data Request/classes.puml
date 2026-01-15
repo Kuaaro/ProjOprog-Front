@@ -38,7 +38,11 @@ class FeedbackDetailsDialog <<View>> {
   +build(BuildContext): Widget
 }
 
-'--- SERVICE ---
+'--- USE CASE & SERVICE ---
+class FeedbackUseCase <<UseCase>> {
+  +createUserFeedback(CreateUserFeedbackDto): Future<void>
+}
+
 class FeedbackService <<Service>> {
   +createUserFeedback(CreateUserFeedbackDto): Future<void>
   +getUserFeedbackList(int datasetId): Future<List<NamedIdPair>>
@@ -66,16 +70,18 @@ class UserFeedbackDetailsDto <<DTO>> {
 }
 
 '--- RELATIONSHIPS ---
-' Requesting Data (User Side)
+' Requesting Data (User Side, UC-DU-012)
 UserCatalogView ..> DataRelatedRequestDialog : opens >
-DataRelatedRequestDialog ..> FeedbackService : uses >
+DataRelatedRequestDialog ..> FeedbackUseCase : uses >
+FeedbackUseCase ..> FeedbackService : uses >
 DataRelatedRequestDialog ..> CreateUserFeedbackDto : creates >
 
-' Viewing Requests (Manager Side)
+' Viewing Requests (Manager Side, UC-DU-011)
 ShowCatalogView ..> FeedbackListDialog : opens (for requests) >
 FeedbackListDialog ..> FeedbackDetailsDialog : opens >
-FeedbackListDialog ..> FeedbackService : uses >
-FeedbackDetailsDialog ..> FeedbackService : uses >
+FeedbackListDialog ..> FeedbackUseCase : uses >
+FeedbackDetailsDialog ..> FeedbackUseCase : uses >
+FeedbackUseCase ..> FeedbackService
 
 FeedbackService ..> CreateUserFeedbackDto
 FeedbackService ..> NamedIdPair

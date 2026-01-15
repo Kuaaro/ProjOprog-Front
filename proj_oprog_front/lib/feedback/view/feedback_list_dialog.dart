@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
+import 'package:proj_oprog_front/feedback/use_case/ifeedback_uc.dart';
 import 'package:proj_oprog_front/feedback/view/feedback_details_dialog.dart';
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
 
@@ -24,7 +24,7 @@ class _FeedbackListDialogState extends State<FeedbackListDialog> {
 
   void _loadFeedback() {
     _feedbackListFuture =
-        GetIt.instance<FeedbackService>().getUserFeedbackList(widget.datasetId);
+        GetIt.instance<IFeedbackUseCase>().getUserFeedbackList(widget.datasetId);
   }
 
   @override
