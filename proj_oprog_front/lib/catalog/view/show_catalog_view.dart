@@ -6,7 +6,6 @@ import 'package:proj_oprog_front/catalog/event/icreate_catalog_event_controller.
 import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/shared/dtos/named_id_pair.dart';
-import 'package:proj_oprog_front/feedback/view/feedback_list_dialog.dart';
 
 class ShowCatalogView extends StatelessWidget {
   final ShowCatalogViewModel viewModel;
@@ -59,17 +58,6 @@ class ShowCatalogView extends StatelessWidget {
                     },
                     icon: const Icon(Icons.add_circle),
                     label: const Text('New Dataset'),
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => const FeedbackListDialog(datasetId: 0),
-                      );
-                    },
-                    icon: const Icon(Icons.question_answer),
-                    label: const Text('Requests'),
                   ),
                   const SizedBox(width: 16),
                   // Back-button

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:proj_oprog_front/dataset/dto/distribution_dto.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
-import 'package:proj_oprog_front/feedback/view/feedback_list_dialog.dart';
 
 class VDatasetEdit extends StatefulWidget {
   final DatasetEditViewModel viewModel;
@@ -145,23 +144,7 @@ class _VDatasetEditState extends State<VDatasetEdit> {
                 const SizedBox(height: 16),
                 _buildDistributionsField(context),
                 const SizedBox(height: 16),
-                const SizedBox(height: 16),
                  _buildSchemaDropdown(context),
-                if (!isCreating) ...[
-                  const SizedBox(height: 24),
-                  OutlinedButton.icon(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => FeedbackListDialog(
-                          datasetId: dataset.id,
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.people),
-                    label: const Text('View User Feedback'),
-                  ),
-                ],
                 const SizedBox(height: 24),
                 Row(
                   children: [
