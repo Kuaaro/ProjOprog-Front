@@ -1,0 +1,104 @@
+@startuml
+title Show Dataset Preview Feature
+
+'--- STYLE CONFIGURATION ---
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<ViewModel>> #D0F0F5
+    BackgroundColor<<EventController>> #FFAB91
+    BackgroundColor<<UseCase>> #FEFECD
+    BackgroundColor<<Presenter>> #90EE90
+    BackgroundColor<<Service>> #FAFAD2
+    BackgroundColor<<DTO>> #D3D3D3
+}
+
+'--- VIEW LAYER ---
+class UserDatasetView <<View>> {
+    + build(context): Widget
+    - _buildDataTable(data): Widget
+}
+
+class DatasetPreviewViewModel <<ViewModel>> {
+    + dataset: DatasetDto?
+    + previewData: List<dynamic>?
+    + isLoading: bool
+    + errorMessage: String?
+    + setDataset(DatasetDto): void
+    + setPreviewData(List<dynamic>): void
+    + setLoading(bool): void
+    + setError(String): void
+    + clear(): void
+}
+
+'--- CONTROLLER LAYER ---
+class DatasetEventController <<EventController>> {
+    + onPreviewDataset(int id): void
+}
+
+'--- USE CASE LAYER ---
+interface IDatasetUseCase <<UseCase>> {
+    + showDatasetPreviewUC(int id): void
+}
+
+class DatasetUseCase <<UseCase>> {
+    + showDatasetPreviewUC(int id): void
+}
+
+IDatasetUseCase <|.. DatasetUseCase
+
+'--- PRESENTER LAYER ---
+interface IDatasetView <<Presenter>> {
+    + showDatasetPreview(DatasetDto, List<dynamic>): void
+    + showError(String): void
+}
+
+class PDataset <<Presenter>> {
+    + showDatasetPreview(DatasetDto, List<dynamic>): void
+    + showError(String): void
+}
+
+IDatasetView <|.. PDataset
+
+'--- SERVICE LAYER ---
+interface IDataset <<Service>> {
+    + getDataset(id): Future<DatasetDto>
+    + getDatasetData(id): Future<List<dynamic>>
+}
+
+class DatasetService <<Service>> {
+    + getDataset(id): Future<DatasetDto>
+    + getDatasetData(id): Future<List<dynamic>>
+}
+
+IDataset <|.. DatasetService
+
+'--- DTO LAYER ---
+class DatasetDto <<DTO>> {
+    + id: int
+    + name: String
+    + desc: String
+    + distributions: List<DistributionDto>
+}
+
+'--- RELATIONSHIPS ---
+
+' View -> ViewModel & Controller
+UserDatasetView ..> DatasetPreviewViewModel : observes
+UserDatasetView ..> DatasetEventController : uses
+
+' Controller -> UseCase & ViewModel
+DatasetEventController ..> IDatasetUseCase : uses
+DatasetEventController ..> DatasetPreviewViewModel : resets state
+
+' UseCase -> Service & Presenter
+DatasetUseCase ..> IDataset : uses
+DatasetUseCase ..> IDatasetView : uses
+DatasetUseCase ..> DatasetDto : fetches
+
+' Presenter -> ViewModel
+PDataset ..> DatasetPreviewViewModel : updates
+
+' Service -> DTOs
+DatasetService ..> DatasetDto
+
+@enduml
