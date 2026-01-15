@@ -1,0 +1,102 @@
+@startuml AddComment_ClassDiagram
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<Presenter>> LightGreen
+    BackgroundColor<<ViewModel>> LightCyan
+    BackgroundColor<<UseCase>> LightYellow
+    BackgroundColor<<EventController>> LightSalmon
+    BackgroundColor<<Service>> LightGoldenRodYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+together {
+    class VDatasetAddComment <<View>> {
+        + build(context): Widget
+        - _buildCommentTextField(context): Widget
+        - _buildSubmitButton(context): Widget
+    }
+}
+
+together {
+    class DatasetCommentViewModel <<ViewModel>> {
+        + datasetId: int
+        + commentContent: String
+        + isLoading: bool
+        + errorMessage: String?
+        + setDatasetId(id): void
+        + updateCommentContent(content): void
+        + clear(): void
+    }
+}
+
+together {
+    class DatasetCommentEventController <<EventController>> {
+        + onSubmitPressed(): void
+        + onCancelPressed(): void
+    }
+}
+
+together {
+    interface IDatasetCommentUseCase <<UseCase>> {
+        + addCommentUC(request): void
+    }
+
+    class DatasetCommentUseCase <<UseCase>> {
+        + addCommentUC(request): void
+    }
+}
+
+together {
+    interface IDatasetCommentView <<Presenter>> {
+        + showCommentAdded(): void
+        + showError(message): void
+    }
+
+    class PDatasetComment <<Presenter>> {
+        + showCommentAdded(): void
+        + showError(message): void
+        - router: GoRouter
+    }
+}
+
+together {
+    interface IDatasetCommentService <<Service>> {
+        + addComment(request): Future<int>
+    }
+
+    class DatasetCommentService <<Service>> {
+        + addComment(request): Future<int>
+    }
+}
+
+together {
+    class AddCommentRequest <<DTO>> {
+        + datasetId: int
+        + content: String
+        + userId: int
+        + createdAt: DateTime
+        + toJson(): Map<String, dynamic>
+    }
+}
+
+' Relationships
+VDatasetAddComment ..> DatasetCommentViewModel : observes
+VDatasetAddComment ..> DatasetCommentEventController : uses
+
+DatasetCommentEventController ..> IDatasetCommentUseCase : uses
+DatasetCommentEventController ..> DatasetCommentViewModel : reads/updates
+
+IDatasetCommentUseCase <|.. DatasetCommentUseCase : implements
+DatasetCommentUseCase ..> IDatasetCommentView : uses
+DatasetCommentUseCase ..> IDatasetCommentService : uses
+DatasetCommentUseCase ..> AddCommentRequest : creates
+
+IDatasetCommentView <|.. PDatasetComment : implements
+PDatasetComment ..> DatasetCommentViewModel : updates
+
+IDatasetCommentService <|.. DatasetCommentService : implements
+DatasetCommentService ..> AddCommentRequest : uses
+
+@enduml

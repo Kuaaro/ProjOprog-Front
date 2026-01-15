@@ -1,0 +1,52 @@
+@startuml SubmitDataRequest_Sequence
+
+actor User
+participant "VSubmitDataRequest" as View <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "DataRequestEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "IDataRequestUseCase" as IUseCase <<Interface>>
+    participant "DataRequestUseCase" as UseCase <<Implementation>>
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "IDataRequestService" as IService <<Interface>>
+    participant "DataRequestService" as Service <<Implementation>>
+end box
+
+participant "Backend API" as API
+
+box "Presenter" #LightGreen
+    participant "IDataRequestView" as IView <<Interface>>
+    participant "PDataRequest" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "DataRequestViewModel" as ViewModel
+end box
+
+participant "GoRouter" as Router
+
+User -> View: Selects Type (e.g. "New Data")\nFills Description & clicks Submit
+View -> EventCtrl: onSubmitPressed()
+EventCtrl -> ViewModel: setLoading(true)
+EventCtrl -> IUseCase: submitRequestUC()
+
+UseCase -> ViewModel: get state (type, description)
+UseCase -> UseCase: Create DataRequestDto
+
+UseCase -> IService: submitDataRequest(dto)
+IService -> Service: 
+Service -> API: POST /catalog/requests\n(Body: DataRequestDto JSON)
+API --> Service: 201 Created
+Service --> UseCase: void
+
+UseCase -> IView: showRequestSubmitted()
+IView -> Presenter: 
+Presenter -> ViewModel: clear()
+Presenter -> Router: pop()
+
+@enduml
