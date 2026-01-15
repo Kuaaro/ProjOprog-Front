@@ -6,6 +6,5 @@ abstract class IDataset {
   Future<DatasetDto> getDataset(int id);
   Future<int> createDataset(CreateDatasetRequest request);
   Future<void> modifyDataset(int id, ModifyDatasetRequest request);
-  Future<Map<String, dynamic>> getDatasetData(int id);
 }
 
