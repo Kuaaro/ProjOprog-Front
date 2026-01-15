@@ -35,6 +35,7 @@ import 'package:proj_oprog_front/catalog/view_model/show_catalog_view_model_adap
 import 'package:proj_oprog_front/schema/business_logic/idata_schema.dart';
 import 'package:proj_oprog_front/schema/business_logic/data_schema_service.dart';
 import 'package:proj_oprog_front/schema/use_case/show_schema_list_uc.dart';
+import 'package:proj_oprog_front/dataset/view_model/dataset_preview_view_model.dart';
 
 // AddSchema imports
 import 'package:proj_oprog_front/schema/view/add_schema_view.dart';
@@ -219,12 +220,18 @@ void setupServiceLocator() {
     ),
   );
 
-  //Dataset registrations
+  // Dataset registrations
   locator.registerSingleton<IDataset>(DatasetService());
   locator.registerSingleton<DatasetEditViewModel>(DatasetEditViewModel());
+  
+  locator.registerSingleton<DatasetPreviewViewModel>(DatasetPreviewViewModel());
 
   locator.registerLazySingleton<IDatasetView>(
-    () => PDataset(locator<DatasetEditViewModel>(), locator<GoRouter>()),
+    () => PDataset(
+      locator<DatasetEditViewModel>(),
+      locator<DatasetPreviewViewModel>(), 
+      locator<GoRouter>(),
+    ),
   );
 
   locator.registerLazySingleton<IDatasetUseCase>(
@@ -239,6 +246,7 @@ void setupServiceLocator() {
     () => DatasetEventController(
       locator<IDatasetUseCase>(),
       locator<DatasetEditViewModel>(),
+      locator<DatasetPreviewViewModel>(), 
     ),
   );
 

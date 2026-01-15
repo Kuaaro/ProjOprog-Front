@@ -1,39 +1,41 @@
 import 'package:proj_oprog_front/dataset/dto/create_dataset_request.dart';
 import 'package:proj_oprog_front/dataset/use_case/idataset_uc.dart';
 import 'package:proj_oprog_front/dataset/view_model/dataset_edit_view_model.dart';
+import 'package:proj_oprog_front/dataset/view_model/dataset_preview_view_model.dart';
 
 class DatasetEventController {
   final IDatasetUseCase appLogic;
-  final DatasetEditViewModel viewModel;
+  final DatasetEditViewModel editViewModel;
+  final DatasetPreviewViewModel previewViewModel;
 
-  DatasetEventController(this.appLogic, this.viewModel);
+  DatasetEventController(this.appLogic, this.editViewModel, this.previewViewModel);
 
   void onNewPressed(int? parentCatalogId) async {
-    viewModel.setLoading(false);
-    viewModel.setError(null);
+    editViewModel.setLoading(false);
+    editViewModel.setError(null);
     final schemas = await appLogic.getSchemas();
-    viewModel.setSchemas(schemas);
+    editViewModel.setSchemas(schemas);
     appLogic.showDatasetCreateUC(parentCatalogId);
   }
 
   void onDatasetPressed(int datasetId) async {
-    viewModel.setLoading(true);
-    viewModel.setError(null);
+    editViewModel.setLoading(true);
+    editViewModel.setError(null);
     final schemas = await appLogic.getSchemas();
-    viewModel.setSchemas(schemas);
+    editViewModel.setSchemas(schemas);
     appLogic.showDatasetEditUC(datasetId);
   }
 
   void onCreatePressed(int? parentCatalogId) {
-    final dataset = viewModel.dataset;
+    final dataset = editViewModel.dataset;
     
     if (dataset == null) {
-      viewModel.setError('No dataset data to create');
+      editViewModel.setError('No dataset data to create');
       return;
     }
     
-    viewModel.setLoading(true);
-    viewModel.setError(null);
+    editViewModel.setLoading(true);
+    editViewModel.setError(null);
     
     final request = CreateDatasetRequest(
       name: dataset.name,
@@ -49,20 +51,26 @@ class DatasetEventController {
   }
 
   void onSavePressed() {
-    final dataset = viewModel.dataset;
+    final dataset = editViewModel.dataset;
     
     if (dataset == null) {
-      viewModel.setError('No dataset to save');
+      editViewModel.setError('No dataset to save');
       return;
     }
     
-    viewModel.setLoading(true);
-    viewModel.setError(null);
+    editViewModel.setLoading(true);
+    editViewModel.setError(null);
     appLogic.saveDatasetUC(dataset);
   }
 
   void onCancelPressed() {
-    viewModel.clear();
+    editViewModel.clear();
+  }
+
+  void onPreviewDataset(int datasetId) {
+    previewViewModel.clear();
+    previewViewModel.setLoading(true);
+    appLogic.showDatasetPreviewUC(datasetId);
   }
 }
 

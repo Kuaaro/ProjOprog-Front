@@ -53,6 +53,19 @@ class DatasetUseCase implements IDatasetUseCase {
   }
 
   @override
+  void showDatasetPreviewUC(int datasetId) async {
+    try {
+      final dataset = await service.getDataset(datasetId);
+      
+      final data = await service.getDatasetData(datasetId);
+
+      view.showDatasetPreview(dataset, data);
+    } catch (e) {
+      view.showError('Failed to load dataset preview: $e');
+    }
+  }
+
+  @override
   Future<List<NamedIdPair>> getSchemas() async {
     try {
       final schemas = await schemaService.getSchemaList();

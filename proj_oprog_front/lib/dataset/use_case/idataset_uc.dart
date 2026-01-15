@@ -8,5 +8,6 @@ abstract class IDatasetUseCase {
   void createDatasetUC(CreateDatasetRequest request);
   void saveDatasetUC(DatasetDto dataset);
   Future<List<NamedIdPair>> getSchemas();
+  void showDatasetPreviewUC(int datasetId);
 }
 
