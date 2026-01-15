@@ -1,0 +1,102 @@
+@startuml SubmitDataRequest_ClassDiagram
+
+skinparam classAttributeIconSize 0
+skinparam class {
+    BackgroundColor<<View>> LightBlue
+    BackgroundColor<<Presenter>> LightGreen
+    BackgroundColor<<ViewModel>> LightCyan
+    BackgroundColor<<UseCase>> LightYellow
+    BackgroundColor<<EventController>> LightSalmon
+    BackgroundColor<<Service>> LightGoldenRodYellow
+    BackgroundColor<<DTO>> LightGray
+}
+
+together {
+    class VSubmitDataRequest <<View>> {
+        + build(context): Widget
+        - _buildTypeDropdown(context): Widget
+        - _buildDescriptionField(context): Widget
+        - _buildSubmitButton(context): Widget
+    }
+}
+
+together {
+    class DataRequestViewModel <<ViewModel>> {
+        + requestType: RequestType
+        + description: String
+        + isLoading: bool
+        + errorMessage: String?
+        + setRequestType(type): void
+        + updateDescription(text): void
+        + clear(): void
+    }
+}
+
+together {
+    class DataRequestEventController <<EventController>> {
+        + onSubmitPressed(): void
+        + onCancelPressed(): void
+    }
+}
+
+together {
+    interface IDataRequestUseCase <<UseCase>> {
+        + submitRequestUC(request): void
+    }
+
+    class DataRequestUseCase <<UseCase>> {
+        + submitRequestUC(request): void
+    }
+}
+
+together {
+    interface IDataRequestView <<Presenter>> {
+        + showRequestSubmitted(): void
+        + showError(message): void
+    }
+
+    class PDataRequest <<Presenter>> {
+        + showRequestSubmitted(): void
+        + showError(message): void
+        - router: GoRouter
+    }
+}
+
+together {
+    interface IDataRequestService <<Service>> {
+        + submitDataRequest(dto): Future<void>
+    }
+
+    class DataRequestService <<Service>> {
+        + submitDataRequest(dto): Future<void>
+    }
+}
+
+together {
+    class DataRequestDto <<DTO>> {
+        + type: String
+        + description: String
+        + userContact: String?
+        + toJson(): Map<String, dynamic>
+    }
+}
+
+' Relationships
+VSubmitDataRequest ..> DataRequestViewModel : observes
+VSubmitDataRequest ..> DataRequestEventController : uses
+
+DataRequestEventController ..> IDataRequestUseCase : uses
+DataRequestEventController ..> DataRequestViewModel : reads/updates
+
+IDataRequestUseCase <|.. DataRequestUseCase : implements
+DataRequestUseCase ..> IDataRequestView : uses
+DataRequestUseCase ..> IDataRequestService : uses
+DataRequestUseCase ..> DataRequestDto : creates
+
+IDataRequestView <|.. PDataRequest : implements
+PDataRequest ..> DataRequestViewModel : updates
+
+IDataRequestService <|.. DataRequestService : implements
+DataRequestService ..> DataRequestDto : uses
+
+@enduml

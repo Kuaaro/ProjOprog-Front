@@ -1,0 +1,52 @@
+@startuml AddComment_Sequence
+
+actor User
+participant "VDatasetAddComment" as View <<View>>
+
+box "Event Controller" #LightSalmon
+    participant "DatasetCommentEventController" as EventCtrl <<Implementation>>
+end box
+
+box "Use Case" #LightYellow
+    participant "IDatasetCommentUseCase" as IUseCase <<Interface>>
+    participant "DatasetCommentUseCase" as UseCase <<Implementation>>
+end box
+
+box "Service" #LightGoldenRodYellow
+    participant "IDatasetCommentService" as IService <<Interface>>
+    participant "DatasetCommentService" as Service <<Implementation>>
+end box
+
+participant "Backend API" as API
+
+box "Presenter" #LightGreen
+    participant "IDatasetCommentView" as IView <<Interface>>
+    participant "PDatasetComment" as Presenter <<Implementation>>
+end box
+
+box "View Model" #LightCyan
+    participant "DatasetCommentViewModel" as ViewModel
+end box
+
+participant "GoRouter" as Router
+
+User -> View: Enters text and clicks Submit
+View -> EventCtrl: onSubmitPressed()
+EventCtrl -> ViewModel: setLoading(true)
+EventCtrl -> IUseCase: addCommentUC(request)
+IUseCase -> UseCase: 
+
+UseCase -> UseCase: Create AddCommentRequest\n(from content & datasetId)
+
+UseCase -> IService: addComment(request)
+IService -> Service: 
+Service -> API: POST /datasets/{id}/comments\n(Body: AddCommentRequest JSON)
+API --> Service: 201 Created (Success)
+Service --> UseCase: void
+
+UseCase -> IView: showCommentAdded()
+IView -> Presenter: 
+Presenter -> ViewModel: clear()
+Presenter -> Router: pop() 
+
+@enduml
