@@ -63,6 +63,8 @@ import 'package:proj_oprog_front/dataset/idataset_view.dart';
 import 'package:proj_oprog_front/dataset/event/dataset_event_controller.dart';
 import 'package:proj_oprog_front/dataset/view/vdataset_edit.dart';
 import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
+import 'package:proj_oprog_front/feedback/use_case/feedback_uc.dart';
+import 'package:proj_oprog_front/feedback/use_case/ifeedback_uc.dart';
 
 // Sensor registrations
 import 'package:proj_oprog_front/sensor/business_logic/sensor_service.dart';
@@ -240,6 +242,10 @@ void setupServiceLocator() {
       locator<IDatasetUseCase>(),
       locator<DatasetEditViewModel>(),
     ),
+  );
+
+  locator.registerLazySingleton<IFeedbackUseCase>(
+    () => FeedbackUseCase(locator<FeedbackService>()),
   );
 
   // Sensor registrations

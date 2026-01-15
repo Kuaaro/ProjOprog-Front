@@ -38,7 +38,13 @@ class FeedbackDetailsDialog <<View>> {
   +build(BuildContext): Widget
 }
 
-'--- SERVICE ---
+'--- USE CASE & SERVICE ---
+class FeedbackUseCase <<UseCase>> {
+  +getUserFeedbackList(int datasetId): Future<List<NamedIdPair>>
+  +getUserFeedbackDetails(int userFeedbackId): Future<UserFeedbackDetailsDto>
+  +deleteUserFeedback(int userFeedbackId): Future<void>
+}
+
 class FeedbackService <<Service>> {
   +createUserFeedback(CreateUserFeedbackDto): Future<void>
   +getUserFeedbackList(int datasetId): Future<List<NamedIdPair>>
@@ -70,9 +76,10 @@ UserDatasetView ..> DatasetCommentDialog : opens >
 ShowCatalogView ..> FeedbackListDialog : opens >
 FeedbackListDialog ..> FeedbackDetailsDialog : opens >
 
-DatasetCommentDialog ..> FeedbackService : uses >
-FeedbackListDialog ..> FeedbackService : uses >
-FeedbackDetailsDialog ..> FeedbackService : uses >
+DatasetCommentDialog ..> FeedbackUseCase : uses >
+FeedbackListDialog ..> FeedbackUseCase : uses >
+FeedbackDetailsDialog ..> FeedbackUseCase : uses >
+FeedbackUseCase ..> FeedbackService : uses >
 
 FeedbackService ..> CreateUserFeedbackDto
 FeedbackService ..> UserFeedbackDetailsDto

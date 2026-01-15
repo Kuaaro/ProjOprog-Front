@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/feedback/dto/create_user_feedback_dto.dart';
-import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
+import 'package:proj_oprog_front/feedback/use_case/ifeedback_uc.dart';
 
 class DatasetCommentDialog extends StatefulWidget {
   final int datasetId;
@@ -38,7 +38,7 @@ class _DatasetCommentDialogState extends State<DatasetCommentDialog> {
           datasetId: widget.datasetId,
         );
 
-        await GetIt.instance<FeedbackService>().createUserFeedback(feedback);
+        await GetIt.instance<IFeedbackUseCase>().createUserFeedback(feedback);
 
         if (mounted) {
           Navigator.of(context).pop();

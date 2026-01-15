@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:proj_oprog_front/feedback/dto/user_feedback_details_dto.dart';
-import 'package:proj_oprog_front/feedback/service/feedback_service.dart';
+import 'package:proj_oprog_front/feedback/use_case/ifeedback_uc.dart';
 
 class FeedbackDetailsDialog extends StatelessWidget {
   final int feedbackId;
@@ -11,7 +11,7 @@ class FeedbackDetailsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserFeedbackDetailsDto>(
-      future: GetIt.instance<FeedbackService>().getUserFeedbackDetails(feedbackId),
+      future: GetIt.instance<IFeedbackUseCase>().getUserFeedbackDetails(feedbackId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const AlertDialog(
@@ -90,7 +90,7 @@ class FeedbackDetailsDialog extends StatelessWidget {
                 );
 
                 if (confirm == true) {
-                  await GetIt.instance<FeedbackService>()
+                  await GetIt.instance<IFeedbackUseCase>()
                       .deleteUserFeedback(feedback.userFeedbackId);
                   if (context.mounted) {
                     Navigator.of(context).pop(true);  
